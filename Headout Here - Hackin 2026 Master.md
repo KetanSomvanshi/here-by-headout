@@ -193,12 +193,23 @@ You don't pick a category, but you *aim* the story. Aim here:
 
 ### Screens
 1. **Place Setup** — form: place name, **place type (free-form with examples: hotel, café, hostel, lounge, venue, tourist desk, coworking, short-stay host, mall concierge, gym… — explicitly "any physical place")**, location, guest profile, languages, brand tone, logo/color, categories to highlight/avoid, commission %. CTA: **"Generate Headout Here."** The breadth of this one field *is* the place-agnostic promise — make it visible.
-2. **Generated Output** — QR code (downloadable), storefront preview (phone frame), dashboard link, embed snippet. The "wow, in 60 seconds" beat.
+2. **Generated Output** — the **branded Headout QR** (see *The branded QR* below), storefront preview (phone frame), dashboard link, embed snippet, and a print-ready QR poster / table-tent. The "wow, in 60 seconds" beat — and the thing that drops out is unmistakably *Headout*, not a generic black-and-white square.
 3. **Guest Storefront (mobile-first)** — **Headout-forward co-branded header: "{Place name} × Headout"** (Headout brand prominent — this is the brand pillar in pixels, not a tiny footer), an "Ask the concierge" input, and quick chips: `Today` · `Near me` · `Kid-friendly` · `Rainy day` · `Under 2 hrs` · `Tonight`.
 4. **Concierge + Recommendations** — chat thread; each recommendation card shows the experience + **why it fits** (e.g. `Indoor ✓ · 700m ✓ · next slot 15:30 ✓ · family-friendly ✓`) + price + "Book."
 5. **Mock Checkout → Confirmation** — handoff screen → ticket confirmation → "{Place} earns €X.XX on this booking" (e.g. Casa Aurelia earns €1.92).
 6. **Partner Dashboard (the place's live scoreboard)** — three headline tiles, the three things every place cares about: **Impressions** (QR brand reach + measured scans — the reach they're giving Headout), **Conversions** (scan → chat → booking, with the booking rate), and **Commission** (earned to date + this month, with the next payout). Below: GMV, top experiences, top guest questions, language mix, and **performance by QR surface** (which placement earns most). Numbers animate up live the instant a booking lands. This is the per-place, real-time version of the model in §14 — every assumption there is a tile here.
 7. **Place-Type Switcher** — toggle across place types (hotel → café → lounge → venue → tourist desk); header, copy, default chips, and CTA re-skin from the same config. Same Headout brand throughout — only the place context changes.
+
+### The branded QR — make it unmistakably Headout
+
+The QR is the product's most-photographed object and the brand pillar (§1) in physical form, so it can **never** be a plain black-and-white square. Every generated QR is:
+
+- **Branded** — the Headout logo locked into the centre module; data modules in the **Headout brand colour** on a clean light field (high-contrast so it always scans). The co-brand frame reads **"{Place} × Headout."**
+- **Thematic** — rounded "pill" modules and custom finder-eyes styled to the Headout mark, wrapped in a framed card: a headline (**"Need plans nearby? Scan for Headout picks"**), the place name, the **Headout wordmark + tagline**, and a light destination motif (e.g. a Rome skyline strip) so it reads *local*, not corporate.
+- **A poster, not just a code** — the downloadable asset is a print-ready **table-tent / lobby stand**, not a bare PNG. This is the physical billboard from §1, actually designed.
+- **Still scannable** — logo overlay ≤ ~20% of area, error-correction level **H**, tested on a real phone before the demo. *Cool must never cost a scan.*
+
+Treat this as a first-class screen, not a `qrcode` default. Build path in §8.
 
 ### Concierge behavior — the golden rule
 **Deterministic filters do the thinking; the LLM does the talking.**
@@ -209,7 +220,7 @@ You don't pick a category, but you *aim* the story. Aim here:
 
 ## 8. Technical Architecture
 
-**Stack:** Replit · Next.js (App Router) single app · API routes for the concierge + booking · Tailwind for fast mobile UI · `qrcode` for QR · Claude (via provided keys) for the concierge call. No external DB needed — seed JSON + in-memory session ledger is enough for the demo (optionally Replit DB / a JSON file for persistence).
+**Stack:** Replit · Next.js (App Router) single app · API routes for the concierge + booking · Tailwind for fast mobile UI · `qrcode` + a canvas overlay for the **branded** QR (§7) · Claude (via provided keys) for the concierge call. No external DB needed — seed JSON + in-memory session ledger is enough for the demo (optionally Replit DB / a JSON file for persistence).
 
 ```mermaid
 flowchart LR
@@ -230,6 +241,8 @@ flowchart LR
 - `attribution` / ledger — aggregates bookings → dashboard metrics
 
 **Attribution:** storefront URL carries `?place=casa-aurelia&surface=lobby`. That token rides through the session into the `booking` event → dashboard credits the place + surface. (Hardcode same-session; don't build real windows.)
+
+**Branded QR (how):** generate the matrix with `qrcode` at error-correction level **H**, render to a `<canvas>`, recolour the modules to the Headout brand colour, round the module corners + paint the Headout-style finder-eyes, then composite the Headout logo in the centre (≤ 20% area). Wrap that in a poster component — `<BrandedQRPoster place={…} />` — that adds the co-brand frame, caption, place name, and Headout wordmark, and exports a print-ready PNG. ~1–2 hrs of Lane A polish on Fri night for an outsized stage payoff (it's the brand pillar people photograph).
 
 **Concierge API contract (keep it this simple):**
 `POST /api/concierge { partnerId, query, lang, weather }` → server runs filters → sends candidate set + guest query to Claude with a grounding prompt → returns `{ reply, recommendations[] }`. Recommendations reference only candidate IDs.
@@ -311,7 +324,7 @@ Build **30–50** experiences for realism; here's the representative core (expan
 ## 10. The 42-Hour Plan
 
 **Three lanes** (collapse if anyone's pulled away):
-- **Builder A — Frontend/Design:** setup form, storefront, dashboard, mobile polish, QR poster asset.
+- **Builder A — Frontend/Design:** setup form, storefront, dashboard, mobile polish, branded QR + poster asset (§7).
 - **Builder B — Backend/Data:** seed JSON, rules engine, booking simulator, attribution ledger, commission, weather/lang toggles.
 - **Builder C — AI/Demo/Story:** concierge prompt + grounding, demo script, trailer, deck, Q&A, pitch.
 > Fri afternoon, everyone converges to integrate. Lane C owns the deliverables that get graded (demo + trailer + pitch) — protect that time.
@@ -322,7 +335,7 @@ Build **30–50** experiences for realism; here's the representative core (expan
 | *Thu midnight – ~7 AM* | Sleep (real). | — |
 | **Fri ~9 AM – 1 PM** | Guest storefront + concierge (filters + one AI call) + QR generation + attribution token. | **Scan → ask → grounded recommendation works end-to-end.** |
 | **Fri 1 PM – 7 PM** | Mock checkout + booking event + attribution ledger + dashboard with live-updating GMV/commission. *(Everyone integrates.)* | **Full loop closes; dashboard reacts to a booking.** |
-| **Fri 7 PM – ~1 AM** | Polish mobile UI; wire weather toggle + language switch; build place-type switcher (the reveal); Headout-forward co-brand treatment; QR poster. | **Demo-quality build; place-type reveal works.** |
+| **Fri 7 PM – ~1 AM** | Polish mobile UI; wire weather toggle + language switch; build place-type switcher (the reveal); Headout-forward co-brand treatment; branded QR + poster (§7). | **Demo-quality build; place-type reveal works.** |
 | *Fri ~1 AM – 7 AM* | Sleep / staggered. | — |
 | **Sat 9 AM – 10:30 AM** | Record the 2–3 min demo; cut the trailer (fal); final dashboard numbers. | **Demo recording + trailer in the can.** |
 | **Sat 10:30 AM — CODE FREEZE** | Stop building. Rehearse live 2–3×; Q&A drill; load backup recording. | **Submitted + rehearsed.** |
@@ -338,7 +351,7 @@ Build **30–50** experiences for realism; here's the representative core (expan
 
 **Hook (15s):** "Every day, travelers ask 'what should we do next?' at hotel desks, dinner tables, lounges, and venues. Those places have trust and footfall — but no inventory, no checkout, no fulfillment. Headout does. Watch us connect them."
 
-**Act 1 — Create the place (20s):** On Headout Here setup, point at the **place-type field — "this works for any physical place"** — and pick one: *hotel · Rome near Vatican · families & couples · JP/EN/HI · warm & premium · 8%* → **Generate**. Out comes a Headout-branded QR, a co-branded storefront, and a dashboard. "Sixty seconds. No engineering. And notice it's a *Headout* QR — that's the brand showing up in the real world."
+**Act 1 — Create the place (20s):** On Headout Here setup, point at the **place-type field — "this works for any physical place"** — and pick one: *hotel · Rome near Vatican · families & couples · JP/EN/HI · warm & premium · 8%* → **Generate**. Out drops a **branded Headout QR** — Headout-coloured, logo in the middle, framed as a "scan for things to do nearby" table-tent — plus a co-branded storefront and a dashboard. "Sixty seconds, no engineering. And look at that QR — it's not a black-and-white square, it's *Headout*, designed for the wall. Every one of these is a little branded billboard."
 
 **Act 2 — Guest scans (45s):** Put the QR on screen; **a judge scans it** with their own phone. Flip the on-stage **weather toggle to "raining."** Guest asks (in Japanese if you've got it): *"It's raining and I have a 6-year-old — what can we do this afternoon near the hotel?"* Concierge replies in-language with 3 cards: Leonardo Experience, Pizza Class, Gladiator School — each showing `Indoor ✓ · nearby ✓ · next slot ✓ · family ✓`. "Notice what it didn't say: the Colosseum's outdoors, Tivoli's a day trip. The rules filter; the AI explains."
 
@@ -356,12 +369,12 @@ A required, graded deliverable — make it cinematic, not a screen recording.
 
 **Storyboard:**
 1. Tourist family at a hotel desk, slightly lost: *"...so what should we do today?"* (fal-generated or stock b-roll)
-2. Tight on a lobby QR stand: "Need plans nearby? Scan for Headout picks from Casa Aurelia."
+2. Tight on a lobby QR stand — a **branded Headout QR** (Headout-coloured, logo-in-centre, themed frame): "Need plans nearby? Scan for Headout picks from Casa Aurelia."
 3. Phone scans → branded storefront blooms.
 4. Chat bubble in Japanese → 3 recommendation cards.
 5. "Booked." → ticket confirmation.
 6. The partner's dashboard: impressions, conversions, and commission all ticking up.
-7. Fast montage of Headout-branded QRs lighting up across a city — hotel lobby → café table → hostel wall → lounge → venue screen → tourist desk → coworking → transit hub (place-agnostic breadth + the brand-everywhere money shot).
+7. Fast montage of the same **branded Headout QRs** (logo-in-centre, Headout-coloured) lighting up across a city — hotel lobby → café table → hostel wall → lounge → venue screen → tourist desk → coworking → transit hub (place-agnostic breadth + the brand-everywhere money shot).
 8. Pull back to a map of the city dotted with glowing Headout pins, then logo + tagline card: **"Headout Here — wherever travelers ask what to do next."**
 
 **VO script (≈35s):** "Travelers don't plan in an app. They decide in the moment — at the desk, the café, the lounge, the venue. Until now, those moments were lost. Headout Here turns *any* trusted place into a Headout storefront. Guests scan, ask, and book. The place earns. And a Headout-branded QR sits on every surface — so wherever people ask what to do next, Headout is already there. **Headout Here.**"
@@ -481,6 +494,7 @@ Rome is **one of 100+ Headout destinations.** Prove the Rome unit economics, rep
 - **Target prizes:** Move the Needle (primary) + Five Stars (secondary)
 - **Framing:** place-agnostic product (not hotel-bound) + co-equal pillars — distribution **and** brand
 - **Branding model:** Headout-forward co-brand ("{Place} × Headout"); every QR is a Headout brand impression
+- **Branded QR:** Headout-coloured, logo-in-centre, themed co-brand poster/table-tent — never a plain B/W square; level-H so it always scans (spec in §7, build in §8)
 - **Demo entry place:** Casa Aurelia Rome (a hotel — chosen for inventory richness + the rainy-day story), presented as *one example of any place*; reveal switches across café → tourist desk → venue
 
 **Still to decide:**
