@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Here by Headout — PARTNER Launch Trailer Prompts (Distribution side)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f4ef;
+      --paper: #fffdf8;
+      --ink: #17201b;
+      --muted: #637069;
+      --line: #ded8ce;
+      --accent: #e8552f;
+      --accent-dark: #aa321f;
+      --teal: #0f766e;
+      --green-soft: #e7f4ec;
+      --blue-soft: #e8f0fb;
+      --shadow: 0 18px 50px rgba(27, 32, 29, 0.11);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(232, 85, 47, 0.10), transparent 32rem),
+        linear-gradient(225deg, rgba(15, 118, 110, 0.10), transparent 34rem),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+    }
+
+    .page-shell {
+      display: grid;
+      grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.82);
+      backdrop-filter: blur(18px);
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .brand-kicker {
+      color: var(--accent-dark);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .toc-title { font-size: 1rem; font-weight: 800; margin: 0 0 18px; }
+
+    .site-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin: 0 0 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .site-nav a {
+      border-radius: 8px;
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    .site-nav a:hover { background: var(--blue-soft); color: var(--ink); }
+    .site-nav a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .toc { display: flex; flex-direction: column; gap: 2px; }
+
+    .toc-link {
+      border-radius: 8px;
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    .toc-link:hover { background: var(--green-soft); color: var(--ink); }
+    .toc-level-1 { color: var(--ink); font-weight: 800; margin-top: 10px; }
+    .toc-level-2 { padding-left: 22px; }
+
+    main { padding: 42px min(6vw, 72px) 72px; }
+
+    article {
+      background: var(--paper);
+      border: 1px solid rgba(222, 216, 206, 0.82);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin: 0 auto;
+      max-width: 980px;
+      padding: clamp(28px, 5vw, 68px);
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--ink);
+      letter-spacing: 0;
+      line-height: 1.12;
+      margin: 2.2rem 0 1rem;
+      scroll-margin-top: 28px;
+    }
+
+    h1:first-child { margin-top: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 4.4rem); max-width: 13ch; }
+    h2 {
+      border-top: 1px solid var(--line);
+      font-size: clamp(1.5rem, 3vw, 2.35rem);
+      padding-top: 2.1rem;
+    }
+    h3 { color: var(--teal); font-size: 1.18rem; margin-top: 1.8rem; }
+    h4 { font-size: 1rem; }
+
+    .anchor {
+      color: var(--accent);
+      float: left;
+      font-size: 0.8em;
+      margin-left: -1.05em;
+      opacity: 0;
+      text-decoration: none;
+      transition: opacity 0.16s ease;
+    }
+
+    h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor { opacity: 1; }
+
+    p { margin: 0.9rem 0; }
+    strong { color: #0f241c; font-weight: 800; }
+
+    blockquote {
+      background: linear-gradient(90deg, rgba(232, 85, 47, 0.10), rgba(15, 118, 110, 0.07));
+      border-left: 5px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+    }
+
+    blockquote p { font-size: 1.02rem; margin: 0.25rem 0; }
+
+    ul, ol { padding-left: 1.35rem; }
+    li { margin: 0.45rem 0; padding-left: 0.12rem; }
+
+    hr { border: 0; border-top: 1px solid var(--line); margin: 2.4rem 0; }
+
+    code {
+      background: #f0ebe2;
+      border: 1px solid #e3dccf;
+      border-radius: 6px;
+      color: #8f2b1d;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.88em;
+      padding: 0.12em 0.36em;
+    }
+
+    .code-block {
+      background: #151b18;
+      border-radius: var(--radius);
+      color: #e9f0eb;
+      overflow: auto;
+      padding: 1.1rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .code-block code { background: transparent; border: 0; color: inherit; padding: 0; }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 1.4rem 0;
+      overflow-x: auto;
+    }
+
+    table { border-collapse: collapse; min-width: 720px; width: 100%; }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 0.78rem 0.9rem;
+      vertical-align: top;
+    }
+
+    th {
+      background: #efe9df;
+      color: #20251f;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) td { background: rgba(232, 240, 251, 0.45); }
+    tr:last-child td { border-bottom: 0; }
+
+    .diagram-shell {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      padding: 1rem;
+    }
+
+    .flow-diagram { display: flex; flex-direction: column; gap: 0.75rem; }
+    .flow-row { align-items: center; display: flex; gap: 0.7rem; min-width: max-content; }
+
+    .flow-node {
+      background: var(--green-soft);
+      border: 1px solid rgba(15, 118, 110, 0.34);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(27, 32, 29, 0.06);
+      color: #12352f;
+      font-size: 0.9rem;
+      font-weight: 750;
+      line-height: 1.25;
+      max-width: 190px;
+      min-height: 64px;
+      min-width: 150px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .flow-arrow { color: var(--accent); font-weight: 900; }
+    .section-ref { color: inherit; text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .page-shell { display: block; }
+      aside {
+        border-bottom: 1px solid var(--line);
+        border-right: 0;
+        height: auto;
+        max-height: 46vh;
+        position: relative;
+      }
+      main { padding: 18px; }
+      article { padding: 24px; }
+      .anchor { display: none; }
+      h1 { max-width: none; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page-shell { display: block; }
+      aside { display: none; }
+      main, article { box-shadow: none; margin: 0; max-width: none; padding: 0; }
+    }
+</style>
+</head>
+<body>
+  <div class="page-shell">
+    <aside>
+      <p class="brand-kicker">Here by Headout</p>
+      <p class="toc-title">Partner Trailer</p>
+      <nav class="site-nav" aria-label="Site">
+        <a href="index.html">📋 Master Doc</a>
+        <a href="trailer-guest.html">🎬 Guest Trailer</a>
+        <a href="trailer-partner.html" class="active">🤝 Partner Trailer</a>
+      </nav>
+      <nav class="toc" aria-label="Document outline">
+        <a class="toc-link toc-level-1" href="#here-by-headout-partner-launch-trailer-prompts-distribution-side">Here by Headout — PARTNER Launch Trailer Prompts (Distribution side)</a>
+<a class="toc-link toc-level-2" href="#pacing-arc-confident-open-fast-proof-strong-close">Pacing arc — confident open → fast proof → strong close</a>
+<a class="toc-link toc-level-2" href="#scene-1-the-missed-moment-owner-s-pov-4s-confident-open">Scene 1 — The missed moment (owner's POV) · ~4s · CONFIDENT OPEN</a>
+<a class="toc-link toc-level-2" href="#scene-2-the-reframe-footfall-trust-4s-confident-open">Scene 2 — The reframe (footfall + trust) · ~4s · CONFIDENT OPEN</a>
+<a class="toc-link toc-level-2" href="#scene-3-sign-up-in-60-seconds-2-5s-the-proof">Scene 3 — Sign up in 60 seconds · ~2.5s · THE PROOF</a>
+<a class="toc-link toc-level-2" href="#scene-4-the-branded-qr-storefront-dashboard-drop-out-2-5s-the-proof">Scene 4 — The branded QR + storefront + dashboard drop out · ~2.5s · THE PROOF</a>
+<a class="toc-link toc-level-2" href="#scene-5-guests-scan-book-on-headout-s-rails-2-5s-the-proof">Scene 5 — Guests scan &amp; book — on Headout's rails · ~2.5s · THE PROOF</a>
+<a class="toc-link toc-level-2" href="#scene-6-you-earn-the-partner-dashboard-2-5s-the-proof">Scene 6 — You earn (the partner dashboard) · ~2.5s · THE PROOF</a>
+<a class="toc-link toc-level-2" href="#scene-7-any-place-becomes-a-partner-montage-6s-fast-peak">Scene 7 — Any place becomes a partner (montage) · ~6s · FAST PEAK</a>
+<a class="toc-link toc-level-2" href="#scene-8-scale-call-to-action-5s-land-cta">Scene 8 — Scale + call to action · ~5s · LAND + CTA</a>
+<a class="toc-link toc-level-2" href="#end-card-banner-add-in-capcut-canva-not-flow">End card / banner (add in CapCut/Canva, not Flow)</a>
+<a class="toc-link toc-level-2" href="#vo-script-35-40s-partner-facing">VO script (≈35–40s, partner-facing)</a>
+<a class="toc-link toc-level-2" href="#music-sound-design-built-to-the-pacing-arc">Music &amp; sound design — built to the pacing arc</a>
+<a class="toc-link toc-level-2" href="#how-the-two-trailers-relate">How the two trailers relate</a>
+      </nav>
+    </aside>
+    <main>
+      <article>
+<h1 id="here-by-headout-partner-launch-trailer-prompts-distribution-side"><a class="anchor" href="#here-by-headout-partner-launch-trailer-prompts-distribution-side" aria-label="Link to section">#</a>Here by Headout — PARTNER Launch Trailer Prompts (Distribution side)</h1>
+<p>Companion to the guest-side trailer (<code>flow-trailer-prompts.md</code>). <strong>Different audience, different promise.</strong> This one sells <em>the place owner</em> — the GM, café/hostel owner, lounge operator, venue lead, visitor-desk manager (<a class="section-ref" href="#15">§15</a> GTM). The pitch is <strong>revenue + zero effort + a better guest experience</strong>, not guest delight.</p>
+<blockquote><p><strong>The partner one-liner:</strong> *You already have the footfall and the trust. Add</p><p>Headout's inventory, checkout, and fulfillment with one QR — and earn a cut of</p><p>every booking.*</p></blockquote>
+<p>Use with <strong>Google Flow (Veo 3)</strong>. Attach the same <strong>Headout city landing screenshots</strong> as Ingredients / style references (palette, typography, purple). UI shots (Scenes 3, 4, 6) are best as <strong>Screen Studio captures of the real build</strong> — Flow prompts are fallbacks.</p>
+<hr>
+<h2 id="pacing-arc-confident-open-fast-proof-strong-close"><a class="anchor" href="#pacing-arc-confident-open-fast-proof-strong-close" aria-label="Link to section">#</a>Pacing arc — confident open → fast proof → strong close</h2>
+<p>Partner trailers sell trust, not tension. Open <strong>confident and aspirational</strong> (not &quot;lost&quot;), accelerate through the <em>proof</em> (setup → live → earnings), peak on the &quot;any place&quot; montage, land on a clear <strong>call to action</strong>.</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Phase</th><th style="text-align:left">Scenes</th><th style="text-align:left">Feel</th><th style="text-align:left">Cut length</th><th style="text-align:left">Camera</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Confident open</strong></td><td style="text-align:left">1–2</td><td style="text-align:left">Busy, thriving place; reframe the missed moment as opportunity</td><td style="text-align:left">3–4s</td><td style="text-align:left">smooth, observational</td></tr><tr><td style="text-align:left"><strong>The proof</strong></td><td style="text-align:left">3–6</td><td style="text-align:left">Setup → QR → guests book → you earn. Momentum builds.</td><td style="text-align:left">1.5–2.5s</td><td style="text-align:left">brisk, snappy</td></tr><tr><td style="text-align:left"><strong>Fast peak</strong></td><td style="text-align:left">7</td><td style="text-align:left">Every kind of place, all earning</td><td style="text-align:left">0.5–0.8s</td><td style="text-align:left">hard snap cuts on the beat</td></tr><tr><td style="text-align:left"><strong>Land + CTA</strong></td><td style="text-align:left">8 + banner</td><td style="text-align:left">Release, scale, &quot;become a partner&quot;</td><td style="text-align:left">4–5s</td><td style="text-align:left">slow pull-back, freeze</td></tr></tbody></table></div>
+<p>Music: same build philosophy as the guest trailer — sparse → driving → hit → release. See the cue sheet at the bottom.</p>
+<hr>
+<h2 id="scene-1-the-missed-moment-owner-s-pov-4s-confident-open"><a class="anchor" href="#scene-1-the-missed-moment-owner-s-pov-4s-confident-open" aria-label="Link to section">#</a>Scene 1 — The missed moment (owner's POV) · ~4s · CONFIDENT OPEN</h2>
+<blockquote><p><strong>Beat / depth:</strong> show the everyday lost revenue. A guest at the counter asks</p><p>&quot;what should we do today?&quot;; the friendly owner/staffer wants to help but can</p><p>only shrug or wave vaguely — the guest drifts off, the moment (and the</p><p>booking) gone. Frame it warmly, not as failure: this is opportunity, not</p><p>embarrassment.</p></blockquote>
+<pre class="code-block"><code class="language-">Inside a warm, busy boutique hotel lobby (or stylish café), a friendly owner
+behind the counter is asked by a guest, &quot;what should we do today?&quot; The owner
+smiles but can only offer a small, helpless shrug and a vague gesture toward the
+street; the guest nods politely and drifts away, unsure. A quiet missed moment
+in an otherwise thriving, beautiful space. Premium modern travel-tech brand
+film, matching the color palette, typography, and bright editorial photography
+style of the attached Headout screenshots — especially the Headout purple
+accent. Cinematic, shallow depth of field, soft natural light, smooth
+observational camera, high production value, 4K, photoreal. No text overlays,
+no captions, no watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-2-the-reframe-footfall-trust-4s-confident-open"><a class="anchor" href="#scene-2-the-reframe-footfall-trust-4s-confident-open" aria-label="Link to section">#</a>Scene 2 — The reframe (footfall + trust) · ~4s · CONFIDENT OPEN</h2>
+<blockquote><p><strong>Beat / depth:</strong> the owner has the two things Headout can't buy — footfall</p><p>and trust — but no inventory or checkout. Visualize the asset they already</p><p>own: a steady flow of guests who trust this place. This is the &quot;you're sitting</p><p>on a distribution channel&quot; beat.</p></blockquote>
+<pre class="code-block"><code class="language-">A flowing, slightly slowed sequence of happy guests moving through the same
+place — checking in, sipping coffee, chatting with staff, the owner greeting
+people warmly by the door. The space feels trusted and full of life and
+footfall. Soft, optimistic, aspirational tone; a sense of untapped potential.
+Matching the color palette, typography, and bright editorial photography style
+of the attached Headout screenshots, with the Headout purple accent. Cinematic,
+shallow depth of field, warm natural light, smooth flowing camera motion, high
+production value, 4K, photoreal. No text overlays, no captions, no watermarks,
+no invented logos.</code></pre>
+<hr>
+<h2 id="scene-3-sign-up-in-60-seconds-2-5s-the-proof"><a class="anchor" href="#scene-3-sign-up-in-60-seconds-2-5s-the-proof" aria-label="Link to section">#</a>Scene 3 — Sign up in 60 seconds · ~2.5s · THE PROOF</h2>
+<p><em>(Prefer a Screen Studio capture of the real build. Flow fallback below.)</em></p>
+<blockquote><p><strong>Beat / depth:</strong> kill the &quot;this is a big integration&quot; fear instantly. The</p><p>owner taps through a short setup form on a tablet — place name, type,</p><p>commission — and hits a glowing purple <strong>&quot;Generate Here by Headout&quot;</strong> button.</p><p>No engineers, no contract, no inventory to source. Sixty seconds.</p></blockquote>
+<pre class="code-block"><code class="language-">Close-up of an owner's hands on a tablet at the counter, filling a clean, short
+setup form with a few quick taps, then pressing a large glowing purple
+&quot;Generate&quot; button that pulses on tap. Confident, effortless, premium app UI in
+Headout purple. The owner glances up with a hopeful, &quot;that's it?&quot; expression.
+Matching the color palette, typography, and editorial style of the attached
+Headout screenshots. Cinematic, shallow depth of field, soft light, 4K,
+photoreal. No legible fake text, no captions, no watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-4-the-branded-qr-storefront-dashboard-drop-out-2-5s-the-proof"><a class="anchor" href="#scene-4-the-branded-qr-storefront-dashboard-drop-out-2-5s-the-proof" aria-label="Link to section">#</a>Scene 4 — The branded QR + storefront + dashboard drop out · ~2.5s · THE PROOF</h2>
+<p><em>(Prefer a Screen Studio capture of the real build. Flow fallback below.)</em></p>
+<blockquote><p><strong>Beat / depth:</strong> the 60-second payoff. Out of one button comes a *branded</p><p>Headout QR table-tent*, a co-branded storefront, and a live dashboard — then a</p><p>hard cut to the owner placing the printed purple QR stand on the counter. They</p><p>built nothing; they have a storefront.</p></blockquote>
+<pre class="code-block"><code class="language-">On the tablet screen, three things bloom into place at once — a Headout-purple
+branded QR table-tent, a co-branded mobile storefront preview, and a live
+dashboard — assembling with a satisfying premium animation. Hard cut to the
+owner's hands setting a freshly printed, Headout-purple QR table-tent down on
+the counter, adjusting it proudly into place. Bright, premium, branded.
+Matching the color palette, typography, and editorial style of the attached
+Headout screenshots, with the Headout purple accent. Cinematic, shallow depth
+of field, soft light, 4K, photoreal. No legible fake text, no captions, no
+watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-5-guests-scan-book-on-headout-s-rails-2-5s-the-proof"><a class="anchor" href="#scene-5-guests-scan-book-on-headout-s-rails-2-5s-the-proof" aria-label="Link to section">#</a>Scene 5 — Guests scan &amp; book — on Headout's rails · ~2.5s · THE PROOF</h2>
+<blockquote><p><strong>Beat / depth:</strong> the owner does <em>nothing</em> — Headout owns inventory, checkout,</p><p>payments, fulfillment, support. Show a guest happily scanning the counter QR</p><p>and booking, while the owner simply carries on serving coffee/greeting the</p><p>next guest in the background. Effortless income.</p></blockquote>
+<pre class="code-block"><code class="language-">A guest at the counter scans the Headout-purple QR table-tent with their phone
+and taps to book, smiling; in the soft-focus background the owner carries on
+warmly serving the next guest, completely hands-off. A subtle purple glow ties
+the phone, the QR, and the storefront together. The whole experience runs
+itself. Matching the color palette, typography, and bright editorial style of
+the attached Headout screenshots, with the Headout purple accent. Cinematic,
+shallow depth of field, warm natural light, smooth motion, high production
+value, 4K, photoreal. No legible fake text, no captions, no watermarks, no
+invented logos.</code></pre>
+<hr>
+<h2 id="scene-6-you-earn-the-partner-dashboard-2-5s-the-proof"><a class="anchor" href="#scene-6-you-earn-the-partner-dashboard-2-5s-the-proof" aria-label="Link to section">#</a>Scene 6 — You earn (the partner dashboard) · ~2.5s · THE PROOF</h2>
+<p><em>(Prefer a Screen Studio capture of the real build. Flow fallback below.)</em></p>
+<blockquote><p><strong>Beat / depth:</strong> the money beat — this is the whole pitch. The owner watches</p><p>the dashboard as a booking lands live: impressions, conversions, and</p><p><strong>commission</strong> tick upward. A genuine, delighted reaction — *they just got</p><p>paid for a question they used to answer for free.*</p></blockquote>
+<pre class="code-block"><code class="language-">Cinematic close-up of an owner watching a tablet dashboard on the counter as a
+booking lands live: three large metric tiles — impressions, conversions, and
+commission earned — pulse and tick upward with a subtle purple progress accent
+and a rising chart. The owner breaks into a genuine, delighted smile, the
+purple screen-glow on their face. Bright, premium, data-product look. Matching
+the color palette, typography, and editorial style of the attached Headout
+screenshots, with the Headout purple accent. Cinematic, shallow depth of field,
+soft light, 4K, photoreal. No legible fake text, no captions, no watermarks, no
+invented logos.</code></pre>
+<hr>
+<h2 id="scene-7-any-place-becomes-a-partner-montage-6s-fast-peak"><a class="anchor" href="#scene-7-any-place-becomes-a-partner-montage-6s-fast-peak" aria-label="Link to section">#</a>Scene 7 — Any place becomes a partner (montage) · ~6s · FAST PEAK</h2>
+<blockquote><p><strong>Beat / depth:</strong> prove place-agnostic breadth from the <em>partner</em> angle —</p><p>owners of every kind of place setting up the same purple QR and watching it</p><p>earn. Same constant object (the QR), many proud owners. Energy peak, hardest</p><p>cuts.</p></blockquote>
+<pre class="code-block"><code class="language-">A fast, rhythmic, escalating montage of different proud owners and managers
+placing the same Headout-purple QR table-tent on their counters and watching it
+work: a hotel front desk, a café bar, a hostel reception, an airport lounge
+desk, a theatre box office, a tourist information desk, a rooftop bar. Each cut
+snaps to the next on the beat; the QR pulses softly in Headout purple in every
+location, the one constant across all of them, owners smiling as they set it in
+place. Light shifts from afternoon to golden dusk to glowing night as energy
+builds — a partner network igniting across a city. Matching the color palette,
+typography, and bright editorial photography style of the attached Headout
+screenshots, with the Headout purple accent. Cinematic, shallow depth of field,
+dynamic motion, high production value, 4K, photoreal. No text overlays, no
+captions, no watermarks, no invented logos.</code></pre>
+<h3 id="place-name-labels-add-in-capcut-not-in-flow"><a class="anchor" href="#place-name-labels-add-in-capcut-not-in-flow" aria-label="Link to section">#</a>Place-name labels (add in CapCut, NOT in Flow)</h3>
+<p>Snap a co-branded <strong>&quot;{Place} × Headout&quot;</strong> label onto each cut, on the beat — identical lockup styling so the co-brand mark becomes the repeating motif.</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Cut</th><th style="text-align:left">Location</th><th style="text-align:left">Headout-style label</th></tr></thead><tbody><tr><td style="text-align:left">1</td><td style="text-align:left">Hotel desk</td><td style="text-align:left"><strong>Casa Aurelia × Headout</strong></td></tr><tr><td style="text-align:left">2</td><td style="text-align:left">Café</td><td style="text-align:left"><strong>Caffè Prati × Headout</strong></td></tr><tr><td style="text-align:left">3</td><td style="text-align:left">Hostel</td><td style="text-align:left"><strong>Trastevere Social × Headout</strong></td></tr><tr><td style="text-align:left">4</td><td style="text-align:left">Airport lounge</td><td style="text-align:left"><strong>Fiumicino SkyLounge × Headout</strong></td></tr><tr><td style="text-align:left">5</td><td style="text-align:left">Theatre</td><td style="text-align:left"><strong>Teatro Argentina × Headout</strong></td></tr><tr><td style="text-align:left">6</td><td style="text-align:left">Tourist desk</td><td style="text-align:left"><strong>Prati Visitor Desk × Headout</strong></td></tr><tr><td style="text-align:left">7</td><td style="text-align:left">Rooftop bar</td><td style="text-align:left"><strong>Terrazza Borghese × Headout</strong></td></tr></tbody></table></div>
+<p><em>(Casa Aurelia, Caffè Prati, Prati Visitor Desk are real <a class="section-ref" href="#9">§9</a> seed places — keep exact; the rest are believable Rome stand-ins.)</em></p>
+<hr>
+<h2 id="scene-8-scale-call-to-action-5s-land-cta"><a class="anchor" href="#scene-8-scale-call-to-action-5s-land-cta" aria-label="Link to section">#</a>Scene 8 — Scale + call to action · ~5s · LAND + CTA</h2>
+<blockquote><p><strong>Beat / depth:</strong> release the energy and turn it into an ask. Pull back over</p><p>the city of glowing purple pins (the partner network), settle into clean</p><p>negative space for the banner + CTA. End on the invitation: <em>become a partner.</em></p></blockquote>
+<pre class="code-block"><code class="language-">Aerial pull-back over a stylized night map of Rome; dozens of glowing Headout-
+purple location pins ignite one after another across the city until it shimmers
+like a partner network coming alive, rippling outward toward other cities on the
+horizon. The fast montage energy decelerates into a wide, calm, aspirational
+reveal, leaving clean dark negative space in the upper center for a logo and a
+call to action. Premium, confident. Matching the Headout purple and the bright
+editorial brand look of the attached Headout screenshots. Cinematic, smooth
+decelerating motion, high production value, 4K, photoreal. No text overlays, no
+captions, no watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="end-card-banner-add-in-capcut-canva-not-flow"><a class="anchor" href="#end-card-banner-add-in-capcut-canva-not-flow" aria-label="Link to section">#</a>End card / banner (add in CapCut/Canva, not Flow)</h2>
+<p>Over Scene 8's negative space:</p>
+<blockquote><p># Here</p><p>### by Headout</p><p>_Turn any trusted place into a Headout storefront._</p><p><strong>Become a partner →</strong></p></blockquote>
+<p><strong>Banner notes:</strong></p>
+<ul><li>Same <strong>&quot;Here · by Headout&quot;</strong> lockup as the guest trailer (consistency across</li></ul>
+<p>both films), but swap the tagline to the <strong>partner CTA</strong> and add a clear <strong>&quot;Become a partner&quot;</strong> button/line.</p>
+<ul><li>Pull the exact wordmark + purple from the attached screenshots / brand kit.</li><li>Animate onto the negative space on the final VO beat; hold ~1.5s.</li></ul>
+<hr>
+<h2 id="vo-script-35-40s-partner-facing"><a class="anchor" href="#vo-script-35-40s-partner-facing" aria-label="Link to section">#</a>VO script (≈35–40s, partner-facing)</h2>
+<blockquote><p>&quot;Every day, your guests ask the same question — <em>what should we do next?</em></p><p>You have the footfall. You have their trust. But you don't have the tickets.</p><p>Now you do. With Here by Headout, any place launches a branded concierge in</p><p>minutes — no engineering, no inventory. Your guests scan, ask, and book —</p><p>all on Headout's rails. You earn a cut of every booking. And you give your</p><p>guests something genuinely useful, right when they ask.</p><p><strong>Here by Headout. Become a partner.</strong>&quot;</p></blockquote>
+<h3 id="vo-sync-map"><a class="anchor" href="#vo-sync-map" aria-label="Link to section">#</a>VO sync map</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">VO line</th><th style="text-align:left">Scene</th></tr></thead><tbody><tr><td style="text-align:left">&quot;Every day, your guests ask the same question — <em>what should we do next?</em>&quot;</td><td style="text-align:left">1</td></tr><tr><td style="text-align:left">&quot;You have the footfall. You have their trust. But you don't have the tickets.&quot;</td><td style="text-align:left">2</td></tr><tr><td style="text-align:left">&quot;Now you do. With Here by Headout, any place launches a branded concierge in minutes — no engineering, no inventory.&quot;</td><td style="text-align:left">3 → 4</td></tr><tr><td style="text-align:left">&quot;Your guests scan, ask, and book — all on Headout's rails.&quot;</td><td style="text-align:left">5</td></tr><tr><td style="text-align:left">&quot;You earn a cut of every booking.&quot;</td><td style="text-align:left">6</td></tr><tr><td style="text-align:left">&quot;And you give your guests something genuinely useful, right when they ask.&quot;</td><td style="text-align:left">7</td></tr><tr><td style="text-align:left">&quot;<strong>Here by Headout. Become a partner.</strong>&quot;</td><td style="text-align:left">8 + banner</td></tr></tbody></table></div>
+<hr>
+<h2 id="music-sound-design-built-to-the-pacing-arc"><a class="anchor" href="#music-sound-design-built-to-the-pacing-arc" aria-label="Link to section">#</a>Music &amp; sound design — built to the pacing arc</h2>
+<p>Same build philosophy as the guest trailer, slightly more <strong>confident / corporate-uplifting</strong> (this is a business pitch, not an emotional story).</p>
+<p><strong>Track brief (Suno / Udio):</strong></p>
+<blockquote><p>*&quot;35–40s confident, uplifting corporate brand-film score. Starts warm and</p><p>understated — light piano/keys with a steady pulse. Builds with claps and</p><p>rising synths into a driving, optimistic, energetic peak with a strong beat,</p><p>then a clean resonant hit and release on the final note. Premium, modern,</p><p>trustworthy, motivating. No vocals.&quot;*</p></blockquote>
+<h3 id="cue-sheet"><a class="anchor" href="#cue-sheet" aria-label="Link to section">#</a>Cue sheet</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Phase</th><th style="text-align:left">Scenes</th><th style="text-align:left">Music</th><th style="text-align:left">Energy</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Confident open</strong></td><td style="text-align:left">1–2</td><td style="text-align:left">Warm keys + light pulse; understated, room to breathe under VO.</td><td style="text-align:left">▁▃</td></tr><tr><td style="text-align:left"><strong>The proof</strong></td><td style="text-align:left">3–6</td><td style="text-align:left">Pulse/kick enters on the Scene 3 &quot;Generate&quot; tap; layers build with each proof beat; tempo feels accelerating.</td><td style="text-align:left">▃▄▅</td></tr><tr><td style="text-align:left"><strong>Fast peak</strong></td><td style="text-align:left">7</td><td style="text-align:left">Full drop — driving beat, montage cuts land on every kick.</td><td style="text-align:left">███</td></tr><tr><td style="text-align:left"><strong>Land + CTA</strong></td><td style="text-align:left">8 + banner</td><td style="text-align:left">Big hit on the pull-back → thin to a sustained pad → resonant tail under the CTA banner.</td><td style="text-align:left">█▁</td></tr></tbody></table></div>
+<h3 id="hit-points"><a class="anchor" href="#hit-points" aria-label="Link to section">#</a>Hit points</h3>
+<ul><li><strong>Scene 3 — &quot;Generate&quot; tap:</strong> the button press lands on the <strong>first downbeat</strong></li></ul>
+<p>of the build (the music &quot;turns on&quot; with the product).</p>
+<ul><li><strong>Scene 6 — commission ticks up:</strong> a small, satisfying accent chime on the</li></ul>
+<p>earnings beat — this is the emotional/financial high of the pitch.</p>
+<ul><li><strong>Scene 7 — montage:</strong> every owner/place cut snaps <strong>on the kick</strong>.</li><li><strong>Scene 8 — pull-back:</strong> biggest hit fires on the release; banner + CTA animate</li></ul>
+<p>in on the final sustained note.</p>
+<p><strong>Tools:</strong> Suno/Udio for the custom track (confirm usage rights) or Epidemic/ Artlist (search <em>corporate uplifting build / confident montage</em>) · ElevenLabs VO mixed ~6 dB above music · CapCut for beat-sync + auto-ducking.</p>
+<hr>
+<h2 id="how-the-two-trailers-relate"><a class="anchor" href="#how-the-two-trailers-relate" aria-label="Link to section">#</a>How the two trailers relate</h2>
+<ul><li><strong>Guest trailer</strong> (<code>flow-trailer-prompts.md</code>): emotional, story-driven —</li></ul>
+<p>proves the <em>experience</em> (Five Stars). Audience: travelers / judges feeling the product.</p>
+<ul><li><strong>Partner trailer</strong> (this file): confident, ROI-driven — proves the <em>channel</em></li></ul>
+<p>(Move the Needle). Audience: place owners / judges evaluating the business.</p>
+<ul><li><strong>Shared assets:</strong> same Headout-purple QR, same &quot;Here by Headout&quot; lockup, same</li></ul>
+<p>Rome world, same screenshot references → the two films feel like one brand. Reuse Scene 7's montage footage across both; only the labels/VO framing differ.</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>

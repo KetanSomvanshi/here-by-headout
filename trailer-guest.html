@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Headout Here — Google Flow Trailer Prompts (All Scenes)</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f4ef;
+      --paper: #fffdf8;
+      --ink: #17201b;
+      --muted: #637069;
+      --line: #ded8ce;
+      --accent: #e8552f;
+      --accent-dark: #aa321f;
+      --teal: #0f766e;
+      --green-soft: #e7f4ec;
+      --blue-soft: #e8f0fb;
+      --shadow: 0 18px 50px rgba(27, 32, 29, 0.11);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(232, 85, 47, 0.10), transparent 32rem),
+        linear-gradient(225deg, rgba(15, 118, 110, 0.10), transparent 34rem),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+    }
+
+    .page-shell {
+      display: grid;
+      grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.82);
+      backdrop-filter: blur(18px);
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .brand-kicker {
+      color: var(--accent-dark);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .toc-title { font-size: 1rem; font-weight: 800; margin: 0 0 18px; }
+
+    .site-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin: 0 0 18px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .site-nav a {
+      border-radius: 8px;
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    .site-nav a:hover { background: var(--blue-soft); color: var(--ink); }
+    .site-nav a.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .toc { display: flex; flex-direction: column; gap: 2px; }
+
+    .toc-link {
+      border-radius: 8px;
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    .toc-link:hover { background: var(--green-soft); color: var(--ink); }
+    .toc-level-1 { color: var(--ink); font-weight: 800; margin-top: 10px; }
+    .toc-level-2 { padding-left: 22px; }
+
+    main { padding: 42px min(6vw, 72px) 72px; }
+
+    article {
+      background: var(--paper);
+      border: 1px solid rgba(222, 216, 206, 0.82);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin: 0 auto;
+      max-width: 980px;
+      padding: clamp(28px, 5vw, 68px);
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--ink);
+      letter-spacing: 0;
+      line-height: 1.12;
+      margin: 2.2rem 0 1rem;
+      scroll-margin-top: 28px;
+    }
+
+    h1:first-child { margin-top: 0; }
+    h1 { font-size: clamp(2rem, 5vw, 4.4rem); max-width: 13ch; }
+    h2 {
+      border-top: 1px solid var(--line);
+      font-size: clamp(1.5rem, 3vw, 2.35rem);
+      padding-top: 2.1rem;
+    }
+    h3 { color: var(--teal); font-size: 1.18rem; margin-top: 1.8rem; }
+    h4 { font-size: 1rem; }
+
+    .anchor {
+      color: var(--accent);
+      float: left;
+      font-size: 0.8em;
+      margin-left: -1.05em;
+      opacity: 0;
+      text-decoration: none;
+      transition: opacity 0.16s ease;
+    }
+
+    h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor { opacity: 1; }
+
+    p { margin: 0.9rem 0; }
+    strong { color: #0f241c; font-weight: 800; }
+
+    blockquote {
+      background: linear-gradient(90deg, rgba(232, 85, 47, 0.10), rgba(15, 118, 110, 0.07));
+      border-left: 5px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+    }
+
+    blockquote p { font-size: 1.02rem; margin: 0.25rem 0; }
+
+    ul, ol { padding-left: 1.35rem; }
+    li { margin: 0.45rem 0; padding-left: 0.12rem; }
+
+    hr { border: 0; border-top: 1px solid var(--line); margin: 2.4rem 0; }
+
+    code {
+      background: #f0ebe2;
+      border: 1px solid #e3dccf;
+      border-radius: 6px;
+      color: #8f2b1d;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.88em;
+      padding: 0.12em 0.36em;
+    }
+
+    .code-block {
+      background: #151b18;
+      border-radius: var(--radius);
+      color: #e9f0eb;
+      overflow: auto;
+      padding: 1.1rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .code-block code { background: transparent; border: 0; color: inherit; padding: 0; }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 1.4rem 0;
+      overflow-x: auto;
+    }
+
+    table { border-collapse: collapse; min-width: 720px; width: 100%; }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 0.78rem 0.9rem;
+      vertical-align: top;
+    }
+
+    th {
+      background: #efe9df;
+      color: #20251f;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) td { background: rgba(232, 240, 251, 0.45); }
+    tr:last-child td { border-bottom: 0; }
+
+    .diagram-shell {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      padding: 1rem;
+    }
+
+    .flow-diagram { display: flex; flex-direction: column; gap: 0.75rem; }
+    .flow-row { align-items: center; display: flex; gap: 0.7rem; min-width: max-content; }
+
+    .flow-node {
+      background: var(--green-soft);
+      border: 1px solid rgba(15, 118, 110, 0.34);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(27, 32, 29, 0.06);
+      color: #12352f;
+      font-size: 0.9rem;
+      font-weight: 750;
+      line-height: 1.25;
+      max-width: 190px;
+      min-height: 64px;
+      min-width: 150px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .flow-arrow { color: var(--accent); font-weight: 900; }
+    .section-ref { color: inherit; text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .page-shell { display: block; }
+      aside {
+        border-bottom: 1px solid var(--line);
+        border-right: 0;
+        height: auto;
+        max-height: 46vh;
+        position: relative;
+      }
+      main { padding: 18px; }
+      article { padding: 24px; }
+      .anchor { display: none; }
+      h1 { max-width: none; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page-shell { display: block; }
+      aside { display: none; }
+      main, article { box-shadow: none; margin: 0; max-width: none; padding: 0; }
+    }
+</style>
+</head>
+<body>
+  <div class="page-shell">
+    <aside>
+      <p class="brand-kicker">Here by Headout</p>
+      <p class="toc-title">Guest Trailer</p>
+      <nav class="site-nav" aria-label="Site">
+        <a href="index.html">📋 Master Doc</a>
+        <a href="trailer-guest.html" class="active">🎬 Guest Trailer</a>
+        <a href="trailer-partner.html">🤝 Partner Trailer</a>
+      </nav>
+      <nav class="toc" aria-label="Document outline">
+        <a class="toc-link toc-level-1" href="#headout-here-google-flow-trailer-prompts-all-scenes">Headout Here — Google Flow Trailer Prompts (All Scenes)</a>
+<a class="toc-link toc-level-2" href="#pacing-arc-slow-open-very-fast-build">Pacing arc — slow open → very fast build</a>
+<a class="toc-link toc-level-2" href="#scene-1-the-hook-lost-family-at-the-desk-5s-slow-open">Scene 1 — The hook (lost family at the desk) · ~5s · SLOW OPEN</a>
+<a class="toc-link toc-level-2" href="#scene-2-the-host-guides-them-to-the-qr-the-human-bridge-4s-slow-open">Scene 2 — The host guides them to the QR (the human bridge) · ~4s · SLOW OPEN</a>
+<a class="toc-link toc-level-2" href="#scene-3-phone-scans-storefront-blooms-2s-transition-quickening">Scene 3 — Phone scans → storefront blooms · ~2s (transition) · QUICKENING</a>
+<a class="toc-link toc-level-2" href="#scene-4-concierge-chat-in-japanese-recommendation-cards-2-5s-quickening">Scene 4 — Concierge chat in Japanese → recommendation cards · ~2.5s · QUICKENING</a>
+<a class="toc-link toc-level-2" href="#scene-5-booked-ticket-the-place-earns-2-5s-quickening">Scene 5 — &quot;Booked&quot; → ticket + the place earns · ~2.5s · QUICKENING</a>
+<a class="toc-link toc-level-2" href="#scene-6-the-place-watches-it-land-partner-dashboard-2-5s-quickening">Scene 6 — The place watches it land (partner dashboard) · ~2.5s · QUICKENING</a>
+<a class="toc-link toc-level-2" href="#scene-7-city-money-shot-montage-brand-everywhere-6s-fast-peak">Scene 7 — City money-shot montage (brand everywhere) · ~6s · FAST PEAK</a>
+<a class="toc-link toc-level-2" href="#scene-8-pull-back-to-the-glowing-map-end-card-space-5s-land-slam-to-slow">Scene 8 — Pull-back to the glowing map + end-card space · ~5s · LAND (slam to slow)</a>
+<a class="toc-link toc-level-2" href="#end-card-banner-add-in-capcut-canva-not-flow">End card / banner (add in CapCut/Canva, not Flow)</a>
+<a class="toc-link toc-level-2" href="#vo-sync-map-35s-12-script">VO sync map (≈35s, <a class="section-ref" href="#12">§12</a> script)</a>
+<a class="toc-link toc-level-2" href="#music-sound-design-built-to-the-pacing-arc">Music &amp; sound design — built to the pacing arc</a>
+<a class="toc-link toc-level-2" href="#flow-veo-tips">Flow / Veo tips</a>
+      </nav>
+    </aside>
+    <main>
+      <article>
+<h1 id="headout-here-google-flow-trailer-prompts-all-scenes"><a class="anchor" href="#headout-here-google-flow-trailer-prompts-all-scenes" aria-label="Link to section">#</a>Headout Here — Google Flow Trailer Prompts (All Scenes)</h1>
+<p>Use with <strong>Google Flow (Veo 3)</strong>. Attach your <strong>Headout city landing-page screenshots</strong> as Ingredients / style references — Flow derives the palette, typography, and photography style from them. Each scene below is a complete, self-contained prompt (brand style already baked in) — just copy, attach the screenshots, generate.</p>
+<p><strong>Attach in Flow:</strong> <em>Ingredients to Video</em> → add 2–3 Headout screenshots (one with header/logo + purple, one with experience cards, one with typography/ layout) + optionally your real <code>&lt;BrandedQRPoster&gt;</code> export.</p>
+<hr>
+<h2 id="pacing-arc-slow-open-very-fast-build"><a class="anchor" href="#pacing-arc-slow-open-very-fast-build" aria-label="Link to section">#</a>Pacing arc — slow open → very fast build</h2>
+<p>The trailer <strong>starts slow and deliberate, then accelerates hard</strong> into a rapid-fire peak, before landing on a held final beat. Drive this two ways: <strong>(a) clip length in the CapCut edit</strong>, and <strong>(b) camera-motion speed in the Flow prompt itself.</strong></p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Phase</th><th style="text-align:left">Scenes</th><th style="text-align:left">Feel</th><th style="text-align:left">Cut length</th><th style="text-align:left">Camera motion</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Slow open</strong></td><td style="text-align:left">1–2</td><td style="text-align:left">Calm, cinematic, lets the problem land</td><td style="text-align:left">3–5s holds</td><td style="text-align:left">slow push-in</td></tr><tr><td style="text-align:left"><strong>Quickening</strong></td><td style="text-align:left">3–6</td><td style="text-align:left">Momentum builds, beat picks up</td><td style="text-align:left">1.5–2.5s</td><td style="text-align:left">brisker moves, snap transitions</td></tr><tr><td style="text-align:left"><strong>Fast peak</strong></td><td style="text-align:left">7</td><td style="text-align:left">Rapid-fire, energy maxes out</td><td style="text-align:left">0.4–0.8s per location</td><td style="text-align:left">hard snap cuts on the beat</td></tr><tr><td style="text-align:left"><strong>Land</strong></td><td style="text-align:left">8 + banner</td><td style="text-align:left">Sudden release, hold on the logo</td><td style="text-align:left">4–5s</td><td style="text-align:left">slow pull-back, then freeze</td></tr></tbody></table></div>
+<ul><li><strong>Sync to music:</strong> drop the cuts onto the beat (CapCut beat-detect). The</li></ul>
+<p>music should build with the visuals — sparse intro → driving build → a hit on Scene 7 → resolve on the banner.</p>
+<ul><li><strong>The accelerando is the point:</strong> Scenes 1→7 should feel like the pace keeps</li></ul>
+<p>doubling, then Scene 8 hits the brakes for the &quot;Here by Headout&quot; payoff.</p>
+<blockquote><p><strong>Scenes 4–6 are UI shots.</strong> Flow/Veo will invent fake, off-brand interfaces.</p><p>Strongly prefer <strong>Screen Studio captures of the real build</strong> for these. Flow</p><p>prompts are included below only as a fallback if you can't capture live.</p></blockquote>
+<hr>
+<h2 id="scene-1-the-hook-lost-family-at-the-desk-5s-slow-open"><a class="anchor" href="#scene-1-the-hook-lost-family-at-the-desk-5s-slow-open" aria-label="Link to section">#</a>Scene 1 — The hook (lost family at the desk) · ~5s · SLOW OPEN</h2>
+<blockquote><p><strong>Beat / depth:</strong> establish the universal &quot;what do we do now?&quot; moment and the</p><p>three characters we follow the whole film — two parents and a ~6-year-old</p><p>girl, fresh off arrival with a small suitcase. Plant the tension early: the</p><p>daughter is restless, the parents are unsure, and **rain has just started</p><p>outside** — the day's plan is suddenly in question. This quiet problem is what</p><p>every later beat pays off. Hold it slow; let the uncertainty land.</p></blockquote>
+<pre class="code-block"><code class="language-">A young international family — two parents and their restless six-year-old
+daughter, a small wheeled suitcase beside them — stands at an elegant boutique
+hotel front desk in Rome, just arrived. The parents glance at each other,
+slightly unsure, one half-shrugging as if to say &quot;so... what do we do now?&quot;;
+the little girl tugs at her mother's sleeve, bored and impatient. Through the
+glass entrance behind them, a sunlit Roman street has just turned to soft rain,
+droplets streaking the window — the day's plan suddenly in question. Warm lobby
+light, marble and brass details, dust motes in a shaft of light. Camera slowly
+pushes in on the parents' uncertain faces. Candid, documentary-cinematic,
+quietly hopeful mood. Premium modern travel-tech brand film, matching the color
+palette, typography feel, and bright editorial photography style of the
+attached Headout screenshots — especially the signature Headout purple accent.
+Cinematic, shallow depth of field, soft natural light, smooth slow camera
+motion, high production value, 4K, photoreal. No text overlays, no captions, no
+watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-2-the-host-guides-them-to-the-qr-the-human-bridge-4s-slow-open"><a class="anchor" href="#scene-2-the-host-guides-them-to-the-qr-the-human-bridge-4s-slow-open" aria-label="Link to section">#</a>Scene 2 — The host guides them to the QR (the human bridge) · ~4s · SLOW OPEN</h2>
+<blockquote><p><strong>Beat / depth:</strong> this connects the guest to Headout — the trusted place,</p><p>through its front-desk host, is what points the traveler to the QR. The human</p><p>hands off to the QR; the QR hands off to the booking — the distribution</p><p>pillar in a single gesture, so don't skip it. Emotionally it's the <em>turn</em>:</p><p>the parents' worry eases into curiosity the moment the host steps in to help.</p><p>Keep her warmth genuine, not salesy — she's a helpful local, not a billboard.</p></blockquote>
+<pre class="code-block"><code class="language-">Behind the desk, a warm, genuinely friendly hotel receptionist reads the
+family's uncertainty, smiles reassuringly, and reaches for a Headout-branded QR
+table-tent, gently turning and sliding it across the counter toward them as if
+to say &quot;here — this'll help.&quot; The Headout purple of the table-tent catches the
+lobby light and glows softly as it slides into focus. The parents' worried
+expressions ease into curiosity; they lean in, and the little girl, suddenly
+interested, reaches up for her mother's phone to scan it herself. A warm,
+human, reassuring exchange — trust passing from the place to the guest. Rain
+still visible on the window behind them. Premium modern travel-tech brand film,
+matching the color palette, typography, and bright editorial photography style
+of the attached Headout screenshots — especially the Headout purple accent.
+Cinematic, shallow depth of field, soft natural light, smooth camera motion,
+high production value, 4K, photoreal. No text overlays, no captions, no
+watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-3-phone-scans-storefront-blooms-2s-transition-quickening"><a class="anchor" href="#scene-3-phone-scans-storefront-blooms-2s-transition-quickening" aria-label="Link to section">#</a>Scene 3 — Phone scans → storefront blooms · ~2s (transition) · QUICKENING</h2>
+<blockquote><p><strong>Beat / depth:</strong> the daughter is the one who scans — a small generational</p><p>detail that says &quot;this is effortless.&quot; Rain streaks the lobby window behind</p><p>her, planting the rainy-day problem the concierge will solve next. The QR</p><p>reflects in her phone screen for a beat before the bloom.</p></blockquote>
+<pre class="code-block"><code class="language-">Extreme close-up: a young girl's hands hold a phone up to the Headout-branded QR
+table-tent on the hotel desk; the QR reflects briefly in the screen as the
+camera lens auto-focuses. Soft rain streaks the sunlit lobby window in the
+blurred background. The instant the code locks, a warm Headout-purple bloom of
+light radiates outward from the phone screen and wipes the frame, revealing a
+clean co-branded mobile storefront (&quot;the place × Headout&quot;) settling into place.
+Smooth, premium, brand-colored light-wipe transition with a satisfying snap of
+focus. Matching the Headout purple, palette, and bright editorial style of the
+attached Headout screenshots. Cinematic, shallow depth of field, high
+production value, 4K, photoreal. No legible fake text, no captions, no
+watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-4-concierge-chat-in-japanese-recommendation-cards-2-5s-quickening"><a class="anchor" href="#scene-4-concierge-chat-in-japanese-recommendation-cards-2-5s-quickening" aria-label="Link to section">#</a>Scene 4 — Concierge chat in Japanese → recommendation cards · ~2.5s · QUICKENING</h2>
+<p><em>(Prefer a Screen Studio capture of the real build. Flow fallback below.)</em></p>
+<blockquote><p><strong>Beat / depth:</strong> the payoff to the rainy-window setup — the mother asks in</p><p>her own language and instantly gets three <em>feasible</em> indoor picks (Leonardo</p><p>Experience, family pizza class, gladiator school for kids). The emotional</p><p>turn is the child lighting up and pointing at a card: the lost family now has</p><p>a plan. Show relief, not just UI.</p></blockquote>
+<pre class="code-block"><code class="language-">Over-the-shoulder close-up of the mother and young daughter leaning over the
+phone together in the rainy lobby. On the clean concierge chat screen, a
+question bubble in Japanese appears, the assistant &quot;thinks&quot; for a beat, then
+three elegant experience recommendation cards rise up one after another — each
+with a warm photo of an indoor Rome activity, a small purple &quot;fits&quot; tag, and a
+price. The little girl's face lights up and she points excitedly at the middle
+card; the mother smiles with relief. Bright, minimal, premium app UI in Headout
+purple accents, reflected softly on their faces. Matching the color palette,
+typography, and bright editorial style of the attached Headout screenshots.
+Cinematic, shallow depth of field, soft natural light, 4K, photoreal. No
+legible fake text, no captions, no watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-5-booked-ticket-the-place-earns-2-5s-quickening"><a class="anchor" href="#scene-5-booked-ticket-the-place-earns-2-5s-quickening" aria-label="Link to section">#</a>Scene 5 — &quot;Booked&quot; → ticket + the place earns · ~2.5s · QUICKENING</h2>
+<p><em>(Prefer a Screen Studio capture of the real build. Flow fallback below.)</em></p>
+<blockquote><p><strong>Beat / depth:</strong> two payoffs in one beat — the guest gets the ticket <em>and</em></p><p>the place earns. The thumb taps &quot;Book,&quot; the confirmation blooms, and a small</p><p>line credits the host (&quot;Casa Aurelia earns €1.92&quot;). Then a quick cut to the</p><p>family standing, umbrella in hand, heading out the door with a plan — the</p><p>problem from Scene 1 is now resolved.</p></blockquote>
+<pre class="code-block"><code class="language-">Tight close-up of a thumb tapping a glowing purple &quot;Book&quot; button; the screen
+transitions to a clean confirmation state — a soft Headout-purple checkmark
+blooms and a ticket card settles into place, with a small line of text crediting
+the hosting place. The phone lowers to reveal the family rising from the lobby
+chairs, smiling, the daughter tugging a parent's hand toward the door, a folded
+umbrella ready as soft rain glistens on the street outside. Satisfying,
+warm, resolved. Bright premium app UI in Headout purple. Matching the color
+palette, typography, and editorial style of the attached Headout screenshots.
+Cinematic, shallow depth of field, soft light, 4K, photoreal. No legible fake
+text, no captions, no watermarks, no invented logos.</code></pre>
+<hr>
+<h2 id="scene-6-the-place-watches-it-land-partner-dashboard-2-5s-quickening"><a class="anchor" href="#scene-6-the-place-watches-it-land-partner-dashboard-2-5s-quickening" aria-label="Link to section">#</a>Scene 6 — The place watches it land (partner dashboard) · ~2.5s · QUICKENING</h2>
+<p><em>(Prefer a Screen Studio capture of the real build. Flow fallback below.)</em></p>
+<blockquote><p><strong>Beat / depth:</strong> close the loop back to the human bridge from Scene 2. The</p><p>same receptionist glances at a tablet behind the desk as the booking we just</p><p>made lands live — bookings tick 7→8, commission animates up — and gives a</p><p>small, satisfied nod. The guest got a plan; the place got paid. This is the</p><p>distribution pillar paying off on screen.</p></blockquote>
+<pre class="code-block"><code class="language-">Behind the hotel front desk, the same friendly receptionist glances down at a
+tablet propped on the counter showing a clean analytics dashboard. As she
+watches, a new booking lands live: three large metric tiles — impressions,
+conversions, and commission — pulse and tick upward, the commission figure
+animating higher with a subtle purple progress accent and a small rising chart.
+She gives a quiet, satisfied nod and a small smile. Bright, premium,
+data-product look, the screen's purple glow on her face. Matching the color
+palette, typography, and editorial style of the attached Headout screenshots,
+with the Headout purple accent. Cinematic, shallow depth of field, soft lobby
+light, 4K, photoreal. No legible fake text, no captions, no watermarks, no
+invented logos.</code></pre>
+<hr>
+<h2 id="scene-7-city-money-shot-montage-brand-everywhere-6s-fast-peak"><a class="anchor" href="#scene-7-city-money-shot-montage-brand-everywhere-6s-fast-peak" aria-label="Link to section">#</a>Scene 7 — City money-shot montage (brand everywhere) · ~6s · FAST PEAK</h2>
+<blockquote><p><strong>Beat / depth:</strong> scale the one story into a thousand. Same purple QR, every</p><p>kind of place, every kind of traveler — solo, couple, friends, elderly, a</p><p>backpacker — each scanning at their own &quot;what next?&quot; moment. Push the</p><p>place-agnostic breadth (<a class="section-ref" href="#3">§3</a>) and the brand-everywhere pillar. The QR is the</p><p>one constant object the eye tracks across all the cuts. Time-of-day shifts</p><p>from afternoon to dusk to night to sell &quot;all day, all over the city.&quot; This</p><p>is the energy peak — hardest, fastest cuts.</p></blockquote>
+<pre class="code-block"><code class="language-">A fast, rhythmic, escalating montage of the same Headout-branded purple QR
+table-tent appearing across many trusted places, with a different traveler
+scanning it at each: a sunlit café table where two friends lean in, a hostel
+common-room wall a backpacker scans, an airport lounge during a delay, a
+theatre foyer after a show at dusk, a tourist information desk where a couple
+asks in their own language, a rooftop bar at night, a transit hub. Each shot
+snaps to the next on the beat; the QR pulses softly in Headout purple the
+instant a phone approaches it, the one constant object across every cut. The
+light shifts from afternoon to golden dusk to glowing night as the energy
+builds — a brand igniting across an entire city. Matching the color palette,
+typography, and bright editorial photography style of the attached Headout
+screenshots, with the signature Headout purple accent. Cinematic, shallow depth
+of field, dynamic motion, high production value, 4K, photoreal. No text
+overlays, no captions, no watermarks, no invented logos.</code></pre>
+<h3 id="place-name-labels-add-in-capcut-not-in-flow"><a class="anchor" href="#place-name-labels-add-in-capcut-not-in-flow" aria-label="Link to section">#</a>Place-name labels (add in CapCut, NOT in Flow)</h3>
+<p>As each location flashes by, snap a small <strong>co-branded label</strong> onto the cut in the <strong>Headout &quot;{Place} × Headout&quot; lockup</strong> — Headout wordmark + purple, place name in the brand font. One per shot, popping on the beat with the cut. (Don't let Flow generate these — Veo garbles text; add them as motion-graphic lower-thirds in post.)</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Cut</th><th style="text-align:left">Location</th><th style="text-align:left">Headout-style label</th></tr></thead><tbody><tr><td style="text-align:left">1</td><td style="text-align:left">Café</td><td style="text-align:left"><strong>Caffè Prati × Headout</strong></td></tr><tr><td style="text-align:left">2</td><td style="text-align:left">Hostel</td><td style="text-align:left"><strong>Trastevere Social × Headout</strong></td></tr><tr><td style="text-align:left">3</td><td style="text-align:left">Airport lounge</td><td style="text-align:left"><strong>Fiumicino SkyLounge × Headout</strong></td></tr><tr><td style="text-align:left">4</td><td style="text-align:left">Theatre foyer</td><td style="text-align:left"><strong>Teatro Argentina × Headout</strong></td></tr><tr><td style="text-align:left">5</td><td style="text-align:left">Tourist desk</td><td style="text-align:left"><strong>Prati Visitor Desk × Headout</strong></td></tr><tr><td style="text-align:left">6</td><td style="text-align:left">Rooftop bar</td><td style="text-align:left"><strong>Terrazza Borghese × Headout</strong></td></tr><tr><td style="text-align:left">7</td><td style="text-align:left">Transit hub</td><td style="text-align:left"><strong>Roma Termini × Headout</strong></td></tr></tbody></table></div>
+<p><em>(Caffè Prati and Prati Visitor Desk are real seed places from <a class="section-ref" href="#9">§9</a> — keep those exact; the rest are believable Rome stand-ins, swap freely. The opening hotel, <strong>Casa Aurelia × Headout</strong>, was already established in Scenes 1–6, so it doesn't need re-labeling here.)</em></p>
+<p><strong>Style the label like the storefront header:</strong> place name in the brand weight, a thin &quot;×&quot;, then the Headout wordmark in purple — identical treatment across all seven so the <em>co-brand lockup itself</em> becomes the repeating motif, reinforcing &quot;any place × Headout.&quot;</p>
+<hr>
+<h2 id="scene-8-pull-back-to-the-glowing-map-end-card-space-5s-land-slam-to-slow"><a class="anchor" href="#scene-8-pull-back-to-the-glowing-map-end-card-space-5s-land-slam-to-slow" aria-label="Link to section">#</a>Scene 8 — Pull-back to the glowing map + end-card space · ~5s · LAND (slam to slow)</h2>
+<blockquote><p><strong>Beat / depth:</strong> the release after the peak. Start on a <em>single</em> glowing pin</p><p>— the hotel from our story — then pull back as pins cascade across all of</p><p>Rome and ripple outward toward other cities on the horizon, tying the one</p><p>family's moment to the nine-figure scale story (<a class="section-ref" href="#14">§14</a>). The motion decelerates</p><p>and settles, opening clean negative space for the &quot;Here by Headout&quot; banner.</p></blockquote>
+<pre class="code-block"><code class="language-">Begin tight on a single glowing Headout-purple location pin on a stylized
+night map of Rome — the hotel from our story. The camera pulls back and rises
+smoothly; more purple pins ignite one after another, cascading across the whole
+city until it shimmers like a constellation, then faint pins begin to ripple
+outward toward other cities on the curved horizon — a network coming alive. The
+fast energy of the montage decelerates and settles into this wide, calm,
+aspirational reveal, leaving clean dark negative space in the upper center for a
+logo. Matching the Headout purple and the bright editorial brand look of the
+attached Headout screenshots. Cinematic, smooth decelerating motion, high
+production value, 4K, photoreal. No text overlays, no captions, no watermarks,
+no invented logos.</code></pre>
+<hr>
+<h2 id="end-card-banner-add-in-capcut-canva-not-flow"><a class="anchor" href="#end-card-banner-add-in-capcut-canva-not-flow" aria-label="Link to section">#</a>End card / banner (add in CapCut/Canva, not Flow)</h2>
+<p>Over the final frame of Scene 8's negative space, drop the <strong>end banner</strong> — the Headout wordmark with the product lockup and tagline:</p>
+<blockquote><p># Here</p><p>### by Headout</p><p>_wherever travelers ask what to do next._</p></blockquote>
+<p><strong>Banner notes:</strong></p>
+<ul><li>Lockup reads <strong>&quot;Here · by Headout&quot;</strong> — &quot;Here&quot; is the hero word, &quot;by Headout&quot;</li></ul>
+<p>sits below/beside it in the Headout wordmark, on the Headout purple.</p>
+<ul><li>Animate it onto the glowing-map negative space (soft fade + slight scale-up),</li></ul>
+<p>timed to land on the final VO beat.</p>
+<ul><li>Keep it on-brand: pull the exact wordmark + purple from the attached Headout</li></ul>
+<p>screenshots / brand kit — don't retype &quot;Headout&quot; in a generic font.</p>
+<hr>
+<h2 id="vo-sync-map-35s-12-script"><a class="anchor" href="#vo-sync-map-35s-12-script" aria-label="Link to section">#</a>VO sync map (≈35s, <a class="section-ref" href="#12">§12</a> script)</h2>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">VO line</th><th style="text-align:left">Scene</th></tr></thead><tbody><tr><td style="text-align:left">&quot;Travelers don't plan in an app. They decide in the moment — at the desk, the café, the lounge, the venue.&quot;</td><td style="text-align:left">1</td></tr><tr><td style="text-align:left">&quot;Until now, those moments were lost.&quot;</td><td style="text-align:left">1 (tail)</td></tr><tr><td style="text-align:left">&quot;Headout Here turns <em>any</em> trusted place into a Headout storefront.&quot;</td><td style="text-align:left">2 (host guides them to the QR) → 3</td></tr><tr><td style="text-align:left">&quot;Guests scan, ask, and book.&quot;</td><td style="text-align:left">4 → 5</td></tr><tr><td style="text-align:left">&quot;The place earns.&quot;</td><td style="text-align:left">6</td></tr><tr><td style="text-align:left">&quot;And a Headout-branded QR sits on every surface — so wherever people ask what to do next, Headout is already there.&quot;</td><td style="text-align:left">7</td></tr><tr><td style="text-align:left">&quot;<strong>Headout Here.</strong>&quot;</td><td style="text-align:left">8 + &quot;Here by Headout&quot; end banner</td></tr></tbody></table></div>
+<hr>
+<h2 id="music-sound-design-built-to-the-pacing-arc"><a class="anchor" href="#music-sound-design-built-to-the-pacing-arc" aria-label="Link to section">#</a>Music &amp; sound design — built to the pacing arc</h2>
+<p>One track that <strong>starts sparse and intimate, builds steadily, hits hard at the montage, then releases</strong> to land the banner. The music <em>is</em> the pacing engine — cut the picture to its beat, not the other way around.</p>
+<p><strong>Track brief (paste into Suno / Udio):</strong></p>
+<blockquote><p>*&quot;30–40s cinematic brand-film score. Starts soft and intimate — a single warm</p><p>piano motif with light ambient texture. Gentle pulse enters and builds with</p><p>claps/percussion and rising synths through the middle. Drops into a driving,</p><p>energetic, uplifting electronic-orchestral peak with a strong four-on-the-floor</p><p>beat, then a sudden hit and a clean, resonant release on the final note.</p><p>Modern, premium, hopeful, travel-tech. No vocals.&quot;*</p></blockquote>
+<h3 id="cue-sheet"><a class="anchor" href="#cue-sheet" aria-label="Link to section">#</a>Cue sheet</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Phase</th><th style="text-align:left">Scenes</th><th style="text-align:left">Music</th><th style="text-align:left">Energy</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Slow open</strong></td><td style="text-align:left">1–2</td><td style="text-align:left">Solo piano motif + soft room ambience. Sparse, breathing, almost silent under the dialogue beat.</td><td style="text-align:left">▁▁</td></tr><tr><td style="text-align:left"><strong>Quickening</strong></td><td style="text-align:left">3–6</td><td style="text-align:left">Pulse/heartbeat kick enters on the Scene 3 scan-bloom; percussion + rising synths layer in with each cut; tempo <em>feels</em> like it's accelerating.</td><td style="text-align:left">▃▄▅</td></tr><tr><td style="text-align:left"><strong>Fast peak</strong></td><td style="text-align:left">7</td><td style="text-align:left">Full drop — driving beat, all elements in, montage cuts land <strong>on every kick</strong>. Loudest, busiest moment.</td><td style="text-align:left">███</td></tr><tr><td style="text-align:left"><strong>Land</strong></td><td style="text-align:left">8 + banner</td><td style="text-align:left">One big hit as the camera pulls back → music thins to a single sustained pad/piano chord → resonant tail under the &quot;Here by Headout&quot; banner.</td><td style="text-align:left">█▁</td></tr></tbody></table></div>
+<h3 id="hit-points-sync-these-exactly"><a class="anchor" href="#hit-points-sync-these-exactly" aria-label="Link to section">#</a>Hit points (sync these exactly)</h3>
+<ul><li><strong>Scene 3 — scan bloom:</strong> the purple light-wipe lands <strong>on the first downbeat</strong></li></ul>
+<p>of the build. This is the moment the music &quot;turns on.&quot;</p>
+<ul><li><strong>Scene 5 — booking confirm:</strong> a small bell/UI chime or accent stab on the</li></ul>
+<p>purple checkmark.</p>
+<ul><li><strong>Scene 7 — montage:</strong> every location cut snaps <strong>on the kick</strong> (use CapCut</li></ul>
+<p>beat-detect; aim ~0.4–0.8s per shot so cuts ride the fastest beat).</p>
+<ul><li><strong>Scene 8 — pull-back:</strong> the <strong>biggest hit of the track</strong> fires as the camera</li></ul>
+<p>releases, then everything drops away to the tail.</p>
+<ul><li><strong>Banner:</strong> logo animates in on the final sustained note; let it ring ~1–1.5s.</li></ul>
+<h3 id="sound-design-accents-subtle-optional"><a class="anchor" href="#sound-design-accents-subtle-optional" aria-label="Link to section">#</a>Sound-design accents (subtle, optional)</h3>
+<p>Rain ambience under Scenes 1–3 (ties the rainy-day thread) · a soft <em>whoosh</em> on the Scene 3 light-wipe · gentle UI ticks as the dashboard numbers climb in Scene 6 · room tone drops out for a half-beat just before the Scene 7 drop (the classic &quot;breath before the peak&quot;).</p>
+<p><strong>Tools:</strong> <strong>Suno / Udio</strong> for the custom track (fastest, fits the brief exactly — confirm usage rights for submission) · or <strong>Epidemic Sound / Artlist</strong> for a licensed &quot;build&quot; track (search <em>cinematic build / corporate uplifting montage</em>) · <strong>ElevenLabs</strong> for VO, mixed ~6 dB above the music · final beat-sync and ducking in <strong>CapCut</strong> (auto-ducks music under VO).</p>
+<hr>
+<h2 id="flow-veo-tips"><a class="anchor" href="#flow-veo-tips" aria-label="Link to section">#</a>Flow / Veo tips</h2>
+<ul><li><strong>Generate Friday night</strong> — expect 3–5 takes per scene; you only need the best</li></ul>
+<p>~3–6s from each.</p>
+<ul><li>Keep each request <strong>single-action</strong>; Veo holds one clear motion best.</li><li>If a clip drifts off-brand, <strong>re-attach the screenshots</strong> and add *&quot;strictly</li></ul>
+<p>match the Headout purple of the references.&quot;*</p>
+<ul><li>Capture scenes <strong>4–6 from the real build</strong> if at all possible — fake UI is the</li></ul>
+<p>fastest way to look unpolished to judges.</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
