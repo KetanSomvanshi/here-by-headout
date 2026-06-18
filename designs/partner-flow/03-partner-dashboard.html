@@ -1,0 +1,181 @@
+<!-- @dsCard group="Partner Flow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03 · Partner Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purps:#8000FF; --purps-600:#6A00D6; --purps-tint:#F4ECFF; --candy:#FF0A6C;
+    --slate:#16161D; --ink-2:#4A4A57; --ink-3:#8A8A99; --line:#E7E4F0;
+    --bg:#FBFAFF; --white:#fff; --okay:#1FC07A; --ocean:#2B6FF5; --mustard:#FFC043;
+    --r:18px; --r-sm:12px; --shadow:0 8px 30px rgba(24,8,60,.07); --shadow-lg:0 24px 70px rgba(24,8,60,.16);
+    --font:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--slate);line-height:1.4}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--line);background:#fff}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:20px;letter-spacing:-.02em}
+  .blimp{width:30px;height:21px}.logo .h{color:var(--purps)}
+  .cobrand{font-size:13px;font-weight:700;color:var(--ink-2)}
+  .cobrand b{color:var(--slate)}
+  .live{font-size:12px;font-weight:700;color:var(--okay);display:flex;align-items:center;gap:6px}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--okay);box-shadow:0 0 0 4px rgba(31,192,122,.2);animation:p 1.6s infinite}
+  @keyframes p{50%{box-shadow:0 0 0 7px rgba(31,192,122,0)}}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 40px 64px}
+  .ph{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:6px}
+  .ph h1{font-size:30px;font-weight:900;letter-spacing:-.03em}
+  .ph .sub{color:var(--ink-3);font-size:14px;font-weight:600;margin-top:4px}
+  .rng{font-size:13px;font-weight:700;color:var(--ink-2);border:1.5px solid var(--line);padding:9px 14px;border-radius:99px;background:#fff}
+  /* headline tiles */
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:24px 0}
+  .tile{border-radius:var(--r);padding:24px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+  .tile .lbl{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+  .tile .big{font-size:42px;font-weight:900;letter-spacing:-.03em;margin:6px 0 2px}
+  .tile .meta{font-size:13px;font-weight:600;opacity:.9}
+  .tile .tag{position:absolute;top:18px;right:18px;font-size:11px;font-weight:800;background:rgba(255,255,255,.2);padding:4px 9px;border-radius:99px}
+  .t-imp{background:linear-gradient(150deg,#8000FF,#5A00B8)}
+  .t-conv{background:linear-gradient(150deg,#2B6FF5,#1A4FC0)}
+  .t-comm{background:linear-gradient(150deg,#FF0A6C,#C20650)}
+  .tile .spark{position:absolute;bottom:0;left:0;right:0;height:38px;opacity:.4}
+  /* second row */
+  .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+  .card{background:#fff;border-radius:var(--r);padding:22px 24px;box-shadow:var(--shadow)}
+  .card h3{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px;display:flex;justify-content:space-between}
+  .card h3 .more{color:var(--purps);font-weight:700;text-transform:none;letter-spacing:0}
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:12px}
+  .fr{display:flex;align-items:center;gap:14px}
+  .fr .fl{width:96px;font-size:13px;font-weight:700;color:var(--ink-2)}
+  .fr .bar{flex:1;height:30px;border-radius:8px;background:var(--purps-tint);position:relative;overflow:hidden}
+  .fr .bar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#8000FF,#A64DFF);border-radius:8px;display:flex;align-items:center;padding-left:12px;color:#fff;font-size:13px;font-weight:800}
+  .fr .pct{width:48px;text-align:right;font-size:13px;font-weight:700;color:var(--ink-3)}
+  /* gmv strip */
+  .gmv{display:flex;gap:24px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+  .gmv .k{flex:1}
+  .gmv .k .n{font-size:26px;font-weight:900;letter-spacing:-.02em}
+  .gmv .k .l{font-size:12px;font-weight:600;color:var(--ink-3)}
+  /* list */
+  .row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F2EEF9;font-size:14px}
+  .row:last-child{border:none}
+  .row .nm{font-weight:600}
+  .row .vv{font-weight:800;color:var(--purps-600)}
+  .rank{width:22px;height:22px;border-radius:6px;background:var(--purps-tint);color:var(--purps);font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;margin-right:10px}
+  /* lang mix */
+  .langbar{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:6px 0 12px}
+  .langbar i{height:100%}
+  .leg{display:flex;gap:16px;font-size:12px;font-weight:600;color:var(--ink-2)}
+  .leg span{display:flex;align-items:center;gap:6px}
+  .leg b{width:9px;height:9px;border-radius:3px;display:inline-block}
+  .q{font-size:13.5px;color:var(--ink-2);padding:7px 0;display:flex;gap:8px}
+  .q .c{font-weight:800;color:var(--purps);font-size:12px}
+  /* surface table */
+  .surf{margin-top:20px}
+  .surf .sr{display:flex;align-items:center;gap:12px;padding:9px 0;font-size:13.5px;border-bottom:1px solid #F2EEF9}
+  .surf .sr:last-child{border:none}
+  .surf .nm{flex:1;font-weight:700}
+  .surf .mini{width:90px;height:8px;border-radius:99px;background:var(--purps-tint);overflow:hidden}
+  .surf .mini i{display:block;height:100%;background:var(--purps)}
+  .surf .amt{width:64px;text-align:right;font-weight:800}
+  /* toast */
+  .toast{position:fixed;bottom:28px;right:28px;background:#16161D;color:#fff;border-radius:14px;padding:16px 20px;box-shadow:var(--shadow-lg);display:flex;gap:14px;align-items:center;max-width:340px}
+  .toast .ic{width:38px;height:38px;border-radius:10px;background:var(--okay);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .toast .t{font-weight:800;font-size:14px}
+  .toast .d{font-size:12.5px;color:#C7BBDB;margin-top:2px}
+</style>
+</head>
+<body>
+  <div class="top">
+    <span class="logo">
+      <svg class="blimp" viewBox="0 0 40 28" fill="none"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#8000FF"/><path d="M4 12 L-2 7 L-2 17 Z" fill="#8000FF"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#8000FF"/><circle cx="24" cy="12" r="2.4" fill="#fff"/></svg>
+      headout <span class="h">Here</span>
+    </span>
+    <span class="cobrand">Casa Aurelia <b>× Headout</b> · Partner Dashboard</span>
+    <span class="live"><span class="dot"></span> Live</span>
+  </div>
+
+  <div class="wrap">
+    <div class="ph">
+      <div><h1>Your scoreboard</h1><div class="sub">Casa Aurelia Rome · hotel · last 14 days</div></div>
+      <span class="rng">Last 14 days ▾</span>
+    </div>
+
+    <!-- THREE HEADLINE TILES -->
+    <div class="tiles">
+      <div class="tile t-imp">
+        <span class="tag">brand reach</span>
+        <div class="lbl">Impressions</div>
+        <div class="big">2,540</div>
+        <div class="meta">84 scans measured · reach you give Headout</div>
+        <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 30 L40 26 L80 28 L120 18 L160 20 L200 12 L240 14 L300 6 V38 H0 Z" fill="#fff"/></svg>
+      </div>
+      <div class="tile t-conv">
+        <span class="tag">scan → book</span>
+        <div class="lbl">Conversions</div>
+        <div class="big">8.3%</div>
+        <div class="meta">84 scans → 31 chats → 7 bookings</div>
+        <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 32 L50 30 L100 24 L150 26 L200 16 L250 18 L300 10 V38 H0 Z" fill="#fff"/></svg>
+      </div>
+      <div class="tile t-comm">
+        <span class="tag">earned</span>
+        <div class="lbl">Commission</div>
+        <div class="big" id="comm">€64.96</div>
+        <div class="meta">this period · next payout €64.96 on 1 Jul</div>
+        <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 34 L40 32 L80 30 L120 24 L160 22 L200 16 L240 12 L300 8 V38 H0 Z" fill="#fff"/></svg>
+      </div>
+    </div>
+
+    <div class="cols">
+      <!-- LEFT -->
+      <div class="card">
+        <h3>The funnel <span class="more">scan → chat → book</span></h3>
+        <div class="funnel">
+          <div class="fr"><span class="fl">Impressions</span><div class="bar"><i style="width:100%">2,540</i></div><span class="pct"></span></div>
+          <div class="fr"><span class="fl">Scans</span><div class="bar"><i style="width:33%">84</i></div><span class="pct">3.3%</span></div>
+          <div class="fr"><span class="fl">Chats</span><div class="bar"><i style="width:18%">31</i></div><span class="pct">37%</span></div>
+          <div class="fr"><span class="fl">Recs shown</span><div class="bar"><i style="width:24%">96</i></div><span class="pct"></span></div>
+          <div class="fr"><span class="fl">Bookings</span><div class="bar"><i style="width:9%" id="bkbar">7</i></div><span class="pct">8.3%</span></div>
+        </div>
+        <div style="height:22px"></div>
+        <div class="gmv">
+          <div class="k"><div class="n" id="gmv">€812</div><div class="l">GMV booked</div></div>
+          <div class="k"><div class="n">€64.96</div><div class="l">Your commission (8%)</div></div>
+          <div class="k"><div class="n" id="bk">7</div><div class="l">Bookings</div></div>
+        </div>
+        <h3 style="margin-top:4px">Performance by QR surface</h3>
+        <div class="surf">
+          <div class="sr"><span class="nm">Lobby table-tent</span><span class="mini"><i style="width:100%"></i></span><span class="amt">€41.20</span></div>
+          <div class="sr"><span class="nm">Room key card</span><span class="mini"><i style="width:48%"></i></span><span class="amt">€18.80</span></div>
+          <div class="sr"><span class="nm">Breakfast counter</span><span class="mini"><i style="width:12%"></i></span><span class="amt">€4.96</span></div>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="card">
+          <h3>Top experiences</h3>
+          <div class="row"><span class="nm"><span class="rank">1</span>Vatican Museums &amp; Sistine Chapel</span><span class="vv">€348</span></div>
+          <div class="row"><span class="nm"><span class="rank">2</span>Castel Sant’Angelo Skip-the-Line</span><span class="vv">€175</span></div>
+          <div class="row"><span class="nm"><span class="rank">3</span>Leonardo Interactive Experience</span><span class="vv">€144</span></div>
+        </div>
+        <div class="card">
+          <h3>Guest languages</h3>
+          <div class="langbar"><i style="width:60%;background:#8000FF"></i><i style="width:25%;background:#2B6FF5"></i><i style="width:15%;background:#FFC043"></i></div>
+          <div class="leg"><span><b style="background:#8000FF"></b>EN 60%</span><span><b style="background:#2B6FF5"></b>JP 25%</span><span><b style="background:#FFC043"></b>HI 15%</span></div>
+          <h3 style="margin-top:20px">Top guest questions</h3>
+          <div class="q"><span class="c">12×</span> “rainy afternoon with kids”</div>
+          <div class="q"><span class="c">7×</span> “skip-the-line near the hotel”</div>
+          <div class="q"><span class="c">5×</span> “something tonight, in Japanese”</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast">
+    <div class="ic">🎉</div>
+    <div><div class="t">New booking · Leonardo Experience</div><div class="d">Bookings 7 → 8 · +€1.92 commission · via lobby QR</div></div>
+  </div>
+</body>
+</html>

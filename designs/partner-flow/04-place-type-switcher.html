@@ -1,0 +1,149 @@
+<!-- @dsCard group="Partner Flow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 · Place-Type Switcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purps:#8000FF; --purps-600:#6A00D6; --purps-tint:#F4ECFF; --candy:#FF0A6C;
+    --slate:#16161D; --ink-2:#4A4A57; --ink-3:#8A8A99; --line:#E7E4F0;
+    --bg:#FBFAFF; --white:#fff;
+    --r:18px; --r-sm:12px; --shadow:0 8px 30px rgba(24,8,60,.08); --shadow-lg:0 24px 70px rgba(24,8,60,.16);
+    --font:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--slate);line-height:1.4}
+  .top{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--line);background:#fff}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:20px;letter-spacing:-.02em}
+  .blimp{width:30px;height:21px}.logo .h{color:var(--purps)}
+  .badge{font-size:12px;font-weight:800;color:var(--purps);background:var(--purps-tint);padding:6px 12px;border-radius:99px}
+  .head{text-align:center;padding:40px 20px 4px}
+  .head h1{font-size:34px;font-weight:900;letter-spacing:-.03em}
+  .head p{color:var(--ink-2);font-size:16px;margin-top:8px;max-width:620px;margin-left:auto;margin-right:auto}
+  .head p b{color:var(--purps-600)}
+  /* switch */
+  .switch{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:28px 0 10px}
+  .switch .opt{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:11px 20px;border-radius:99px;border:1.5px solid var(--line);background:#fff;color:var(--ink-2);cursor:pointer}
+  .switch .opt.on{background:var(--purps);color:#fff;border-color:var(--purps);box-shadow:0 8px 22px rgba(128,0,255,.28)}
+  .same{text-align:center;font-size:13px;font-weight:700;color:var(--ink-3);margin-bottom:30px}
+  .same b{color:var(--purps)}
+  /* phone row */
+  .phones{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;padding:0 32px 60px}
+  .phone{width:240px;border:9px solid #16161D;border-radius:36px;overflow:hidden;background:#fff;box-shadow:var(--shadow-lg)}
+  .ph-head{padding:18px 16px 16px;color:#fff;position:relative}
+  .ho-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:99px;font-size:10px;font-weight:800;margin-bottom:9px}
+  .cb{font-size:13px;font-weight:800}
+  .cb .x{opacity:.7;font-weight:500}
+  .ph-type{font-size:11px;font-weight:700;opacity:.8;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
+  .ph-body{padding:14px}
+  .ask{border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:12px;color:var(--ink-3);display:flex;justify-content:space-between;align-items:center}
+  .ask .send{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+  .chips span{font-size:10.5px;font-weight:600;padding:6px 10px;border-radius:99px}
+  .rec{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:11px}
+  .rec .t{font-size:12px;font-weight:800}
+  .rec .why{font-size:9.5px;font-weight:700;margin-top:4px;color:#1FC07A}
+  .rec .pr{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
+  .rec .price{font-size:13px;font-weight:800}
+  .rec .book{font-size:10.5px;font-weight:800;color:#fff;background:var(--candy);padding:5px 13px;border-radius:99px}
+  .label{text-align:center;font-size:13px;font-weight:800;margin-top:14px;color:var(--ink-2)}
+  /* per-type accent via inline */
+</style>
+</head>
+<body>
+  <div class="top">
+    <span class="logo">
+      <svg class="blimp" viewBox="0 0 40 28" fill="none"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#8000FF"/><path d="M4 12 L-2 7 L-2 17 Z" fill="#8000FF"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#8000FF"/><circle cx="24" cy="12" r="2.4" fill="#fff"/></svg>
+      headout <span class="h">Here</span>
+    </span>
+    <span class="badge">The reveal · place-agnostic</span>
+  </div>
+
+  <div class="head">
+    <h1>One engine. Any trusted place.</h1>
+    <p>Flip the place type and the header, copy, chips &amp; CTA re-skin instantly — but it’s <b>the same Headout brand, the same engine</b>. Hotels were never the point.</p>
+  </div>
+
+  <div class="switch">
+    <span class="opt on">🏨 Hotel</span>
+    <span class="opt">☕ Café</span>
+    <span class="opt">🛋️ Lounge</span>
+    <span class="opt">🎭 Venue</span>
+    <span class="opt">🗺️ Tourist desk</span>
+  </div>
+  <div class="same">Same Headout brand &amp; engine — only the <b>context</b> changes ↓</div>
+
+  <div class="phones">
+    <!-- HOTEL -->
+    <div>
+      <div class="phone">
+        <div class="ph-head" style="background:#1B4B5A">
+          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
+          <div class="cb">Casa Aurelia <span class="x">× Headout</span></div>
+          <div class="ph-type">Hotel · Rome</div>
+        </div>
+        <div class="ph-body">
+          <div class="ask">It’s raining with a 6-yr-old… <span class="send" style="background:#1B4B5A">→</span></div>
+          <div class="chips"><span style="background:#EEF4F5;color:#1B4B5A">Today</span><span style="background:#EEF4F5;color:#1B4B5A">Kid-friendly</span><span style="background:#EEF4F5;color:#1B4B5A">Rainy day</span></div>
+          <div class="rec"><div class="t">Leonardo Experience</div><div class="why">Indoor ✓ · 900m ✓ · family ✓</div><div class="pr"><span class="price">€12</span><span class="book">Book</span></div></div>
+        </div>
+      </div>
+      <div class="label">“What to do this afternoon?”</div>
+    </div>
+
+    <!-- CAFÉ -->
+    <div>
+      <div class="phone">
+        <div class="ph-head" style="background:#B5651D">
+          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
+          <div class="cb">Caffè Prati <span class="x">× Headout</span></div>
+          <div class="ph-type">Café · Rome</div>
+        </div>
+        <div class="ph-body">
+          <div class="ask">What’s good tonight nearby? <span class="send" style="background:#B5651D">→</span></div>
+          <div class="chips"><span style="background:#FBF0E6;color:#B5651D">Tonight</span><span style="background:#FBF0E6;color:#B5651D">After this</span><span style="background:#FBF0E6;color:#B5651D">Under 2 hrs</span></div>
+          <div class="rec"><div class="t">Trastevere Food Tour</div><div class="why">Tonight ✓ · 19:30 ✓ · 1.2km ✓</div><div class="pr"><span class="price">€89</span><span class="book">Book</span></div></div>
+        </div>
+      </div>
+      <div class="label">“What’s good tonight?”</div>
+    </div>
+
+    <!-- VENUE -->
+    <div>
+      <div class="phone">
+        <div class="ph-head" style="background:#3A1D6E">
+          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
+          <div class="cb">Teatro Sistina <span class="x">× Headout</span></div>
+          <div class="ph-type">Venue · Rome</div>
+        </div>
+        <div class="ph-body">
+          <div class="ask">Anything after the show? <span class="send" style="background:#3A1D6E">→</span></div>
+          <div class="chips"><span style="background:#EFE9F8;color:#3A1D6E">After the show</span><span style="background:#EFE9F8;color:#3A1D6E">Late night</span><span style="background:#EFE9F8;color:#3A1D6E">Walkable</span></div>
+          <div class="rec"><div class="t">Night Food &amp; Wine Walk</div><div class="why">Open late ✓ · 600m ✓ · 22:00 ✓</div><div class="pr"><span class="price">€55</span><span class="book">Book</span></div></div>
+        </div>
+      </div>
+      <div class="label">“After the show?”</div>
+    </div>
+
+    <!-- TOURIST DESK -->
+    <div>
+      <div class="phone">
+        <div class="ph-head" style="background:#2E7D32">
+          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
+          <div class="cb">Prati Visitor Desk <span class="x">× Headout</span></div>
+          <div class="ph-type">Tourist desk · Rome</div>
+        </div>
+        <div class="ph-body">
+          <div class="ask">In my language, skip the line <span class="send" style="background:#2E7D32">→</span></div>
+          <div class="chips"><span style="background:#E8F5E9;color:#2E7D32">Today</span><span style="background:#E8F5E9;color:#2E7D32">Skip the line</span><span style="background:#E8F5E9;color:#2E7D32">In my language</span></div>
+          <div class="rec"><div class="t">Vatican Skip-the-Line</div><div class="why">日本語 ✓ · 650m ✓ · 15:30 ✓</div><div class="pr"><span class="price">€58</span><span class="book">Book</span></div></div>
+        </div>
+      </div>
+      <div class="label">“In my language.”</div>
+    </div>
+  </div>
+</body>
+</html>

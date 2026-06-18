@@ -1,0 +1,135 @@
+<!-- @dsCard group="Foundations" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Headout Here — Foundations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purps:#8000FF; --purps-600:#6A00D6; --purps-tint:#F4ECFF;
+    --candy:#FF0A6C; --candy-tint:#FFE9F2;
+    --slate:#16161D; --ink-2:#4A4A57; --ink-3:#8A8A99;
+    --line:#E7E4F0; --bg:#FBFAFF; --white:#fff;
+    --peachy:#FF8C5A; --mustard:#FFC043; --hola:#FFD84D;
+    --okay:#1FC07A; --ocean:#2B6FF5; --warn:#FF4D4F; --dreamy:#F4F0FF;
+    --r:18px; --r-sm:12px;
+    --shadow:0 8px 30px rgba(24,8,60,.08); --shadow-lg:0 20px 60px rgba(24,8,60,.14);
+    --font:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--slate);padding:48px;line-height:1.4}
+  .wrap{max-width:1080px;margin:0 auto}
+  .brandbar{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+  .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:24px;color:var(--slate);letter-spacing:-.02em}
+  .blimp{width:34px;height:24px}
+  .kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purps);background:var(--purps-tint);padding:6px 12px;border-radius:99px;margin-bottom:18px}
+  h1{font-size:40px;font-weight:900;letter-spacing:-.03em;margin-bottom:8px}
+  .sub{color:var(--ink-2);font-size:17px;max-width:680px;margin-bottom:40px}
+  section{margin-bottom:48px}
+  h2{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .sw{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);background:var(--white)}
+  .sw .chip{height:96px}
+  .sw .meta{padding:12px 14px}
+  .sw .name{font-weight:800;font-size:15px}
+  .sw .hex{font-size:13px;color:var(--ink-3);font-weight:600;text-transform:uppercase}
+  .sec-row{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+  .mini{border-radius:12px;overflow:hidden;box-shadow:var(--shadow);background:#fff}
+  .mini .chip{height:54px}
+  .mini .meta{padding:8px 10px}
+  .mini .name{font-weight:700;font-size:12px}
+  .mini .hex{font-size:10px;color:var(--ink-3);font-weight:600}
+  .typorow{display:flex;flex-direction:column;gap:14px;background:#fff;border-radius:var(--r);padding:28px 32px;box-shadow:var(--shadow)}
+  .t-d1{font-size:44px;font-weight:900;letter-spacing:-.03em}
+  .t-d2{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .t-h{font-size:20px;font-weight:700}
+  .t-b{font-size:16px;font-weight:400;color:var(--ink-2)}
+  .t-c{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .tlabel{font-size:11px;color:var(--purps);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .btns{display:flex;gap:14px;align-items:center;flex-wrap:wrap;background:#fff;border-radius:var(--r);padding:28px 32px;box-shadow:var(--shadow)}
+  .btn{font-family:var(--font);font-weight:700;font-size:15px;border:none;cursor:pointer;border-radius:99px;padding:13px 26px;transition:.15s}
+  .btn-primary{background:var(--purps);color:#fff}
+  .btn-candy{background:var(--candy);color:#fff}
+  .btn-secondary{background:var(--purps-tint);color:var(--purps)}
+  .btn-ghost{background:transparent;color:var(--slate);border:1.5px solid var(--line)}
+  .lockup{display:flex;align-items:center;gap:14px;background:#fff;border-radius:var(--r);padding:24px 28px;box-shadow:var(--shadow);font-weight:800;font-size:22px}
+  .lockup .x{color:var(--ink-3);font-weight:500}
+  .lockup .ho{color:var(--purps)}
+  .note{font-size:13px;color:var(--ink-3);margin-top:14px;line-height:1.6}
+  .pill-set{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{font-size:13px;font-weight:600;padding:8px 14px;border-radius:99px;background:#fff;border:1px solid var(--line);color:var(--ink-2)}
+  .pill.on{background:var(--purps);color:#fff;border-color:var(--purps)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandbar">
+    <span class="logo">
+      <svg class="blimp" viewBox="0 0 40 28" fill="none"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#8000FF"/><path d="M4 12 L-2 7 L-2 17 Z" fill="#8000FF"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#8000FF"/><circle cx="24" cy="12" r="2.4" fill="#fff"/></svg>
+      headout <span style="color:var(--purps);font-weight:800">Here</span>
+    </span>
+  </div>
+  <span class="kicker">Design Foundations · follows the Headout brand</span>
+  <h1>Foundations</h1>
+  <p class="sub">The token set every Headout&nbsp;Here partner-flow screen is built on — pulled from the official Headout brand. Purps leads, Candy accents, Slate Black for ink. Type approximates the Halyard family used by Headout.</p>
+
+  <section>
+    <h2>Core palette</h2>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#8000FF"></div><div class="meta"><div class="name">Purps</div><div class="hex">#8000FF · primary</div></div></div>
+      <div class="sw"><div class="chip" style="background:#FF0A6C"></div><div class="meta"><div class="name">Candy</div><div class="hex">#FF0A6C · accent</div></div></div>
+      <div class="sw"><div class="chip" style="background:#16161D"></div><div class="meta"><div class="name">Slate Black</div><div class="hex">#16161D · ink</div></div></div>
+      <div class="sw"><div class="chip" style="background:#fff;border-bottom:1px solid var(--line)"></div><div class="meta"><div class="name">White</div><div class="hex">#FFFFFF</div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Secondaries</h2>
+    <div class="sec-row">
+      <div class="mini"><div class="chip" style="background:#F4F0FF"></div><div class="meta"><div class="name">Dreamy Pale</div><div class="hex">#F4F0FF</div></div></div>
+      <div class="mini"><div class="chip" style="background:#FF8C5A"></div><div class="meta"><div class="name">Peachy</div><div class="hex">#FF8C5A</div></div></div>
+      <div class="mini"><div class="chip" style="background:#FFC043"></div><div class="meta"><div class="name">Joy Mustard</div><div class="hex">#FFC043</div></div></div>
+      <div class="mini"><div class="chip" style="background:#1FC07A"></div><div class="meta"><div class="name">Okay Green</div><div class="hex">#1FC07A</div></div></div>
+      <div class="mini"><div class="chip" style="background:#2B6FF5"></div><div class="meta"><div class="name">Ocean Blue</div><div class="hex">#2B6FF5</div></div></div>
+      <div class="mini"><div class="chip" style="background:#FF4D4F"></div><div class="meta"><div class="name">Warning</div><div class="hex">#FF4D4F</div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Typography — Halyard (fallback: Figtree)</h2>
+    <div class="typorow">
+      <div><div class="tlabel">Display / 900</div><div class="t-d1">What should we do next?</div></div>
+      <div><div class="tlabel">Display / 800</div><div class="t-d2">Turn any place into a storefront</div></div>
+      <div><div class="tlabel">Heading / 700</div><div class="t-h">Partner Dashboard</div></div>
+      <div><div class="tlabel">Body / 400</div><div class="t-b">Guests scan a Headout-branded QR, ask in their own language, and book on Headout rails — the place earns a cut.</div></div>
+      <div><div class="tlabel">Caption / 700 · tracked</div><div class="t-c">Indoor ✓ · 700m ✓ · next slot 15:30 ✓</div></div>
+    </div>
+    <p class="note">Headout ships <strong>Halyard Display</strong> (headings) and <strong>Halyard Text</strong> (body) by Darden Studio. Halyard is licensed, so these mockups render in <strong>Figtree</strong> — a close geometric-humanist match with the same high x-height. Production build should license and swap to Halyard.</p>
+  </section>
+
+  <section>
+    <h2>Buttons</h2>
+    <div class="btns">
+      <button class="btn btn-primary">Generate Headout Here →</button>
+      <button class="btn btn-candy">Book</button>
+      <button class="btn btn-secondary">Preview storefront</button>
+      <button class="btn btn-ghost">Download poster</button>
+    </div>
+    <p class="note">Pill radius (99px). Purps for the primary partner action; Candy reserved for the guest-side “Book”; tinted secondary; ghost for tertiary.</p>
+  </section>
+
+  <section>
+    <h2>Co-brand lockup &amp; chips</h2>
+    <div class="lockup">Casa Aurelia <span class="x">×</span> <span class="ho">headout</span></div>
+    <div style="height:14px"></div>
+    <div class="pill-set">
+      <span class="pill on">Today</span><span class="pill">Near me</span><span class="pill">Kid-friendly</span><span class="pill">Rainy day</span><span class="pill">Under 2 hrs</span><span class="pill">Tonight</span>
+    </div>
+    <p class="note">Headout-forward co-brand: “{Place} × Headout”, Headout always prominent (the brand pillar in pixels). Quick chips drive the concierge.</p>
+  </section>
+</div>
+</body>
+</html>
