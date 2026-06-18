@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hackin 2026 - Experiences Launchpad</title>
+  <style>
+    :root {
+      --bg: #f7f8f6;
+      --paper: #ffffff;
+      --ink: #20231f;
+      --muted: #62685f;
+      --line: #d9ded6;
+      --green: #1f6f52;
+      --green-soft: #e5f2eb;
+      --blue: #255f85;
+      --blue-soft: #e5eef4;
+      --gold: #8a641f;
+      --gold-soft: #f4eddc;
+      --red: #8d3b2f;
+      --red-soft: #f5e6e3;
+      --shadow: 0 18px 45px rgba(34, 39, 32, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .shell {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: #eef1ec;
+      overflow: auto;
+    }
+
+    .nav-title {
+      margin: 0 0 6px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .nav-subtitle {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: grid;
+      gap: 7px;
+    }
+
+    nav a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 7px;
+      color: #343932;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      background: #ffffff;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 42px 44px 70px;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 36px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 920px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 860px;
+      margin: 18px 0 0;
+      color: #3f453d;
+      font-size: 21px;
+      line-height: 1.45;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .metric {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+    }
+
+    .metric strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    section {
+      margin-top: 34px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--paper);
+    }
+
+    section.compact {
+      padding: 24px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 24px 0 10px;
+      font-size: 18px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul, ol {
+      margin: 10px 0 0;
+      padding-left: 22px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 0 6px 8px 0;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tag.blue {
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+
+    .tag.gold {
+      background: var(--gold-soft);
+      color: var(--gold);
+    }
+
+    .tag.red {
+      background: var(--red-soft);
+      color: var(--red);
+    }
+
+    .callout {
+      padding: 16px 18px;
+      border-left: 4px solid var(--green);
+      border-radius: 7px;
+      background: var(--green-soft);
+      color: #244135;
+      font-weight: 650;
+    }
+
+    .warning {
+      border-left-color: var(--red);
+      background: var(--red-soft);
+      color: #5a2923;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #eef1ec;
+      color: #30362e;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+      align-items: stretch;
+    }
+
+    .flow.five {
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+    }
+
+    .flow.four {
+      grid-template-columns: repeat(4, minmax(130px, 1fr));
+    }
+
+    .node {
+      position: relative;
+      min-height: 118px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+    }
+
+    .node:not(:last-child)::after {
+      content: ">";
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      width: 14px;
+      height: 24px;
+      margin-top: -12px;
+      color: var(--muted);
+      font-weight: 800;
+      text-align: center;
+      background: var(--paper);
+    }
+
+    .node .num {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .node strong {
+      display: block;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .node span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .swimlane {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .lane {
+      display: grid;
+      grid-template-columns: 150px repeat(4, minmax(130px, 1fr));
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .lane-title {
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border-radius: 8px;
+      background: #eef1ec;
+      color: #343932;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .lane-step {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfa;
+      font-size: 14px;
+    }
+
+    .quote {
+      padding: 22px;
+      border-radius: 8px;
+      background: #20231f;
+      color: #f8faf5;
+      font-size: 21px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    code {
+      padding: 2px 5px;
+      border-radius: 5px;
+      background: #eef1ec;
+      color: #30362e;
+      font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    @media (max-width: 980px) {
+      .shell {
+        display: block;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      main {
+        padding: 24px 18px 46px;
+      }
+
+      .hero {
+        padding: 24px;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .flow,
+      .flow.five,
+      .flow.four {
+        grid-template-columns: 1fr;
+      }
+
+      .node:not(:last-child)::after {
+        content: "v";
+        right: 18px;
+        top: auto;
+        bottom: -18px;
+        background: transparent;
+      }
+
+      .lane {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <p class="nav-title">Experiences Launchpad</p>
+      <p class="nav-subtitle">Hackin 2026 idea brief</p>
+      <nav aria-label="Page navigation">
+        <a href="#thesis">Thesis</a>
+        <a href="#reality">Reality Check</a>
+        <a href="#wedge">Partner Wedges</a>
+        <a href="#platform">Platform</a>
+        <a href="#flows">Flows</a>
+        <a href="#build">42h Build</a>
+        <a href="#demo">Demo Script</a>
+        <a href="#business">Business Model</a>
+        <a href="#risks">Risks</a>
+        <a href="#plan">Plan</a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="page">
+        <header class="hero">
+          <p class="eyebrow">Hackin 2026</p>
+          <h1>Experiences Launchpad</h1>
+          <p class="lead">A physical partner platform that lets hotels, restaurants, airport lounges, event venues, and other trusted local surfaces launch a Headout-powered experiences business in minutes.</p>
+          <div class="hero-grid">
+            <div class="metric">
+              <strong>Partner surfaces</strong>
+              <span>Hotel lobby, restaurant table, airport lounge, event venue, tourist desk: QR -> concierge -> booking.</span>
+            </div>
+            <div class="metric">
+              <strong>Partner cut</strong>
+              <span>Every booking made through a partner QR is attributed back, and the partner earns a cut.</span>
+            </div>
+            <div class="metric">
+              <strong>Brand play</strong>
+              <span>Headout becomes the helpful answer to "what should we do next?" in the real world.</span>
+            </div>
+          </div>
+        </header>
+
+        <section id="thesis">
+          <h2>Thesis</h2>
+          <p>Headout already has the hard parts of selling experiences: global inventory, availability, pricing, checkout, payments, ticket fulfillment, support, cancellations, refunds, and supplier relationships.</p>
+          <p>What Headout does not fully own is the moment when a traveler is physically present somewhere and asks: <strong>"What should we do next?"</strong></p>
+          <div class="callout">Experiences Launchpad turns that physical intent into a Headout booking, using a partner-branded QR storefront, AI concierge, QR attribution, and partner commission.</div>
+          <p>Every partner QR is an attribution surface. When a guest books after scanning a hotel, restaurant, lounge, event-venue, or tourist-desk QR, that partner gets a cut of the booking.</p>
+
+          <h3>High-intent physical contexts</h3>
+          <div>
+            <span class="tag">Hotel front desks</span>
+            <span class="tag">Restaurant tables</span>
+            <span class="tag">Airport lounges</span>
+            <span class="tag">Event venues</span>
+            <span class="tag">Conference hotels</span>
+            <span class="tag">Theatres and arenas</span>
+            <span class="tag">Cruise terminals</span>
+            <span class="tag">Tourist info desks</span>
+          </div>
+        </section>
+
+        <section id="reality">
+          <h2>Partnerships Reality Check</h2>
+          <p><code>#pod-partnerships</code> shows Headout already has serious machinery around existing digital distribution lanes.</p>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Already active</h3>
+              <ul>
+                <li>Creator and affiliate tooling</li>
+                <li>Affiliate booking APIs</li>
+                <li>Partner portal and signup revamp</li>
+                <li>Voucher APIs</li>
+                <li>Product webhooks for partners</li>
+                <li>Prio, agent, and API attribution</li>
+                <li>Whitelabel work</li>
+                <li>Partner reporting and dashboard asks</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Launchpad whitespace</h3>
+              <ul>
+                <li>Physical partners with footfall</li>
+                <li>Guests already present in a city</li>
+                <li>Time-constrained decisions</li>
+                <li>No existing experiences infrastructure</li>
+                <li>QR-first launch, not API integration</li>
+                <li>Concierge-first recommendation, not generic affiliate links</li>
+              </ul>
+            </div>
+          </div>
+          <p class="callout warning">Do not pitch this as "creators get storefronts" or "travel agents get curated pages." Pitch it as physical-context partners who have guest intent but no experiences infrastructure.</p>
+        </section>
+
+        <section id="wedge">
+          <h2>Physical Partner Wedges</h2>
+          <p>Hotels are the cleanest first demo, but the product should stay multi-partner from day one. The shared pattern is: guests are physically present, they need a next plan, the partner has trust and footfall, and Headout has inventory plus fulfillment.</p>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Today</h3>
+              <ul>
+                <li>Brochure racks and table tents</li>
+                <li>One-language human suggestions</li>
+                <li>Untracked concierge or staff recommendations</li>
+                <li>Google Maps handoff</li>
+                <li>No direct monetization</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>With Launchpad</h3>
+              <ul>
+                <li>Lobby, table, receipt, lounge, venue, room, WiFi, and email QR</li>
+                <li>Branded AI concierge</li>
+                <li>Curated nearby Headout inventory</li>
+                <li>Weather, language, and time awareness</li>
+                <li>Checkout on Headout rails</li>
+                <li>QR-attributed rev-share dashboard</li>
+              </ul>
+            </div>
+          </div>
+          <div class="quote">"The partner used to answer this question for free. Now the same question becomes a booking, a commission, and a Headout brand moment."</div>
+        </section>
+
+        <section id="platform">
+          <h2>Bigger Platform Story</h2>
+          <p>The hotel demo is only one physical-context use case. The same platform can power other places where guests are physically present and ready to choose.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Partner Type</th>
+                <th>Use Case</th>
+                <th>Why They Care</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hotels</td>
+                <td>Lobby QR concierge</td>
+                <td>New revenue without ops</td>
+              </tr>
+              <tr>
+                <td>Restaurants and bars</td>
+                <td>"What should we do after dinner?" QR on bill folder or table tent</td>
+                <td>Extra commission and better guest hospitality</td>
+              </tr>
+              <tr>
+                <td>Airport/airline lounges</td>
+                <td>Long-layover or delayed-flight experiences</td>
+                <td>Ancillary revenue and better passenger experience</td>
+              </tr>
+              <tr>
+                <td>Event venues</td>
+                <td>Nearby pre/post-event experiences</td>
+                <td>Higher guest engagement before and after shows/games</td>
+              </tr>
+              <tr>
+                <td>Cruise/ferry terminals</td>
+                <td>Shore excursion alternatives and last-minute city plans</td>
+                <td>Monetize waiting time and shore time</td>
+              </tr>
+              <tr>
+                <td>Tourist info desks</td>
+                <td>Multilingual QR concierge instead of brochures</td>
+                <td>Modernize walk-up recommendations</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="grid-2" style="margin-top: 18px;">
+            <div class="card">
+              <h3>Platform thesis</h3>
+              <p>Headout should be the infrastructure that lets every trusted physical surface sell experiences at the moment intent appears.</p>
+            </div>
+            <div class="card">
+              <h3>Brand thesis</h3>
+              <p>Headout should become the helpful answer to "what should we do next?" wherever that question is asked in the real world.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="flows">
+          <h2>Flow Diagrams</h2>
+
+          <h3>1. Product Loop</h3>
+          <div class="flow">
+            <div class="node">
+              <span class="num">1</span>
+              <strong>Partner creates Launchpad</strong>
+              <span>Name, type, location, guest profile, brand, QR commission.</span>
+            </div>
+            <div class="node">
+              <span class="num">2</span>
+              <strong>QR surfaces go live</strong>
+              <span>Lobby, rooms, table tent, lounge, event page.</span>
+            </div>
+            <div class="node">
+              <span class="num">3</span>
+              <strong>Guest asks what next</strong>
+              <span>Language, timing, weather, constraints.</span>
+            </div>
+            <div class="node">
+              <span class="num">4</span>
+              <strong>Concierge recommends</strong>
+              <span>Deterministic filters plus AI explanation.</span>
+            </div>
+            <div class="node">
+              <span class="num">5</span>
+              <strong>Headout checkout</strong>
+              <span>Booking, ticket, fulfillment, support.</span>
+            </div>
+            <div class="node">
+              <span class="num">6</span>
+              <strong>Partner dashboard</strong>
+              <span>QR scans, chats, bookings, GMV, commission, demand.</span>
+            </div>
+          </div>
+
+          <h3>2. Physical Partner Demo Flow</h3>
+          <div class="flow five">
+            <div class="node">
+              <span class="num">A</span>
+              <strong>One partner signs up</strong>
+              <span>Start with Casa Aurelia hotel, then switch to restaurant/lounge/venue.</span>
+            </div>
+            <div class="node">
+              <span class="num">B</span>
+              <strong>Launchpad generates</strong>
+              <span>Mobile page, concierge, QR, dashboard.</span>
+            </div>
+            <div class="node">
+              <span class="num">C</span>
+              <strong>Guest scans QR</strong>
+              <span>"Raining, 6-year-old, free this afternoon" or "what after dinner?"</span>
+            </div>
+            <div class="node">
+              <span class="num">D</span>
+              <strong>Experience booked</strong>
+              <span>Indoor, nearby, available, family-friendly.</span>
+            </div>
+            <div class="node">
+              <span class="num">E</span>
+              <strong>Commission appears</strong>
+              <span>Partner sees QR-attributed revenue and conversion.</span>
+            </div>
+          </div>
+
+          <h3>3. Data and System Flow</h3>
+          <div class="flow five">
+            <div class="node">
+              <span class="num">1</span>
+              <strong>Partner config</strong>
+              <span>Type, location, languages, tone, categories.</span>
+            </div>
+            <div class="node">
+              <span class="num">2</span>
+              <strong>Inventory layer</strong>
+              <span>One city, availability, price, duration, distance.</span>
+            </div>
+            <div class="node">
+              <span class="num">3</span>
+              <strong>Rules engine</strong>
+              <span>Distance, time, weather, family fit, indoor/outdoor.</span>
+            </div>
+            <div class="node">
+              <span class="num">4</span>
+              <strong>AI layer</strong>
+              <span>Conversational answer and explanation.</span>
+            </div>
+            <div class="node">
+              <span class="num">5</span>
+              <strong>Ledger</strong>
+              <span>Booking event, QR attribution, partner cut, commission dashboard.</span>
+            </div>
+          </div>
+
+          <h3>4. Swimlane: Who Does What</h3>
+          <div class="swimlane">
+            <div class="lane">
+              <div class="lane-title">Partner</div>
+              <div class="lane-step">Signs up</div>
+              <div class="lane-step">Places QR</div>
+              <div class="lane-step">Monitors dashboard</div>
+              <div class="lane-step">Optimizes placement</div>
+            </div>
+            <div class="lane">
+              <div class="lane-title">Guest</div>
+              <div class="lane-step">Scans QR</div>
+              <div class="lane-step">Asks for plan</div>
+              <div class="lane-step">Books experience</div>
+              <div class="lane-step">Gets ticket/support</div>
+            </div>
+            <div class="lane">
+              <div class="lane-title">Headout</div>
+              <div class="lane-step">Curates inventory</div>
+              <div class="lane-step">Ranks options</div>
+              <div class="lane-step">Runs checkout</div>
+              <div class="lane-step">Attributes and pays commission</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="build">
+          <h2>42-Hour Build</h2>
+          <p>Keep the prototype to one polished wedge: partner signup -> generated QR/storefront -> guest concierge -> booking -> QR-attributed commission dashboard. Show one partner deeply, then switch partner type to prove breadth.</p>
+          <div class="grid-3">
+            <div class="card">
+              <h3>Build for real</h3>
+              <ul>
+                <li>Partner setup form</li>
+                <li>Generated guest storefront</li>
+                <li>AI concierge over inventory JSON</li>
+                <li>QR code</li>
+                <li>Mock booking action</li>
+                <li>Dashboard metrics update</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Fake cleanly</h3>
+              <ul>
+                <li>Real payment</li>
+                <li>Real ticket fulfillment</li>
+                <li>Partner auth</li>
+                <li>Commission settlement</li>
+                <li>Live inventory API</li>
+                <li>Multi-city supply</li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Mock data</h3>
+              <ul>
+                <li>One city: Rome</li>
+                <li>30-50 experiences</li>
+                <li>Weather: rainy afternoon</li>
+                <li>84 scans</li>
+                <li>31 chats</li>
+                <li>7 bookings</li>
+                <li>EUR 64.96 partner commission</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="demo">
+          <h2>Demo Script</h2>
+          <div class="flow four">
+            <div class="node">
+              <span class="num">1</span>
+              <strong>Create the partner</strong>
+              <span>Casa Aurelia hotel first, with variants for restaurant, lounge, and event venue.</span>
+            </div>
+            <div class="node">
+              <span class="num">2</span>
+              <strong>Scan the QR</strong>
+              <span>Judges can scan a lobby stand, table tent, lounge placard, or venue poster.</span>
+            </div>
+            <div class="node">
+              <span class="num">3</span>
+              <strong>Ask a constrained question</strong>
+              <span>"It is raining and we have a 6-year-old. What can we do?"</span>
+            </div>
+            <div class="node">
+              <span class="num">4</span>
+              <strong>Book and reveal</strong>
+              <span>Booking confirms, partner commission updates, platform expands to lounge/restaurant/venue.</span>
+            </div>
+          </div>
+          <h3>Sharp pitch</h3>
+          <p class="quote">"Headout has inventory, fulfillment, payments, and support. Hotels, restaurants, airport lounges, and event venues have guests physically asking what to do next. Launchpad connects the two: partners earn from QR bookings, and Headout becomes the helpful experiences brand in the real world."</p>
+        </section>
+
+        <section id="business">
+          <h2>Business Model</h2>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Partner commission</h3>
+              <ul>
+                <li>Hotel: 8-10 percent</li>
+                <li>Restaurant/bar: 5-8 percent</li>
+                <li>Airport/lounge: negotiated rev share</li>
+                <li>Conference/event: rev share or sponsor model</li>
+              </ul>
+              <p class="small">Each QR is tied to a partner, surface, and location. Bookings after scan are attributed back to that distributor.</p>
+            </div>
+            <div class="card">
+              <h3>Why Headout says yes</h3>
+              <ul>
+                <li>Lower CAC</li>
+                <li>Contextual acquisition at physical intent</li>
+                <li>Partner-led demand outside affiliate/API lanes</li>
+                <li>Defensible B2B2C channel</li>
+                <li>Data on high-intent travel contexts</li>
+                <li>Offline brand presence in trusted local environments</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="risks">
+          <h2>Risks and Answers</h2>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Is this just affiliate links?</h3>
+              <p>No. Affiliate links are static. Launchpad gives partners a branded concierge, curated inventory, checkout handoff, fulfillment, support, QR attribution, commission, and rev-share reporting.</p>
+            </div>
+            <div class="card">
+              <h3>Why physical partners instead of Viator or GetYourGuide?</h3>
+              <p>The wedge is a five-minute launch, multilingual concierge, local context, partner-branded QR, QR-attributed commission, and dashboard. Headout can win by being lighter and more partner-native.</p>
+            </div>
+            <div class="card">
+              <h3>Will this cannibalize direct traffic?</h3>
+              <p>Hotel lobby scans, restaurant table scans, lounge delays, and venue pages are incremental contexts where users may not open Headout first.</p>
+            </div>
+            <div class="card">
+              <h3>Why is this a brand play?</h3>
+              <p>Every QR is a measurable offline brand placement. Headout shows up as the useful concierge exactly when travelers ask what to do next.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="plan">
+          <h2>Hackathon Plan</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Window</th>
+                <th>Focus</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Day 1 evening</td>
+                <td>Lock city, first partner, variant list, inventory JSON, screen sketch</td>
+                <td>Clickable skeleton</td>
+              </tr>
+              <tr>
+                <td>Day 2 morning</td>
+                <td>Guest storefront, concierge, QR, deterministic filters</td>
+                <td>End-to-end guest path</td>
+              </tr>
+              <tr>
+                <td>Day 2 afternoon</td>
+                <td>Mock checkout, booking event, commission ledger</td>
+                <td>Partner dashboard</td>
+              </tr>
+              <tr>
+                <td>Day 2 night</td>
+                <td>Polish mobile UI, language switch, second partner reveal</td>
+                <td>Demo-ready product</td>
+              </tr>
+              <tr>
+                <td>Day 3 morning</td>
+                <td>Rehearse, cut flaky pieces, tighten Q&A</td>
+                <td>Confident pitch</td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="callout">Final framing: Build one polished physical-partner demo, but pitch Experiences Launchpad as a multi-partner platform where distributors earn from QR bookings and Headout gains offline brand presence.</p>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
