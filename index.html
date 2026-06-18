@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Headout Here — Hackin '26 Master Doc</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f4ef;
+      --paper: #fffdf8;
+      --ink: #17201b;
+      --muted: #637069;
+      --line: #ded8ce;
+      --accent: #e8552f;
+      --accent-dark: #aa321f;
+      --teal: #0f766e;
+      --green-soft: #e7f4ec;
+      --blue-soft: #e8f0fb;
+      --shadow: 0 18px 50px rgba(27, 32, 29, 0.11);
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(135deg, rgba(232, 85, 47, 0.10), transparent 32rem),
+        linear-gradient(225deg, rgba(15, 118, 110, 0.10), transparent 34rem),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    a {
+      color: var(--accent-dark);
+      text-decoration-thickness: 0.08em;
+      text-underline-offset: 0.18em;
+    }
+
+    .page-shell {
+      display: grid;
+      grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    aside {
+      border-right: 1px solid var(--line);
+      background: rgba(255, 253, 248, 0.82);
+      backdrop-filter: blur(18px);
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+    }
+
+    .brand-kicker {
+      color: var(--accent-dark);
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin: 0 0 8px;
+    }
+
+    .toc-title {
+      font-size: 1rem;
+      font-weight: 800;
+      margin: 0 0 18px;
+    }
+
+    .toc {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc-link {
+      border-radius: 8px;
+      color: var(--muted);
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.3;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    .toc-link:hover {
+      background: var(--green-soft);
+      color: var(--ink);
+    }
+
+    .toc-level-1 {
+      color: var(--ink);
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .toc-level-2 {
+      padding-left: 22px;
+    }
+
+    main {
+      padding: 42px min(6vw, 72px) 72px;
+    }
+
+    article {
+      background: var(--paper);
+      border: 1px solid rgba(222, 216, 206, 0.82);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      margin: 0 auto;
+      max-width: 980px;
+      padding: clamp(28px, 5vw, 68px);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+      color: var(--ink);
+      letter-spacing: 0;
+      line-height: 1.12;
+      margin: 2.2rem 0 1rem;
+      scroll-margin-top: 28px;
+    }
+
+    h1:first-child {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4.4rem);
+      max-width: 13ch;
+    }
+
+    h2 {
+      border-top: 1px solid var(--line);
+      font-size: clamp(1.5rem, 3vw, 2.35rem);
+      padding-top: 2.1rem;
+    }
+
+    h3 {
+      color: var(--teal);
+      font-size: 1.18rem;
+      margin-top: 1.8rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    .anchor {
+      color: var(--accent);
+      float: left;
+      font-size: 0.8em;
+      margin-left: -1.05em;
+      opacity: 0;
+      text-decoration: none;
+      transition: opacity 0.16s ease;
+    }
+
+    h1:hover .anchor,
+    h2:hover .anchor,
+    h3:hover .anchor,
+    h4:hover .anchor {
+      opacity: 1;
+    }
+
+    p {
+      margin: 0.9rem 0;
+    }
+
+    strong {
+      color: #0f241c;
+      font-weight: 800;
+    }
+
+    blockquote {
+      background: linear-gradient(90deg, rgba(232, 85, 47, 0.10), rgba(15, 118, 110, 0.07));
+      border-left: 5px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+    }
+
+    blockquote p {
+      font-size: 1.02rem;
+      margin: 0.25rem 0;
+    }
+
+    ul,
+    ol {
+      padding-left: 1.35rem;
+    }
+
+    li {
+      margin: 0.45rem 0;
+      padding-left: 0.12rem;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 2.4rem 0;
+    }
+
+    code {
+      background: #f0ebe2;
+      border: 1px solid #e3dccf;
+      border-radius: 6px;
+      color: #8f2b1d;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.88em;
+      padding: 0.12em 0.36em;
+    }
+
+    .code-block {
+      background: #151b18;
+      border-radius: var(--radius);
+      color: #e9f0eb;
+      overflow: auto;
+      padding: 1.1rem;
+    }
+
+    .code-block code {
+      background: transparent;
+      border: 0;
+      color: inherit;
+      padding: 0;
+    }
+
+    .table-wrap {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 1.4rem 0;
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 720px;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 0.78rem 0.9rem;
+      vertical-align: top;
+    }
+
+    th {
+      background: #efe9df;
+      color: #20251f;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(232, 240, 251, 0.45);
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .diagram-shell {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin: 1.5rem 0;
+      overflow-x: auto;
+      padding: 1rem;
+    }
+
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .flow-row {
+      align-items: center;
+      display: flex;
+      gap: 0.7rem;
+      min-width: max-content;
+    }
+
+    .flow-node {
+      background: var(--green-soft);
+      border: 1px solid rgba(15, 118, 110, 0.34);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(27, 32, 29, 0.06);
+      color: #12352f;
+      font-size: 0.9rem;
+      font-weight: 750;
+      line-height: 1.25;
+      max-width: 190px;
+      min-height: 64px;
+      min-width: 150px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .flow-arrow {
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .section-ref {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .page-shell {
+        display: block;
+      }
+
+      aside {
+        border-bottom: 1px solid var(--line);
+        border-right: 0;
+        height: auto;
+        max-height: 46vh;
+        position: relative;
+      }
+
+      main {
+        padding: 18px;
+      }
+
+      article {
+        padding: 24px;
+      }
+
+      .anchor {
+        display: none;
+      }
+
+      h1 {
+        max-width: none;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .page-shell {
+        display: block;
+      }
+
+      aside {
+        display: none;
+      }
+
+      main,
+      article {
+        box-shadow: none;
+        margin: 0;
+        max-width: none;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <aside>
+      <p class="brand-kicker">Headout Here</p>
+      <p class="toc-title">Master Doc</p>
+      <nav class="toc" aria-label="Document outline">
+        <a class="toc-link toc-level-1" href="#headout-here-hackin-26-master-doc">Headout Here — Hackin '26 Master Doc</a>
+<a class="toc-link toc-level-2" href="#table-of-contents">Table of Contents</a>
+<a class="toc-link toc-level-1" href="#part-a-orient">Part A — Orient</a>
+<a class="toc-link toc-level-2" href="#1-tl-dr-pitch">1. TL;DR &amp; Pitch</a>
+<a class="toc-link toc-level-2" href="#2-hackathon-reality-check">2. Hackathon Reality Check</a>
+<a class="toc-link toc-level-2" href="#3-the-idea-sharpened">3. The Idea, Sharpened</a>
+<a class="toc-link toc-level-1" href="#part-b-win">Part B — Win</a>
+<a class="toc-link toc-level-2" href="#4-prize-positioning">4. Prize Positioning</a>
+<a class="toc-link toc-level-2" href="#5-the-field-our-edge">5. The Field &amp; Our Edge</a>
+<a class="toc-link toc-level-1" href="#part-c-build">Part C — Build</a>
+<a class="toc-link toc-level-2" href="#6-scope-cut-lines">6. Scope &amp; Cut Lines</a>
+<a class="toc-link toc-level-2" href="#7-product-spec">7. Product Spec</a>
+<a class="toc-link toc-level-2" href="#8-technical-architecture">8. Technical Architecture</a>
+<a class="toc-link toc-level-2" href="#9-seed-data-rome">9. Seed Data (Rome)</a>
+<a class="toc-link toc-level-2" href="#10-the-42-hour-plan">10. The 42-Hour Plan</a>
+<a class="toc-link toc-level-1" href="#part-d-sell">Part D — Sell</a>
+<a class="toc-link toc-level-2" href="#11-live-demo-script-2-3-min">11. Live Demo Script (2–3 min)</a>
+<a class="toc-link toc-level-2" href="#12-trailer-plan-30-45s-hype-reel">12. Trailer Plan (~30–45s hype reel)</a>
+<a class="toc-link toc-level-2" href="#13-pitch-q-a-prep">13. Pitch &amp; Q&amp;A Prep</a>
+<a class="toc-link toc-level-1" href="#appendix">Appendix</a>
+<a class="toc-link toc-level-2" href="#14-economics-rome-impressions-conversions-gmv">14. Economics (Rome) — Impressions, Conversions &amp; GMV</a>
+<a class="toc-link toc-level-2" href="#15-gtm-compressed">15. GTM (Compressed)</a>
+<a class="toc-link toc-level-2" href="#16-open-decisions-status">16. Open Decisions &amp; Status</a>
+      </nav>
+    </aside>
+    <main>
+      <article>
+<h1 id="headout-here-hackin-26-master-doc"><a class="anchor" href="#headout-here-hackin-26-master-doc" aria-label="Link to section">#</a>Headout Here — Hackin '26 Master Doc</h1>
+<blockquote><p>Single source of truth for building <strong>Headout Here</strong> at Hackin '26.</p><p>Replaces the earlier Launchpad brief, GTM plan, and handoff docs.</p><p>Last updated: 2026-06-18 · Team size: 3 · Stack: Replit · Data: polished mock (Rome)</p></blockquote>
+<hr>
+<h2 id="table-of-contents"><a class="anchor" href="#table-of-contents" aria-label="Link to section">#</a>Table of Contents</h2>
+<p><strong>Part A — Orient</strong></p>
+<ol><li>TL;DR &amp; Pitch</li><li>Hackathon Reality Check</li><li>The Idea, Sharpened</li></ol>
+<p><strong>Part B — Win</strong></p>
+<ol><li>Prize Positioning</li><li>The Field &amp; Our Edge</li></ol>
+<p><strong>Part C — Build</strong></p>
+<ol><li>Scope &amp; Cut Lines</li><li>Product Spec</li><li>Technical Architecture</li><li>Seed Data (Rome)</li><li>The 42-Hour Plan</li></ol>
+<p><strong>Part D — Sell</strong></p>
+<ol><li>Live Demo Script</li><li>Trailer Plan</li><li>Pitch &amp; Q&amp;A Prep</li></ol>
+<p><strong>Appendix</strong></p>
+<ol><li>Economics (Rome)</li><li>GTM (Compressed)</li><li>Open Decisions &amp; Status</li></ol>
+<hr>
+<h1 id="part-a-orient"><a class="anchor" href="#part-a-orient" aria-label="Link to section">#</a>Part A — Orient</h1>
+<h2 id="1-tl-dr-pitch"><a class="anchor" href="#1-tl-dr-pitch" aria-label="Link to section">#</a>1. TL;DR &amp; Pitch</h2>
+<p><strong>One-liner:</strong></p>
+<blockquote><p><strong>Headout Here turns <em>any</em> trusted physical place — a hotel desk, a café, a lounge, a venue, a tourist desk, a short-stay host, a coworking space — into a Headout-powered experiences storefront. Guests scan a Headout-branded QR, ask what to do next, book on Headout rails, and the place earns a cut of every QR-attributed booking.</strong></p></blockquote>
+<p><strong>It's two things at once (both pillars matter equally):</strong></p>
+<ul><li><strong>Distribution</strong> — a new, low-CAC channel that captures <em>physical</em> demand at the moment of intent and pays the place that owns the surface, instead of paying an ad platform.</li><li><strong>Brand</strong> — Headout-branded QRs on trusted surfaces all over a city. Headout becomes ambient — the recognizable answer to &quot;what should we do next?&quot; in the real world, not just an app you remember to open. Every QR is a measurable offline billboard.</li></ul>
+<p><strong>What it is, in three sentences:</strong></p>
+<ol><li>Every day travelers ask &quot;what should we do next?&quot; in physical places that have trust and footfall but no inventory, checkout, or fulfillment.</li><li>Headout Here gives any such place a Headout-branded QR concierge: the guest scans, asks in their own language, gets feasible/bookable Headout experiences (location-, time-, and weather-aware), and books.</li><li>Every QR is attributed, so the place earns commission — making Headout a new physical distribution network <em>and</em> an everywhere brand at the moment of intent.</li></ol>
+<p><strong>Target prizes:</strong> 📈 <strong>Move the Needle</strong> (primary — new distribution channel + brand surface) + ⭐ <strong>Five Stars</strong> (secondary — the guest concierge delight). See <a class="section-ref" href="#4-prize-positioning">§4</a>.</p>
+<p><strong>The demo in one breath:</strong> A place — <em>pick any; we'll use one as an example</em> — signs up in 60 seconds → gets a Headout-branded QR → a judge scans it → asks &quot;it's raining and I have a 6-year-old, what can we do this afternoon?&quot; → gets 3 indoor, nearby, family-friendly, bookable picks → books one → the place's dashboard updates with GMV and commission live → we flip the place type (café, lounge, venue, tourist desk) and the same engine re-skins instantly — same Headout brand, any surface.</p>
+<hr>
+<h2 id="2-hackathon-reality-check"><a class="anchor" href="#2-hackathon-reality-check" aria-label="Link to section">#</a>2. Hackathon Reality Check</h2>
+<p><strong>The clock — this is live now.</strong></p>
+<ul><li><strong>Build window: Thu 18 June 6:00 PM IST → Sat 20 June 12:00 PM (noon) IST ≈ 42 hours.</strong></li><li><strong>Hard rule: code only inside the window.</strong> Planning/ideas before is fine (that's this doc). Any pre-built code = <strong>instant disqualification</strong>. Start the repo <em>after</em> kickoff.</li></ul>
+<p><strong>What we must submit (3 things — your old docs only planned 1):</strong></p>
+<ol><li><strong>A live demo</strong> of the working tool (strongly recommended to run live on the final day).</li><li><strong>A 2–3 minute recording</strong> of that live demo (backup if the live run stumbles; required for remote teams).</li><li><strong>A trailer / hype reel</strong> — Hackin '26 explicitly expects every team to ship a trailer <em>and</em> a demo video. This is graded storytelling, not optional polish. (See <a class="section-ref" href="#12-trailer-plan-30-45s-hype-reel">§12</a>.)</li></ol>
+<p><strong>Judging:</strong> No tracks. Build anything that matters to Headout. After demos, <strong>every hack is considered for every award</strong> — you don't pick a category, the category finds you. Five categories (<a class="section-ref" href="#4-prize-positioning">§4</a>). <strong>$500 per person</strong> on each winning team.</p>
+<p><strong>Sanctioned tools &amp; credits:</strong></p>
+<ul><li><strong>Replit</strong> — sponsored, <strong>unlimited credits for these 2 days</strong>, out-of-the-box (our stack).</li><li><strong>Claude / Codex</strong> — limits bumped way up; use for coding + the concierge LLM calls.</li><li><strong>fal</strong> — sponsored credits for video/trailer generation.</li><li><strong>Product OS</strong> (<code>product-os.headout.com</code>) + <strong>Porygon MCP</strong> — internal knowledge base for research/PRD/validation; an extra &quot;teammate.&quot;</li><li><strong>Specialized/paid tools (e.g. ElevenLabs for VO)</strong> — available on request; ping the AI mentors.</li></ul>
+<p><strong>Data:</strong> Everything except PII is fair game; most lives in <strong>BigQuery</strong> (access via the data team). <em>We are deliberately using polished mock data (<a class="section-ref" href="#9-seed-data-rome">§9</a>) — real data is a stretch goal only (<a class="section-ref" href="#6-scope-cut-lines">§6</a>), not a dependency.</em></p>
+<p><strong>Mentors to pull on (they're volunteering on top of their own hacks — bring context):</strong></p>
+<ul><li><strong>Product:</strong> Atish, Aditya Kulkarni</li><li><strong>Engg + AI:</strong> Neel, Sumit, Aakash, Rachit, Yuvraj</li><li><strong>Data:</strong> Mrinalini, Harshita</li><li><strong>Design:</strong> Ramakrishna V</li><li><strong>Storytelling/GTM:</strong> Gaurav Bisen (ran the GTM session) — channel his framing into the pitch.</li></ul>
+<p><strong>Key channels:</strong> <code>#event-hackin-2026</code> (logistics) · <code>#event-hackin-2026-ideas</code> (idea board / claims).</p>
+<hr>
+<h2 id="3-the-idea-sharpened"><a class="anchor" href="#3-the-idea-sharpened" aria-label="Link to section">#</a>3. The Idea, Sharpened</h2>
+<p><strong>The insight.</strong> Headout already owns the hard parts of selling experiences — global inventory, availability, pricing, checkout, payments, fulfillment, support, refunds, supplier relationships. What it doesn't own is the <strong>physical moment of intent</strong>, and that moment happens in <em>every kind of place</em>: a hotel lobby, a café, a dinner table, a lounge during a delay, a venue after the show, a hostel common room, a short-stay check-in, a coworking lounge, a tourist desk, a mall concierge. Any place with footfall and a &quot;what should we do next?&quot; moment qualifies. These surfaces have trust and footfall but no experiences infrastructure. Headout Here bolts the two together — and is deliberately <strong>place-agnostic</strong>: hotels are a convenient example, never the boundary.</p>
+<p><strong>The product loop:</strong></p>
+<div class="diagram-shell flow-diagram"><div class="flow-row"><div class="flow-node">Partner signs up<br>(60s)</div><span class="flow-arrow">→</span><div class="flow-node">Branded QR + storefront generated</div><span class="flow-arrow">→</span><div class="flow-node">QR placed on physical surface</div><span class="flow-arrow">→</span><div class="flow-node">Guest scans, asks what to do next</div><span class="flow-arrow">→</span><div class="flow-node">Concierge recommends feasible, bookable experiences</div><span class="flow-arrow">→</span><div class="flow-node">Guest books on Headout rails</div><span class="flow-arrow">→</span><div class="flow-node">Booking attributed to partner QR</div><span class="flow-arrow">→</span><div class="flow-node">Dashboard updates: GMV + commission</div></div></div>
+<p><strong>The second pillar — brand.</strong> Don't let anyone reduce this to a booking funnel. Every Headout Here QR is a Headout-branded object on a trusted physical surface — a small, measurable billboard. Put thousands of them across a city's hotels, cafés, lounges, and desks and Headout stops being &quot;an app you open&quot; and becomes <strong>ambient</strong>: the brand travelers see, and trust, exactly when they're deciding what to do. Distribution earns the booking; brand earns the next one, direct. Both pillars are first-class.</p>
+<p><strong>Why this is NOT &quot;just another AI concierge&quot; (read this before every judge conversation).</strong> There are already 3–4 concierge/travel-assistant hacks in the room (<a class="section-ref" href="#5-the-field-our-edge">§5</a>), all of them consumer-direct chatbots on a phone. Headout Here is a different <em>kind</em> of thing: it's a <strong>B2B2C distribution channel with a physical surface and attributed economics</strong>. The concierge is one feature inside it. The product is: <em>a new low-CAC channel that pays the owner of the physical surface a cut, and puts the Headout brand on the wall where the question is actually asked.</em> Better chat is a feature; a new channel is a needle-mover. We compete on the second.</p>
+<hr>
+<h1 id="part-b-win"><a class="anchor" href="#part-b-win" aria-label="Link to section">#</a>Part B — Win</h1>
+<h2 id="4-prize-positioning"><a class="anchor" href="#4-prize-positioning" aria-label="Link to section">#</a>4. Prize Positioning</h2>
+<p>You don't pick a category, but you <em>aim</em> the story. Aim here:</p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Category</th><th style="text-align:left">Fit</th><th style="text-align:left">How we tell it</th></tr></thead><tbody><tr><td style="text-align:left">📈 <strong>Move the Needle</strong></td><td style="text-align:left"><strong>PRIMARY</strong></td><td style="text-align:left">New revenue stream + new physical distribution channel + brand-positioning play. &quot;Roadmap rock nobody's moved,&quot; structural bet. This is the home category.</td></tr><tr><td style="text-align:left">⭐ <strong>Five Stars</strong></td><td style="text-align:left"><strong>SECONDARY</strong></td><td style="text-align:left">The guest-facing concierge that gives a genuinely better answer than a brochure rack — multilingual, weather-aware, bookable in two taps. Carried by the live demo.</td></tr><tr><td style="text-align:left">🎟️ Partner Pass</td><td style="text-align:left"><em>Not our category</em></td><td style="text-align:left">This is for <strong>supply partners</strong> (operators who run experiences). Hotels/restaurants are <strong>distribution</strong> partners, not supply. Don't frame it here — that lane belongs to SupplyLens/Benevolent/SP-growth hacks.</td></tr><tr><td style="text-align:left">🗼 Mission Control</td><td style="text-align:left">No</td><td style="text-align:left">Internal systems/tooling — not us.</td></tr><tr><td style="text-align:left">💻 Root Access</td><td style="text-align:left">No</td><td style="text-align:left">Deep-stack/infra — not us.</td></tr></tbody></table></div>
+<p><strong>The strategic one-liner for judges:</strong></p>
+<blockquote><p>&quot;Headout spends to acquire traffic online. Headout Here acquires <em>physical</em> demand at the moment of intent — from any trusted place, not just hotels — and pays that place a commission instead of paying an ad platform. Two wins in one: a new low-CAC channel, and a Headout-branded surface in the real world. Measurable down to GMV <em>and</em> brand impressions per QR.&quot;</p></blockquote>
+<p><strong>The numbers (see <a class="section-ref" href="#14-economics-rome-impressions-conversions-gmv">§14</a>):</strong> base-case Rome maturity models to <strong>~€22M incremental GMV/yr</strong> at a <strong>~7% effective CAC</strong> and <strong>~89M Headout brand impressions/yr</strong> — from a single city. Each partner watches its own slice live on its dashboard.</p>
+<hr>
+<h2 id="5-the-field-our-edge"><a class="anchor" href="#5-the-field-our-edge" aria-label="Link to section">#</a>5. The Field &amp; Our Edge</h2>
+<p><strong>Live on the idea board (concierge / travel-adjacent):</strong></p>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Hack</th><th style="text-align:left">What it is</th><th style="text-align:left">Surface</th><th style="text-align:left">Why we're different</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Headout In-Trip Concierge</strong></td><td style="text-align:left">WhatsApp AI: itinerary + booking + restaurant reservations during a trip</td><td style="text-align:left">Consumer phone (WhatsApp)</td><td style="text-align:left">Direct-to-consumer. No partner, no physical surface, no attributed commission, no new channel.</td></tr><tr><td style="text-align:left"><strong>Travel Copilot</strong></td><td style="text-align:left">Remembers your planning, surfaces what you need during the trip</td><td style="text-align:left">Consumer app</td><td style="text-align:left">Personal assistant, not distribution.</td></tr><tr><td style="text-align:left"><strong>Day of the Experience</strong></td><td style="text-align:left">WhatsApp day-of support + nearby add-ons for <em>already-booked</em> guests</td><td style="text-align:left">Consumer phone</td><td style="text-align:left">Post-booking support; we're pre-booking demand capture at a physical surface.</td></tr><tr><td style="text-align:left"><strong>Disruption Recovery Concierge</strong></td><td style="text-align:left">Rebook alternatives when an SP cancels</td><td style="text-align:left">Internal/recovery flow</td><td style="text-align:left">Salvage funnel; different moment.</td></tr></tbody></table></div>
+<p><strong>Our edge, in one line:</strong></p>
+<blockquote><p>Every other concierge sells to the traveler through the phone they already own. <strong>Headout Here puts the Headout brand on the wall, the table, and the front desk — anywhere there's footfall — and pays whoever owns that surface.</strong> They built better chat. We built a new channel <em>and</em> an everywhere brand.</p></blockquote>
+<p><strong>The trap to avoid:</strong> if a judge mentally files us under &quot;AI concierge,&quot; we lose to whoever has the slickest chat. So the demo and pitch must foreground the <strong>partner dashboard, the commission counter, the QR attribution, and the partner-type switch</strong> — the things no consumer chatbot has. Lead with the channel, not the chat.</p>
+<p><strong>No collision:</strong> nobody has claimed the physical-partner-QR-distribution wedge. It's ours.</p>
+<hr>
+<h1 id="part-c-build"><a class="anchor" href="#part-c-build" aria-label="Link to section">#</a>Part C — Build</h1>
+<h2 id="6-scope-cut-lines"><a class="anchor" href="#6-scope-cut-lines" aria-label="Link to section">#</a>6. Scope &amp; Cut Lines</h2>
+<p><strong>The one loop we build (and nothing else):</strong></p>
+<blockquote><p>Partner signup → generated QR + storefront → guest concierge → recommendation → mock checkout → QR-attributed commission dashboard → partner-type switch.</p></blockquote>
+<p><strong>Build for real:</strong></p>
+<ul><li>Partner setup form</li><li>Generated guest storefront (mobile-first) + working QR code</li><li>AI concierge over the Rome inventory JSON (deterministic filter → AI explanation)</li><li>Mock &quot;book&quot; action that emits a real booking event</li><li>Partner dashboard that updates live (scans, chats, bookings, GMV, commission)</li><li>Place-type switcher (hotel → café → lounge → venue → tourist desk re-skin — proves it's place-agnostic)</li><li>Weather toggle + language switch (both are demo superpowers — cheap to build, huge on stage)</li></ul>
+<p><strong>Fake cleanly (and say so if asked):</strong></p>
+<ul><li>Real payment / real ticket fulfillment / real partner auth</li><li>Real commission settlement / payouts</li><li>Live inventory API / multi-city supply</li><li>Real attribution windows (we hardcode same-session for the demo)</li></ul>
+<p><strong>Explicit non-goals (do not build):</strong></p>
+<ul><li>More than one fully-built place type (the others are <em>re-skins</em> of the same engine, not separate builds)</li><li>More than one city</li><li>Accounts, login, persistence beyond the demo session</li><li>A real maps integration (distance is precomputed in the seed data)</li><li>Real data / BigQuery (stretch only — see below)</li></ul>
+<p><strong>Stretch goals (only if demo-ready by Fri night):</strong> swap a real Rome inventory slice from BigQuery behind the same interface; add a second language voice; print a physical QR stand for the room.</p>
+<hr>
+<h2 id="7-product-spec"><a class="anchor" href="#7-product-spec" aria-label="Link to section">#</a>7. Product Spec</h2>
+<h3 id="screens"><a class="anchor" href="#screens" aria-label="Link to section">#</a>Screens</h3>
+<ol><li><strong>Place Setup</strong> — form: place name, <strong>place type (free-form with examples: hotel, café, hostel, lounge, venue, tourist desk, coworking, short-stay host, mall concierge, gym… — explicitly &quot;any physical place&quot;)</strong>, location, guest profile, languages, brand tone, logo/color, categories to highlight/avoid, commission %. CTA: <strong>&quot;Generate Headout Here.&quot;</strong> The breadth of this one field <em>is</em> the place-agnostic promise — make it visible.</li><li><strong>Generated Output</strong> — QR code (downloadable), storefront preview (phone frame), dashboard link, embed snippet. The &quot;wow, in 60 seconds&quot; beat.</li><li><strong>Guest Storefront (mobile-first)</strong> — <strong>Headout-forward co-branded header: &quot;{Place name} × Headout&quot;</strong> (Headout brand prominent — this is the brand pillar in pixels, not a tiny footer), an &quot;Ask the concierge&quot; input, and quick chips: <code>Today</code> · <code>Near me</code> · <code>Kid-friendly</code> · <code>Rainy day</code> · <code>Under 2 hrs</code> · <code>Tonight</code>.</li><li><strong>Concierge + Recommendations</strong> — chat thread; each recommendation card shows the experience + <strong>why it fits</strong> (e.g. <code>Indoor ✓ · 700m ✓ · next slot 15:30 ✓ · family-friendly ✓</code>) + price + &quot;Book.&quot;</li><li><strong>Mock Checkout → Confirmation</strong> — handoff screen → ticket confirmation → &quot;{Place} earns €X.XX on this booking&quot; (e.g. Casa Aurelia earns €1.92).</li><li><strong>Partner Dashboard (the place's live scoreboard)</strong> — three headline tiles, the three things every place cares about: <strong>Impressions</strong> (QR brand reach + measured scans — the reach they're giving Headout), <strong>Conversions</strong> (scan → chat → booking, with the booking rate), and <strong>Commission</strong> (earned to date + this month, with the next payout). Below: GMV, top experiences, top guest questions, language mix, and <strong>performance by QR surface</strong> (which placement earns most). Numbers animate up live the instant a booking lands. This is the per-place, real-time version of the model in <a class="section-ref" href="#14-economics-rome-impressions-conversions-gmv">§14</a> — every assumption there is a tile here.</li><li><strong>Place-Type Switcher</strong> — toggle across place types (hotel → café → lounge → venue → tourist desk); header, copy, default chips, and CTA re-skin from the same config. Same Headout brand throughout — only the place context changes.</li></ol>
+<h3 id="concierge-behavior-the-golden-rule"><a class="anchor" href="#concierge-behavior-the-golden-rule" aria-label="Link to section">#</a>Concierge behavior — the golden rule</h3>
+<p><strong>Deterministic filters do the thinking; the LLM does the talking.</strong></p>
+<ul><li><strong>Filters (code, not AI):</strong> distance, indoor/outdoor vs. weather, duration vs. guest's time window, opening hours / next slot, kid/family/accessibility flags, <code>available_today</code>, category include/exclude.</li><li><strong>AI (one grounded call):</strong> takes the <em>filtered candidate set only</em>, ranks/selects 2–3, writes the conversational reply + the &quot;why it fits&quot; line, in the guest's language. <strong>The AI never invents inventory and never does math.</strong> This kills the #1 demo-killer: confidently recommending something that's closed, far, or sold out.</li></ul>
+<hr>
+<h2 id="8-technical-architecture"><a class="anchor" href="#8-technical-architecture" aria-label="Link to section">#</a>8. Technical Architecture</h2>
+<p><strong>Stack:</strong> Replit · Next.js (App Router) single app · API routes for the concierge + booking · Tailwind for fast mobile UI · <code>qrcode</code> for QR · Claude (via provided keys) for the concierge call. No external DB needed — seed JSON + in-memory session ledger is enough for the demo (optionally Replit DB / a JSON file for persistence).</p>
+<div class="diagram-shell flow-diagram"><div class="flow-row"><div class="flow-node">Partner config (JSON)</div><span class="flow-arrow">→</span><div class="flow-node">Inventory layer (Rome JSON)</div><span class="flow-arrow">→</span><div class="flow-node">Deterministic rules engine<br>distance · weather · time · constraints</div><span class="flow-arrow">→</span><div class="flow-node">AI concierge (Claude)<br>rank + explain + language</div><span class="flow-arrow">→</span><div class="flow-node">Mock checkout</div><span class="flow-arrow">→</span><div class="flow-node">Attribution ledger (in-memory)</div><span class="flow-arrow">→</span><div class="flow-node">Partner dashboard</div></div><div class="flow-row"><div class="flow-node">Weather toggle</div><span class="flow-arrow">→</span><div class="flow-node">Deterministic rules engine<br>distance · weather · time · constraints</div></div><div class="flow-row"><div class="flow-node">Language switch</div><span class="flow-arrow">→</span><div class="flow-node">AI concierge (Claude)<br>rank + explain + language</div></div></div>
+<p><strong>Data model (4 objects):</strong></p>
+<ul><li><code>place</code> — config (any place type; free-form <code>type</code>) that drives branding + defaults</li><li><code>experience</code> — inventory item with all the fields the filters need (precomputed <code>distance_m</code> per partner)</li><li><code>booking</code> — emitted on checkout, carries the attribution token</li><li><code>attribution</code> / ledger — aggregates bookings → dashboard metrics</li></ul>
+<p><strong>Attribution:</strong> storefront URL carries <code>?place=casa-aurelia&amp;surface=lobby</code>. That token rides through the session into the <code>booking</code> event → dashboard credits the place + surface. (Hardcode same-session; don't build real windows.)</p>
+<p><strong>Concierge API contract (keep it this simple):</strong> <code>POST /api/concierge { partnerId, query, lang, weather }</code> → server runs filters → sends candidate set + guest query to Claude with a grounding prompt → returns <code>{ reply, recommendations[] }</code>. Recommendations reference only candidate IDs.</p>
+<p><strong>Demo levers to wire early:</strong> the <strong>weather toggle</strong> (sunny↔rain flips indoor filtering live) and the <strong>language switch</strong> are the two cheapest, highest-impact things on stage. Build them in.</p>
+<hr>
+<h2 id="9-seed-data-rome"><a class="anchor" href="#9-seed-data-rome" aria-label="Link to section">#</a>9. Seed Data (Rome)</h2>
+<p>Build <strong>30–50</strong> experiences for realism; here's the representative core (expand around it). All distances are from Casa Aurelia (near the Vatican).</p>
+<pre class="code-block"><code class="language-json">// places.json — type is free-form; ANY physical place works.
+// 3 varied examples so the place-type switcher has real targets.
+[
+  {
+    &quot;place_id&quot;: &quot;casa-aurelia-rome&quot;, &quot;name&quot;: &quot;Casa Aurelia Rome&quot;, &quot;type&quot;: &quot;hotel&quot;,
+    &quot;address&quot;: &quot;Via Germanico, Prati, Rome&quot;, &quot;lat&quot;: 41.9070, &quot;lng&quot;: 12.4560,
+    &quot;guest_profile&quot;: &quot;international families and couples&quot;,
+    &quot;languages&quot;: [&quot;English&quot;,&quot;Japanese&quot;,&quot;Hindi&quot;],
+    &quot;brand_tone&quot;: &quot;warm, premium, calm&quot;, &quot;brand_color&quot;: &quot;#1B4B5A&quot;,
+    &quot;highlight&quot;: [&quot;museum&quot;,&quot;family&quot;,&quot;food&quot;], &quot;avoid&quot;: [&quot;nightlife&quot;],
+    &quot;default_chips&quot;: [&quot;Today&quot;,&quot;Near me&quot;,&quot;Kid-friendly&quot;,&quot;Rainy day&quot;],
+    &quot;commission_rate&quot;: 0.08
+  },
+  {
+    &quot;place_id&quot;: &quot;caffe-prati&quot;, &quot;name&quot;: &quot;Caffè Prati&quot;, &quot;type&quot;: &quot;cafe&quot;,
+    &quot;address&quot;: &quot;Via Cola di Rienzo, Prati, Rome&quot;, &quot;lat&quot;: 41.9075, &quot;lng&quot;: 12.4640,
+    &quot;guest_profile&quot;: &quot;couples and friends, post-coffee planning&quot;,
+    &quot;languages&quot;: [&quot;English&quot;,&quot;Italian&quot;],
+    &quot;brand_tone&quot;: &quot;casual, lively, local&quot;, &quot;brand_color&quot;: &quot;#B5651D&quot;,
+    &quot;highlight&quot;: [&quot;food&quot;,&quot;walking-tour&quot;,&quot;nightlife&quot;], &quot;avoid&quot;: [],
+    &quot;default_chips&quot;: [&quot;Tonight&quot;,&quot;After this&quot;,&quot;Near me&quot;,&quot;Under 2 hrs&quot;],
+    &quot;commission_rate&quot;: 0.06
+  },
+  {
+    &quot;place_id&quot;: &quot;prati-visitor-desk&quot;, &quot;name&quot;: &quot;Prati Visitor Desk&quot;, &quot;type&quot;: &quot;tourist-desk&quot;,
+    &quot;address&quot;: &quot;Piazza del Risorgimento, Rome&quot;, &quot;lat&quot;: 41.9069, &quot;lng&quot;: 12.4570,
+    &quot;guest_profile&quot;: &quot;walk-up tourists, all languages&quot;,
+    &quot;languages&quot;: [&quot;English&quot;,&quot;Japanese&quot;,&quot;Hindi&quot;,&quot;Italian&quot;,&quot;Spanish&quot;],
+    &quot;brand_tone&quot;: &quot;helpful, neutral, multilingual&quot;, &quot;brand_color&quot;: &quot;#2E7D32&quot;,
+    &quot;highlight&quot;: [&quot;museum&quot;,&quot;historical&quot;,&quot;family&quot;], &quot;avoid&quot;: [],
+    &quot;default_chips&quot;: [&quot;Today&quot;,&quot;Skip the line&quot;,&quot;Kid-friendly&quot;,&quot;In my language&quot;],
+    &quot;commission_rate&quot;: 0.08
+  }
+]</code></pre>
+<pre class="code-block"><code class="language-json">// inventory.rome.json (excerpt — aim for 30-50)
+[
+  {&quot;id&quot;:&quot;vatican-museums&quot;,&quot;title&quot;:&quot;Vatican Museums &amp; Sistine Chapel Guided Tour&quot;,&quot;category&quot;:&quot;museum&quot;,&quot;indoor&quot;:true,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:150,&quot;walking&quot;:&quot;medium&quot;,&quot;distance_m&quot;:650,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;15:30&quot;,&quot;languages&quot;:[&quot;English&quot;,&quot;Japanese&quot;,&quot;Hindi&quot;],&quot;price_eur&quot;:58},
+  {&quot;id&quot;:&quot;leonardo-experience&quot;,&quot;title&quot;:&quot;Leonardo da Vinci Interactive Experience&quot;,&quot;category&quot;:&quot;museum&quot;,&quot;indoor&quot;:true,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:60,&quot;walking&quot;:&quot;low&quot;,&quot;distance_m&quot;:900,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;14:00&quot;,&quot;languages&quot;:[&quot;English&quot;,&quot;Japanese&quot;],&quot;price_eur&quot;:12},
+  {&quot;id&quot;:&quot;pizza-class&quot;,&quot;title&quot;:&quot;Family Roman Pizza-Making Class&quot;,&quot;category&quot;:&quot;food-class&quot;,&quot;indoor&quot;:true,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:120,&quot;walking&quot;:&quot;low&quot;,&quot;distance_m&quot;:1100,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;16:00&quot;,&quot;languages&quot;:[&quot;English&quot;],&quot;price_eur&quot;:70},
+  {&quot;id&quot;:&quot;gladiator-school&quot;,&quot;title&quot;:&quot;Gladiator School for Kids&quot;,&quot;category&quot;:&quot;class&quot;,&quot;indoor&quot;:true,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:120,&quot;walking&quot;:&quot;low&quot;,&quot;distance_m&quot;:3200,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;15:00&quot;,&quot;languages&quot;:[&quot;English&quot;],&quot;price_eur&quot;:55},
+  {&quot;id&quot;:&quot;castel-sant-angelo&quot;,&quot;title&quot;:&quot;Castel Sant'Angelo Skip-the-Line&quot;,&quot;category&quot;:&quot;historical&quot;,&quot;indoor&quot;:true,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:90,&quot;walking&quot;:&quot;medium&quot;,&quot;distance_m&quot;:1200,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;15:00&quot;,&quot;languages&quot;:[&quot;English&quot;,&quot;Japanese&quot;,&quot;Hindi&quot;],&quot;price_eur&quot;:25},
+  {&quot;id&quot;:&quot;colosseum&quot;,&quot;title&quot;:&quot;Colosseum, Roman Forum &amp; Palatine Hill&quot;,&quot;category&quot;:&quot;historical&quot;,&quot;indoor&quot;:false,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:180,&quot;walking&quot;:&quot;high&quot;,&quot;distance_m&quot;:4200,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;15:30&quot;,&quot;languages&quot;:[&quot;English&quot;,&quot;Japanese&quot;,&quot;Hindi&quot;],&quot;price_eur&quot;:64},
+  {&quot;id&quot;:&quot;borghese&quot;,&quot;title&quot;:&quot;Borghese Gallery Skip-the-Line&quot;,&quot;category&quot;:&quot;museum&quot;,&quot;indoor&quot;:true,&quot;kid_friendly&quot;:false,&quot;duration_min&quot;:120,&quot;walking&quot;:&quot;low&quot;,&quot;distance_m&quot;:5200,&quot;available_today&quot;:false,&quot;next_slot&quot;:null,&quot;languages&quot;:[&quot;English&quot;],&quot;price_eur&quot;:45},
+  {&quot;id&quot;:&quot;trastevere-food&quot;,&quot;title&quot;:&quot;Trastevere Evening Food Tour&quot;,&quot;category&quot;:&quot;food&quot;,&quot;indoor&quot;:false,&quot;kid_friendly&quot;:false,&quot;duration_min&quot;:180,&quot;walking&quot;:&quot;medium&quot;,&quot;distance_m&quot;:4800,&quot;available_today&quot;:true,&quot;next_slot&quot;:&quot;19:30&quot;,&quot;languages&quot;:[&quot;English&quot;],&quot;price_eur&quot;:89},
+  {&quot;id&quot;:&quot;tivoli-daytrip&quot;,&quot;title&quot;:&quot;Tivoli Day Trip: Villa d'Este &amp; Hadrian's Villa&quot;,&quot;category&quot;:&quot;daytrip&quot;,&quot;indoor&quot;:false,&quot;kid_friendly&quot;:true,&quot;duration_min&quot;:480,&quot;walking&quot;:&quot;high&quot;,&quot;distance_m&quot;:30000,&quot;available_today&quot;:false,&quot;next_slot&quot;:null,&quot;languages&quot;:[&quot;English&quot;],&quot;price_eur&quot;:110}
+]</code></pre>
+<pre class="code-block"><code class="language-json">// booking event (emitted on checkout)
+{&quot;booking_id&quot;:&quot;HH-1007&quot;,&quot;place_id&quot;:&quot;casa-aurelia-rome&quot;,&quot;experience_id&quot;:&quot;leonardo-experience&quot;,&quot;surface&quot;:&quot;lobby_qr&quot;,&quot;gmv_eur&quot;:24,&quot;commission_eur&quot;:1.92,&quot;guest_language&quot;:&quot;Japanese&quot;,&quot;ts&quot;:&quot;2026-06-19T14:05:00Z&quot;}</code></pre>
+<p><strong>Believable dashboard numbers (pre-load these so it never looks empty):</strong></p>
+<ul><li>Scans <strong>84</strong> · Chats <strong>31</strong> · Recs shown <strong>96</strong> · Bookings <strong>7</strong> · Scan→book <strong>8.3%</strong></li><li>GMV <strong>€812</strong> · Commission <strong>€64.96</strong> · Top experience: Vatican Museums</li><li>Language mix: EN 60% / JP 25% / HI 15% · Top question: &quot;rainy afternoon with kids&quot;</li></ul>
+<p><em>(The &quot;rainy + 6-year-old&quot; query above is engineered to return Leonardo Experience, Pizza Class, Gladiator School — all indoor, kid-friendly, nearby, available — and to </em>exclude<em> Colosseum/Trastevere/Tivoli/Borghese. Verify the filters produce exactly this before the demo.)</em></p>
+<hr>
+<h2 id="10-the-42-hour-plan"><a class="anchor" href="#10-the-42-hour-plan" aria-label="Link to section">#</a>10. The 42-Hour Plan</h2>
+<p><strong>Three lanes</strong> (collapse if anyone's pulled away):</p>
+<ul><li><strong>Builder A — Frontend/Design:</strong> setup form, storefront, dashboard, mobile polish, QR poster asset.</li><li><strong>Builder B — Backend/Data:</strong> seed JSON, rules engine, booking simulator, attribution ledger, commission, weather/lang toggles.</li><li><strong>Builder C — AI/Demo/Story:</strong> concierge prompt + grounding, demo script, trailer, deck, Q&amp;A, pitch.</li></ul>
+<blockquote><p>Fri afternoon, everyone converges to integrate. Lane C owns the deliverables that get graded (demo + trailer + pitch) — protect that time.</p></blockquote>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">When (IST)</th><th style="text-align:left">Goal</th><th style="text-align:left">Milestone</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Thu 6 PM – midnight</strong></td><td style="text-align:left">Repo on Replit; data schema + Rome seed (30–50 items); 3 screens scaffolded; partner config → generated route; routing.</td><td style="text-align:left"><strong>Clickable shell on seed data.</strong></td></tr><tr><td style="text-align:left"><em>Thu midnight – ~7 AM</em></td><td style="text-align:left">Sleep (real).</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left"><strong>Fri ~9 AM – 1 PM</strong></td><td style="text-align:left">Guest storefront + concierge (filters + one AI call) + QR generation + attribution token.</td><td style="text-align:left"><strong>Scan → ask → grounded recommendation works end-to-end.</strong></td></tr><tr><td style="text-align:left"><strong>Fri 1 PM – 7 PM</strong></td><td style="text-align:left">Mock checkout + booking event + attribution ledger + dashboard with live-updating GMV/commission. <em>(Everyone integrates.)</em></td><td style="text-align:left"><strong>Full loop closes; dashboard reacts to a booking.</strong></td></tr><tr><td style="text-align:left"><strong>Fri 7 PM – ~1 AM</strong></td><td style="text-align:left">Polish mobile UI; wire weather toggle + language switch; build place-type switcher (the reveal); Headout-forward co-brand treatment; QR poster.</td><td style="text-align:left"><strong>Demo-quality build; place-type reveal works.</strong></td></tr><tr><td style="text-align:left"><em>Fri ~1 AM – 7 AM</em></td><td style="text-align:left">Sleep / staggered.</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left"><strong>Sat 9 AM – 10:30 AM</strong></td><td style="text-align:left">Record the 2–3 min demo; cut the trailer (fal); final dashboard numbers.</td><td style="text-align:left"><strong>Demo recording + trailer in the can.</strong></td></tr><tr><td style="text-align:left"><strong>Sat 10:30 AM — CODE FREEZE</strong></td><td style="text-align:left">Stop building. Rehearse live 2–3×; Q&amp;A drill; load backup recording.</td><td style="text-align:left"><strong>Submitted + rehearsed.</strong></td></tr><tr><td style="text-align:left"><strong>Sat 12:00 PM</strong></td><td style="text-align:left">Window closes.</td><td style="text-align:left">—</td></tr></tbody></table></div>
+<p><strong>Rule:</strong> if it's not in the demo, don't build it. Protect the freeze.</p>
+<hr>
+<h1 id="part-d-sell"><a class="anchor" href="#part-d-sell" aria-label="Link to section">#</a>Part D — Sell</h1>
+<h2 id="11-live-demo-script-2-3-min"><a class="anchor" href="#11-live-demo-script-2-3-min" aria-label="Link to section">#</a>11. Live Demo Script (2–3 min)</h2>
+<p><strong>Hook (15s):</strong> &quot;Every day, travelers ask 'what should we do next?' at hotel desks, dinner tables, lounges, and venues. Those places have trust and footfall — but no inventory, no checkout, no fulfillment. Headout does. Watch us connect them.&quot;</p>
+<p><strong>Act 1 — Create the place (20s):</strong> On Headout Here setup, point at the <strong>place-type field — &quot;this works for any physical place&quot;</strong> — and pick one: <em>hotel · Rome near Vatican · families &amp; couples · JP/EN/HI · warm &amp; premium · 8%</em> → <strong>Generate</strong>. Out comes a Headout-branded QR, a co-branded storefront, and a dashboard. &quot;Sixty seconds. No engineering. And notice it's a <em>Headout</em> QR — that's the brand showing up in the real world.&quot;</p>
+<p><strong>Act 2 — Guest scans (45s):</strong> Put the QR on screen; <strong>a judge scans it</strong> with their own phone. Flip the on-stage <strong>weather toggle to &quot;raining.&quot;</strong> Guest asks (in Japanese if you've got it): <em>&quot;It's raining and I have a 6-year-old — what can we do this afternoon near the hotel?&quot;</em> Concierge replies in-language with 3 cards: Leonardo Experience, Pizza Class, Gladiator School — each showing <code>Indoor ✓ · nearby ✓ · next slot ✓ · family ✓</code>. &quot;Notice what it didn't say: the Colosseum's outdoors, Tivoli's a day trip. The rules filter; the AI explains.&quot;</p>
+<p><strong>Act 3 — Book + the partner dashboard (40s):</strong> Guest books the Leonardo Experience → confirmation (&quot;Casa Aurelia earns €1.92&quot;). Now cut to <strong>the place's own dashboard — this is what every partner gets.</strong> Three live tiles: <strong>Impressions</strong> (the reach they're giving Headout), <strong>Conversions</strong> (scan → chat → booking, rate ticking), and <strong>Commission</strong> (earned this month + next payout). The booking we just made lands live: bookings 7→8, commission animates up, by-surface breakdown shifts. &quot;Every place sees exactly what its QR earns — impressions, conversions, commission, broken down by surface. The hotel used to answer this question for free; now it's a tracked, paid booking.&quot;</p>
+<p><strong>Act 4 — The reveal (25s):</strong> Flip the place type <strong>hotel → café → tourist desk → venue</strong> in a few clicks. Same engine, same Headout brand, new context each time: a café's &quot;what's good tonight?&quot;, a desk's &quot;in my language,&quot; a venue's &quot;after the show.&quot; &quot;Hotels were never the point. <em>Any</em> trusted place becomes a Headout storefront — and every one is another Headout-branded surface in the city.&quot;</p>
+<p><strong>Close (10s):</strong> &quot;Headout Here is a new physical distribution channel and an offline brand surface — Headout, right where travelers ask what to do next.&quot;</p>
+<hr>
+<h2 id="12-trailer-plan-30-45s-hype-reel"><a class="anchor" href="#12-trailer-plan-30-45s-hype-reel" aria-label="Link to section">#</a>12. Trailer Plan (~30–45s hype reel)</h2>
+<p>A required, graded deliverable — make it cinematic, not a screen recording.</p>
+<p><strong>Storyboard:</strong></p>
+<ol><li>Tourist family at a hotel desk, slightly lost: <em>&quot;...so what should we do today?&quot;</em> (fal-generated or stock b-roll)</li><li>Tight on a lobby QR stand: &quot;Need plans nearby? Scan for Headout picks from Casa Aurelia.&quot;</li><li>Phone scans → branded storefront blooms.</li><li>Chat bubble in Japanese → 3 recommendation cards.</li><li>&quot;Booked.&quot; → ticket confirmation.</li><li>The partner's dashboard: impressions, conversions, and commission all ticking up.</li><li>Fast montage of Headout-branded QRs lighting up across a city — hotel lobby → café table → hostel wall → lounge → venue screen → tourist desk → coworking → transit hub (place-agnostic breadth + the brand-everywhere money shot).</li><li>Pull back to a map of the city dotted with glowing Headout pins, then logo + tagline card: <strong>&quot;Headout Here — wherever travelers ask what to do next.&quot;</strong></li></ol>
+<p><strong>VO script (≈35s):</strong> &quot;Travelers don't plan in an app. They decide in the moment — at the desk, the café, the lounge, the venue. Until now, those moments were lost. Headout Here turns <em>any</em> trusted place into a Headout storefront. Guests scan, ask, and book. The place earns. And a Headout-branded QR sits on every surface — so wherever people ask what to do next, Headout is already there. <strong>Headout Here.</strong>&quot;</p>
+<p><strong>Tooling:</strong> fal for generated b-roll / destination shots; ElevenLabs for VO (request access); the live build for the UI shots; a deck tool (Gamma/Pitch) for title cards. Keep cuts fast and on the beat.</p>
+<p><strong>Taglines (pick one):</strong> &quot;Wherever travelers ask what to do next.&quot; · &quot;Turn any trusted place into a Headout storefront.&quot; · &quot;From lobby question to confirmed booking.&quot;</p>
+<hr>
+<h2 id="13-pitch-q-a-prep"><a class="anchor" href="#13-pitch-q-a-prep" aria-label="Link to section">#</a>13. Pitch &amp; Q&amp;A Prep</h2>
+<p><strong>The sharp pitch (memorize):</strong></p>
+<blockquote><p>&quot;Headout has inventory, fulfillment, payments, and support. Every physical place with footfall — hotels, cafés, lounges, venues, tourist desks — has guests asking what to do next. Headout Here connects them: any place launches a Headout-branded QR concierge in minutes, earns a cut from QR-attributed bookings, and every booking runs on Headout rails. It's two plays in one — a new physical distribution channel, and a brand that shows up everywhere travelers ask what to do next.&quot;</p></blockquote>
+<p><strong>Q&amp;A — crisp rebuttals:</strong></p>
+<ul><li><strong>&quot;Isn't this just affiliate links?&quot;</strong> No. Affiliate links are static URLs. This is a branded concierge with curated inventory, feasibility checks, fulfillment, support, attribution, and a rev-share dashboard tied to a physical surface.</li><li><strong>&quot;Won't it cannibalize Headout direct?&quot;</strong> These are <em>incremental</em> contexts — a lobby scan, a table-tent scan, a lounge delay. The guest wasn't opening Headout first. It's net-new demand, not the same traffic.</li><li><strong>&quot;Why would partners use this over Viator/GetYourGuide?&quot;</strong> Five-minute launch, multilingual concierge, local context, partner-branded QR, attributed commission, and a dashboard. We win by being lighter and more partner-native.</li><li><strong>&quot;What's the moat?&quot;</strong> Not the generated page — Headout's inventory, fulfillment, supplier ops, payments, support, plus the physical distribution data: over time we learn which surfaces convert which experiences.</li><li><strong>&quot;Why does Headout care about the brand angle?&quot;</strong> Because paid online traffic is rented and getting pricier. Thousands of Headout-branded QRs on trusted local surfaces are <em>owned</em>, ambient brand presence — measurable in scans and impressions, and they compound: a guest who books via a café QR today opens Headout direct next trip.</li><li><strong>&quot;Why not just start with hotels?&quot;</strong> Hotels are a great first beachhead for <em>sales</em>, but the product is place-agnostic by design — the same engine serves a café, a desk, or a venue with zero rebuild. Narrowing the <em>product</em> to hotels would throw away most of the channel and most of the brand surface.</li><li><strong>&quot;Is the AI even necessary?&quot;</strong> For conversation and explanation across messy context (language, weather, constraints) — yes. For feasibility and math — no, deterministic rules handle that. That split is a feature.</li><li><strong>&quot;Buildable in 42h?&quot;</strong> It's built — one city, mock checkout, one polished loop, with the partner-type switch proving it generalizes.</li><li><strong>&quot;Isn't this just another AI concierge?&quot;</strong> (the one that matters) No — the others are consumer chatbots. This is a distribution channel that pays the partner who owns the physical surface. Different buyer, different economics, different moat. <em>(Then point at the dashboard + commission counter.)</em></li></ul>
+<hr>
+<h1 id="appendix"><a class="anchor" href="#appendix" aria-label="Link to section">#</a>Appendix</h1>
+<h2 id="14-economics-rome-impressions-conversions-gmv"><a class="anchor" href="#14-economics-rome-impressions-conversions-gmv" aria-label="Link to section">#</a>14. Economics (Rome) — Impressions, Conversions &amp; GMV</h2>
+<blockquote><p><strong>Read this as a model, not a forecast.</strong> Every input is a <em>labeled assumption</em> — the funnel structure is the point. Swap in real figures from BigQuery (AOV, take rate) and the pilot (scan rate, conversion) as they land; validate with the Data mentors (Mrinalini, Harshita). <strong>Every row below is also a live tile on the partner's own dashboard (<a class="section-ref" href="#7-product-spec">§7</a>)</strong> — impressions, conversions, commission — so each place sees its own economics in real time.</p></blockquote>
+<h3 id="assumptions-base-case"><a class="anchor" href="#assumptions-base-case" aria-label="Link to section">#</a>Assumptions (base case)</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Lever</th><th style="text-align:left">Assumption</th><th style="text-align:left">Why / range</th></tr></thead><tbody><tr><td style="text-align:left">Headout take rate</td><td style="text-align:left">20% of GMV</td><td style="text-align:left">Marketplace blended; replace with the real internal number. Range 12–25%.</td></tr><tr><td style="text-align:left">Partner commission</td><td style="text-align:left">Hotels 8% · cafés/other 6% of GMV</td><td style="text-align:left">Per <a class="section-ref" href="#15-gtm-compressed">§15</a> GTM commission table.</td></tr><tr><td style="text-align:left">AOV (GMV/booking)</td><td style="text-align:left">Hotels €115 · cafés/other €70</td><td style="text-align:left">Rome experiences skew €25–110; hotels index higher (museums, day trips).</td></tr><tr><td style="text-align:left">Scan rate</td><td style="text-align:left">6–8% of QR impressions</td><td style="text-align:left">Physical-signage scans run ~2–12%; a relevant concierge offer sits mid-range.</td></tr><tr><td style="text-align:left">Scan→booking</td><td style="text-align:left">Hotels 8% · cafés/other 4%</td><td style="text-align:left">Hotels = higher intent + dwell time; cafés = volume, lower intent.</td></tr></tbody></table></div>
+<p><em>&quot;Impressions&quot; = QR brand reach (estimated from footfall); &quot;scans&quot; = measured. Both feed the brand pillar and both appear on the dashboard.</em></p>
+<h3 id="the-funnel-per-place-per-month"><a class="anchor" href="#the-funnel-per-place-per-month" aria-label="Link to section">#</a>The funnel — per place, per month</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Step</th><th style="text-align:right">Hotel</th><th style="text-align:right">Café / other</th></tr></thead><tbody><tr><td style="text-align:left">QR <strong>brand impressions</strong> (reach)</td><td style="text-align:right">2,500</td><td style="text-align:right">4,000</td></tr><tr><td style="text-align:left">Scans (measured · 6–8%)</td><td style="text-align:right">200</td><td style="text-align:right">240</td></tr><tr><td style="text-align:left">Chats started (~35% of scans)</td><td style="text-align:right">70</td><td style="text-align:right">84</td></tr><tr><td style="text-align:left"><strong>Bookings</strong> (scan→book)</td><td style="text-align:right">16</td><td style="text-align:right">10</td></tr><tr><td style="text-align:left">AOV</td><td style="text-align:right">€115</td><td style="text-align:right">€70</td></tr><tr><td style="text-align:left"><strong>GMV</strong></td><td style="text-align:right">€1,840</td><td style="text-align:right">€700</td></tr><tr><td style="text-align:left">Partner commission</td><td style="text-align:right">€147 (8%)</td><td style="text-align:right">€42 (6%)</td></tr><tr><td style="text-align:left"><strong>Headout net</strong> (take − commission)</td><td style="text-align:right">€221</td><td style="text-align:right">€98</td></tr></tbody></table></div>
+<p><em>(The <a class="section-ref" href="#9-seed-data-rome">§9</a> demo dashboard — 84 scans / 7 bookings / €812 — is an early ~2-week snapshot, consistent with the hotel base case.)</em></p>
+<h3 id="scaling-rome"><a class="anchor" href="#scaling-rome" aria-label="Link to section">#</a>Scaling Rome</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left">Scenario</th><th style="text-align:right">Active places</th><th style="text-align:right">GMV/yr</th><th style="text-align:right">Partner payouts/yr</th><th style="text-align:right"><strong>Headout net/yr</strong></th><th style="text-align:right">Brand impressions/yr</th><th style="text-align:right">Bookings/yr</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Pilot</strong> (Phase 1)</td><td style="text-align:right">15 hotels</td><td style="text-align:right">€0.33M</td><td style="text-align:right">€26k</td><td style="text-align:right">€40k</td><td style="text-align:right">0.45M</td><td style="text-align:right">2.9k</td></tr><tr><td style="text-align:left"><strong>Rome maturity</strong> (Phase 3)</td><td style="text-align:right">~2,000 (400 hotel + 1,600 café/other)</td><td style="text-align:right"><strong>€22M</strong></td><td style="text-align:right">€1.5M</td><td style="text-align:right"><strong>€2.9M</strong></td><td style="text-align:right"><strong>89M</strong></td><td style="text-align:right">269k</td></tr></tbody></table></div>
+<h3 id="the-two-payoffs-one-per-pillar"><a class="anchor" href="#the-two-payoffs-one-per-pillar" aria-label="Link to section">#</a>The two payoffs (one per pillar)</h3>
+<ul><li><strong>Distribution</strong> — ~<strong>€22M incremental GMV/yr</strong> in Rome at a <strong>~6.8% effective CAC</strong> (commission ÷ GMV): about a third of typical paid-performance CAC (15–25%), and it's <em>incremental</em> demand. ~€1.5M/yr flows to local places (the partner-love story — visible live on their dashboards).</li><li><strong>Brand</strong> — ~<strong>89M Headout-branded impressions/yr</strong> in Rome. At an €8 CPM that's <strong>~€0.7M/yr of equivalent media — owned, not rented</strong> — plus the compounding direct-return effect (a guest who books via a QR opens Headout direct next trip).</li></ul>
+<h3 id="sensitivity-rome-maturity-gmv"><a class="anchor" href="#sensitivity-rome-maturity-gmv" aria-label="Link to section">#</a>Sensitivity (Rome maturity GMV)</h3>
+<div class="table-wrap"><table><thead><tr><th style="text-align:left"></th><th style="text-align:right">Scan rate</th><th style="text-align:right">Scan→book</th><th style="text-align:right">GMV/yr</th></tr></thead><tbody><tr><td style="text-align:left">Conservative</td><td style="text-align:right">5%</td><td style="text-align:right">4–5%</td><td style="text-align:right">~€11M</td></tr><tr><td style="text-align:left"><strong>Base</strong></td><td style="text-align:right">6–8%</td><td style="text-align:right">4–8%</td><td style="text-align:right"><strong>~€22M</strong></td></tr><tr><td style="text-align:left">Aggressive</td><td style="text-align:right">10–12%</td><td style="text-align:right">8–10%</td><td style="text-align:right">~€44M</td></tr></tbody></table></div>
+<p>Three numbers move everything — <strong>scan rate, scan→booking, AOV</strong> — and they're exactly what the 15-place pilot exists to measure. The rest is arithmetic.</p>
+<h3 id="multi-city-disciplined"><a class="anchor" href="#multi-city-disciplined" aria-label="Link to section">#</a>Multi-city (disciplined)</h3>
+<p>Rome is <strong>one of 100+ Headout destinations.</strong> Prove the Rome unit economics, replicate at even a fraction per city, and Headout Here is a <strong>nine-figure GMV channel</strong> with a permanent offline brand surface. The pilot's only job: turn the five assumptions above into five measured numbers.</p>
+<p><strong>Stage hook:</strong> <em>&quot;15 hotels is a rounding error. Rome alone models to ~€22M incremental GMV and ~90M Headout impressions a year — and Rome is one of a hundred cities.&quot;</em></p>
+<hr>
+<h2 id="15-gtm-compressed"><a class="anchor" href="#15-gtm-compressed" aria-label="Link to section">#</a>15. GTM (Compressed)</h2>
+<p><strong>Frame:</strong> launch <strong>city-by-city as a physical partner network</strong>, not a generic portal. Prove that physical QR surfaces produce incremental, attributable bookings.</p>
+<p><strong>Beachhead: Rome</strong> — dense tourist geography, strong Headout inventory fit (Vatican/Colosseum/food/museums), high &quot;what now?&quot; behavior, easy demo. Backups: Dubai, Paris, London, Barcelona.</p>
+<p><strong>The universe is any high-footfall physical place</strong> with a &quot;what's next?&quot; moment — hotels, cafés, restaurants, hostels, short-stay hosts, lounges, venues, tourist desks, coworking, malls, transit hubs. <strong>Sequencing for sales</strong> (not a product limit): Hotels (Tier 1 pilot — richest intent + dwell time) → Restaurants/cafés → Lounges → Venues/theatres → Tourist desks. Buyers: GM/front-office, owner/operator, lounge operator/airline ancillary, venue partnerships lead, visitor-center manager.</p>
+<p><strong>Commission (pilot):</strong> Hotels 8–10% · Restaurants 5–8% · Lounges negotiated · Venues rev-share/sponsor · Tourist desks 5–10%. Attribution: same-session default, 7 days for hotel pre-arrival/room QR, same-day for the rest; partner earns only on completed bookings.</p>
+<p><strong>North star:</strong> <strong>incremental QR-attributed GMV from physical surfaces.</strong> Funnel: places signed → QR surfaces live → scans/QR → scan-to-chat → scan-to-booking → GMV/scan → commission earned → place retention. <strong>Brand metric (second scoreboard):</strong> QR brand impressions + scans = measurable offline reach; track direct-Headout return visits seeded by a QR.</p>
+<p><strong>Phases:</strong> (0) internal validation: Rome inventory + attribution + flows. (1) hotel pilot: 10–20 Rome hotels near Vatican/Colosseum. (2) surface expansion: restaurants, a lounge, a venue, a tourist desk. (3) city playbook: package for Dubai/London/Paris/Barcelona.</p>
+<p><strong>Guardrails:</strong> cancellation/refund rate, support-contact rate, bad-recommendation reports, &quot;inventory unavailable after recommendation,&quot; low-quality QR placements.</p>
+<hr>
+<h2 id="16-open-decisions-status"><a class="anchor" href="#16-open-decisions-status" aria-label="Link to section">#</a>16. Open Decisions &amp; Status</h2>
+<p><strong>Locked:</strong></p>
+<ul><li><strong>Name:</strong> Headout Here</li><li><strong>Team:</strong> 3 builders (3 lanes per <a class="section-ref" href="#10-the-42-hour-plan">§10</a>)</li><li><strong>Data:</strong> polished mock (Rome) — real BigQuery slice is stretch-only</li><li><strong>Stack:</strong> Replit (Next.js, Claude for concierge)</li><li><strong>Target prizes:</strong> Move the Needle (primary) + Five Stars (secondary)</li><li><strong>Framing:</strong> place-agnostic product (not hotel-bound) + co-equal pillars — distribution <strong>and</strong> brand</li><li><strong>Branding model:</strong> Headout-forward co-brand (&quot;{Place} × Headout&quot;); every QR is a Headout brand impression</li><li><strong>Demo entry place:</strong> Casa Aurelia Rome (a hotel — chosen for inventory richness + the rainy-day story), presented as <em>one example of any place</em>; reveal switches across café → tourist desk → venue</li></ul>
+<p><strong>Still to decide:</strong></p>
+<ul><li>[ ] Names for the 3 builders → map to lanes A/B/C</li><li>[ ] Second reveal partner beyond restaurant (lounge vs. venue) — pick one, don't build both</li><li>[ ] VO: ElevenLabs (request access) vs. live voiceover for the trailer</li><li>[ ] Deck/title-card tool: Gamma vs. Pitch</li><li>[ ] Whether to print a physical QR stand for the room (high-impact if judges scan in person)</li><li>[ ] Demo language for Act 2: attempt Japanese (stronger) vs. English-only (safer)</li></ul>
+<p><strong>Definition of done:</strong> live loop runs on Replit · 2–3 min demo recorded · trailer cut · pitch + Q&amp;A rehearsed · code frozen by <strong>Sat 10:30 AM IST</strong>.</p>
+      </article>
+    </main>
+  </div>
+</body>
+</html>
