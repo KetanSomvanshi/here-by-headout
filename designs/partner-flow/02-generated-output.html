@@ -10,7 +10,7 @@
 <style>
   body{background:var(--surface-1)}
 
-  /* ── generating → reveal overlay ── */
+  /* generating to reveal overlay */
   .gen{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;transition:opacity .55s ease;color:#fff}
   .gen.is-gone{opacity:0;pointer-events:none}
   .gen .kick{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--purps-100);background:var(--white-a10);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:24px}
@@ -134,7 +134,7 @@
   <div class="journey-meta">Step 2 of 4 · QR kit ready</div>
   <div class="journey-actions">
     <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
-    <a class="ho-btn ho-btn--primary" href="03-partner-dashboard.html?v=journey">See your live dashboard →</a>
+    <a class="ho-btn ho-btn--primary" href="03-partner-dashboard.html?v=journey">See your live dashboard</a>
   </div>
 </nav>
 
@@ -283,7 +283,7 @@
   });
   renderQrSet();
 
-  // ── generating → reveal sequence ──
+  // generating to reveal sequence
   (function(){
     const setup=readSetup();
     const count=(setup.placements&&setup.placements.length?setup.placements:DEFAULT_SETUP.placements).filter(Boolean).length;

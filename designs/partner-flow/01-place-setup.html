@@ -101,7 +101,7 @@
   <div class="form" data-reveal="up">
     <span class="kicker">Any physical place · 60 seconds</span>
     <h1 class="display-s">Create your partner QR kit</h1>
-    <p class="lede para-m">Tell us where guests already ask for plans. Watch your storefront build itself on the right — then we generate branded QR posters, a guest storefront, and an earnings dashboard.</p>
+    <p class="lede para-m">Tell us where guests already ask for plans. Watch your storefront build itself, then get branded QR posters, a guest storefront, and an earnings dashboard.</p>
 
     <div class="stack-g">
       <div class="ho-field"><label for="placeNameInput">Place name · required</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
@@ -159,7 +159,7 @@
 
   <aside class="rail" aria-label="Live storefront preview" data-reveal="left">
     <div class="rail-cap">What your guests will see <span class="live"><span class="d"></span>Live</span></div>
-    <div class="rail-sub" id="railSub">Updating as you fill the form →</div>
+    <div class="rail-sub" id="railSub">Updating as you fill the form</div>
 
     <div class="pv-phone pf-sheen">
       <div class="pv-promo">Headout picks for guests</div>
@@ -335,7 +335,7 @@
     const list=document.getElementById('pvPosterList');
     document.getElementById('pvPosterCount').textContent=`${sel.length} poster${sel.length!==1?'s':''}`;
     list.innerHTML=sel.map((p,i)=>`<span class="pv-poster" style="--reveal-delay:${i*60}ms"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h6v6h-6z"/></svg>${p}</span>`).join('')
-      || '<span class="pv-poster" style="opacity:.5">Choose a QR spot →</span>';
+      || '<span class="pv-poster" style="opacity:.5">Choose a QR spot</span>';
     if(!PF.reduced){
       list.querySelectorAll('.pv-poster').forEach((el,i)=>{el.style.animation='none';void el.offsetWidth;el.style.animation=`pfPop .45s ${i*55}ms cubic-bezier(.22,1,.36,1) both`;});
     }

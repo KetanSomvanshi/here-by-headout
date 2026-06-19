@@ -54,7 +54,7 @@
   .stage .phone-wrap{position:relative;z-index:1;width:min(340px,80%);filter:drop-shadow(0 40px 80px rgba(0,0,0,.5))}
   .stage .phone-wrap img{width:100%;height:auto;display:block}
 
-  /* floating proof cards — sequenced loop */
+  /* floating proof cards, sequenced loop */
   .proof{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;background:var(--white);
     border-radius:var(--r-12);padding:11px 14px;box-shadow:0 18px 44px rgba(0,0,0,.34);
     opacity:0;animation:proofCycle 6s ease-in-out infinite}
@@ -134,7 +134,7 @@
     <div class="copy">
       <span class="kicker"><span class="dot"></span> Headout Here · for partners</span>
       <h1 class="display-l">Earn commission when guests <span class="grad">book Headout</span> from your place.</h1>
-      <p class="lede">Create branded QR posters in 60 seconds. Guests scan, book on Headout, and every attributed booking lands in your dashboard — live.</p>
+      <p class="lede">Create branded QR posters in 60 seconds. Guests scan, book on Headout, and every booking lands live in your dashboard.</p>
 
       <div class="ticker" data-reveal="up">
         <span class="pulse"></span>
@@ -204,7 +204,7 @@
 <section class="closer">
   <h2 class="display-m" data-reveal="up">Your place, earning while you host.</h2>
   <p data-reveal="up" style="--reveal-delay:80ms">Free to create. No integration. You earn commission only when guests book.</p>
-  <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html" data-reveal="up" style="--reveal-delay:160ms">Create my QR kit →</a>
+  <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html" data-reveal="up" style="--reveal-delay:160ms">Create my QR kit</a>
   <div class="journey-peek" data-reveal="up" style="--reveal-delay:240ms"><div id="rail"></div></div>
 </section>
 
@@ -219,7 +219,7 @@
   const set=TYPES.map(card).join('');
   document.getElementById('marquee').innerHTML=set+set; // duplicated for seamless loop
 
-  // journey progress rail (this is the entry — step 0)
+  // journey progress rail (this is the entry, step 0)
   PF.rail(['Set up','QR kit','Earnings','Any place'], -1, '#rail');
 
   // cinematic coin pops + live ticker climb
