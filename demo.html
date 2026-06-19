@@ -53,17 +53,6 @@
     box-shadow:0 40px 120px -40px rgba(128,0,255,.55)}
   .screen{border-radius:20px;overflow:hidden;background:#000;position:relative;display:block}
   .screen video{display:block;width:100%;height:auto;border-radius:20px}
-  .bar{display:flex;align-items:center;gap:12px;padding:13px 18px;
-    background:linear-gradient(170deg,var(--ground-2),rgba(21,16,42,.55));
-    border-bottom:1px solid var(--line)}
-  .traffic{display:flex;gap:7px}
-  .traffic i{width:11px;height:11px;border-radius:50%;display:block}
-  .traffic i:nth-child(1){background:#ff5f57}.traffic i:nth-child(2){background:#febc2e}.traffic i:nth-child(3){background:#28c840}
-  .url{flex:1;font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;
-    background:var(--ground);border:1px solid var(--line);border-radius:var(--r-pill);padding:6px 14px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .url b{color:var(--accent);font-weight:500}
-  .meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);font-family:var(--mono)}
 
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
   .chip{font-family:var(--mono);font-size:12px;color:var(--text);background:var(--panel);
@@ -71,10 +60,10 @@
   .chip b{color:var(--accent);font-weight:600}
 
   /* CTA */
-  .cta-row{display:flex;flex-direction:column;align-items:flex-start;gap:9px;margin-top:30px}
+  .cta-row{display:flex;flex-direction:column;align-items:center;gap:9px;margin-top:32px;text-align:center}
   .cta{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:600;font-size:15px;
-    justify-content:space-between;min-width:270px;white-space:nowrap;
-    color:var(--ground);background:var(--grad);border-radius:var(--r-pill);padding:15px 24px;
+    justify-content:center;white-space:nowrap;
+    color:var(--ground);background:var(--grad);border-radius:var(--r-pill);padding:14px 20px;
     box-shadow:0 16px 40px -14px rgba(255,102,175,.6);transition:transform .15s,box-shadow .2s}
   .cta:hover{transform:translateY(-2px);box-shadow:0 22px 52px -14px rgba(255,102,175,.75)}
   .cta svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
@@ -101,7 +90,6 @@
 
   @media(max-width:760px){
     .beats{grid-template-columns:repeat(2,1fr)}
-    .meta{display:none}
   }
   @media(prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
 </style>
@@ -122,11 +110,6 @@
     <!-- THE VIDEO -->
     <div class="stage">
       <div class="screen">
-        <div class="bar">
-          <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
-          <span class="url">ketansomvanshi.github.io/here-by-headout/<b>demo</b></span>
-          <span class="meta"><span class="dot"></span> the money loop</span>
-        </div>
         <video controls preload="metadata" playsinline
                poster="designs/assets/partner-phone-qr-scene.png">
           <source src="demo-videos/final-deck-video.mp4" type="video/mp4">
