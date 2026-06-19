@@ -73,7 +73,7 @@
   /* ── page transition ── */
   function pageTransition(opts){
     opts = opts||{};
-    const sel = opts.selector || 'a[href$=".html"], a[data-flow]';
+    const sel = opts.selector || 'a[href*=".html"], a[data-flow]';
     document.body.classList.add('pf-fade');
     requestAnimationFrame(()=>document.body.classList.add('is-ready'));
     if(reduced) return;

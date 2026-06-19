@@ -83,7 +83,7 @@
 <body>
 <header class="ho-header">
   <a class="ho-logo" href="../index.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-purps.svg" alt="HERE by Headout"></a>
-  <span class="rng">Analytics preview <svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+  <span class="rng">Demo data · last 7 days</span>
 </header>
 
 <div class="wrap">
@@ -197,11 +197,12 @@
 <div id="rail"></div>
 <nav class="journey-nav">
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Guest storefront</a>
+    <a class="ho-btn ho-btn--secondary" href="02-generated-output.html?v=journey">QR kit</a>
   </div>
-  <div class="journey-meta">Step 4 · Analytics dashboard</div>
+  <div class="journey-meta">Step 3 of 4 · Your earnings</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="02-generated-output.html?v=journey">Finish setup & download posters</a>
+    <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
+    <a class="ho-btn ho-btn--primary" href="04-place-type-switcher.html?v=journey">See it for any place →</a>
   </div>
 </nav>
 
@@ -445,7 +446,7 @@
       setTimeout(()=>{ landBooking(); loop=setInterval(landBooking,3600); }, 2800);
     }
 
-    PF.rail(['Set up','QR kit','Guest scan','Earnings','Any place'], 3, '#rail');
+    PF.rail(['Set up','QR kit','Earnings','Any place'], 2, '#rail');
     PF.pageTransition();
   })();
 </script>

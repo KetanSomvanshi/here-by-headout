@@ -206,7 +206,6 @@
     </div>
     <div class="reveal-actions" data-reveal="up" style="--reveal-delay:260ms">
       <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html">Set up your place</a>
-      <a class="ho-btn ho-btn--secondary ho-btn--lg" href="00-landing.html" style="background:transparent;color:#fff;border-color:var(--white-a20)">Start over</a>
     </div>
   </div>
 </section>
@@ -214,11 +213,12 @@
 <div id="rail"></div>
 <nav class="journey-nav">
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="03-partner-dashboard.html?v=journey">Analytics dashboard</a>
+    <a class="ho-btn ho-btn--secondary" href="03-partner-dashboard.html?v=journey">Earnings</a>
   </div>
-  <div class="journey-meta">Step 5 · Same engine, every place</div>
+  <div class="journey-meta">Step 4 of 4 · Any place</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="../index.html">Back to all screens</a>
+    <a class="ho-btn ho-btn--secondary" href="../index.html">All screens</a>
+    <a class="ho-btn ho-btn--primary" href="01-place-setup.html">Set up your place →</a>
   </div>
 </nav>
 
@@ -272,7 +272,7 @@
   emphasize('hotel');
 
   if(window.PF){
-    PF.rail(['Set up','QR kit','Guest scan','Earnings','Any place'], 4, '#rail');
+    PF.rail(['Set up','QR kit','Earnings','Any place'], 3, '#rail');
     PF.pageTransition();
   }
 </script>

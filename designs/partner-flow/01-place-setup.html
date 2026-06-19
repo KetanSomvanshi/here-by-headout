@@ -94,7 +94,7 @@
 <body>
 <header class="ho-header">
   <a class="ho-logo" href="00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-purps.svg" alt="HERE by Headout"></a>
-  <span class="step">Step <b>1</b> · Set up your place</span>
+  <span class="step">Step <b>1</b> of 4 · Set up your place</span>
 </header>
 
 <div class="layout">
@@ -107,8 +107,7 @@
       <div class="ho-field"><label for="placeNameInput">Place name · required</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
 
       <div class="hero-field">
-        <span class="ho-tag ho-tag--purps" style="margin-bottom:10px">Choose a place type</span>
-        <div class="ho-field"><label>Place type</label></div>
+        <span class="ho-tag ho-tag--purps" style="margin-bottom:12px">Choose a place type</span>
         <div class="chips" id="typeChips" aria-label="Place type options">
           <button type="button" class="ho-chip is-selected" data-type="hotel">Hotel</button>
           <button type="button" class="ho-chip" data-type="cafe">Café</button>
@@ -200,7 +199,7 @@
   <div class="journey-actions">
     <a class="ho-btn ho-btn--secondary" href="00-landing.html">Partner landing</a>
   </div>
-  <div class="journey-meta">Step 1 · Set up the place</div>
+  <div class="journey-meta">Step 1 of 4 · Set up your place</div>
   <div class="journey-actions">
     <a class="ho-btn ho-btn--primary" href="02-generated-output.html">Generate QR kit</a>
   </div>
@@ -407,7 +406,7 @@
   renderPlacements('hotel');
   addPlacementButton.disabled=true;
 
-  PF.rail(['Set up','QR kit','Guest scan','Earnings','Any place'], 0, '#rail');
+  PF.rail(['Set up','QR kit','Earnings','Any place'], 0, '#rail');
   PF.pageTransition();
 </script>
 </body>
