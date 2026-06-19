@@ -24,7 +24,7 @@
   .chips .add{border-style:dashed;color:var(--text-3)}
   .opt{color:var(--grey-500);font-weight:400}
   .loc-alt{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--text-3)}
-  .loc-alt .maps-link{border:0;font:inherit;cursor:pointer;font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill)}
+  .loc-alt .maps-link{border:0;font:inherit;cursor:pointer;font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill);display:inline-flex;align-items:center;gap:5px}
   .colorpick{display:flex;align-items:center;gap:10px}
   .colorpick .sw{width:38px;height:38px;border-radius:var(--r-8);flex:none;border:1px solid var(--divider-dark)}
   .commission{display:flex;align-items:center;gap:16px}
@@ -32,20 +32,23 @@
   .commission .big{font-family:var(--font-hd);font-weight:500;font-size:30px;color:var(--text-primary)}
   .cta-note{font-size:12px;color:var(--text-3);margin-top:10px}
   /* rail */
-  .rail{background:linear-gradient(180deg,var(--purps-900),var(--purps-700));color:#fff;border-radius:var(--r-16);padding:26px 24px;position:sticky;top:20px}
-  .rail h3{font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--purps-100);margin-bottom:18px}
-  .deliver{display:flex;gap:12px;margin-bottom:16px}
-  .deliver .ic{width:34px;height:34px;border-radius:var(--r-8);flex:none;display:grid;place-items:center;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);color:#fff}
-  .deliver .ic svg{width:18px;height:18px;display:block}
-  .deliver .t{font-weight:600;font-size:14px} .deliver .d{font-size:12px;color:rgba(255,255,255,.72);margin-top:2px;line-height:1.5}
-  .mini-qr{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:var(--r-12);padding:18px;text-align:center;margin-top:8px}
-  .mini-qr .grid{width:108px;height:108px;margin:0 auto 10px;display:grid;grid-template-columns:repeat(9,1fr);gap:2px}
-  .mini-qr .grid i{border-radius:2px}
-  .mini-qr .cap{font-size:11px;font-weight:600;color:var(--purps-100)}
-  .mini-qr .pl{font-size:12px;color:rgba(255,255,255,.85);font-weight:500;margin-top:2px}
-  .timer{margin-top:18px;font-size:13px;color:rgba(255,255,255,.8);display:flex;align-items:center;gap:8px}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--okay-400);box-shadow:0 0 0 4px rgba(73,238,156,.25)}
+  .rail{position:sticky;top:20px}
+  .rail-card{position:relative;overflow:hidden;border-radius:var(--r-20);min-height:735px;padding:28px 30px 0;color:#fff;background:
+    radial-gradient(circle at 82% 7%,rgba(0,196,235,.38),transparent 34%),
+    radial-gradient(circle at 20% 28%,rgba(255,0,122,.18),transparent 36%),
+    linear-gradient(160deg,var(--purps-800),var(--purps) 62%,var(--purps-700));box-shadow:var(--shadow-2);border:1px solid rgba(128,0,255,.42)}
+  .rail-card::after{content:"";position:absolute;inset:auto -20px -70px -20px;height:220px;background:linear-gradient(180deg,rgba(128,0,255,0),rgba(128,0,255,.88));z-index:3;pointer-events:none}
+  .rail-title{font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;margin-bottom:20px}
+  .rail-rule{height:1px;background:rgba(255,255,255,.14);margin-bottom:22px}
+  .drop-row{display:grid;grid-template-columns:42px 1fr;gap:14px;margin-bottom:18px;position:relative;z-index:4}
+  .drop-icon{width:42px;height:42px;border-radius:var(--r-12);display:grid;place-items:center;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+  .drop-icon .ee-icon{width:22px;height:22px;color:#fff}
+  .drop-copy .t{font-weight:600;font-size:18px;line-height:22px;letter-spacing:.2px}
+  .drop-copy .d{font-size:13.5px;line-height:21px;color:rgba(255,255,255,.86);margin-top:5px}
+  .phone-scene{position:absolute;left:50%;bottom:0;width:min(390px,100%);transform:translateX(-50%);z-index:2;line-height:0}
+  .phone-scene img{display:block;width:100%;height:auto}
   @media(max-width:860px){.layout{grid-template-columns:1fr}.rail{position:static}.row2{grid-template-columns:1fr}}
+  @media(max-width:440px){.rail-card{padding:26px 24px 0}.drop-copy .t{font-size:19px}.drop-copy .d{font-size:14px;line-height:23px}}
 </style>
 </head>
 <body>
@@ -61,7 +64,7 @@
     <p class="lede para-m">Tell us about the place. We’ll generate a Headout-branded QR, a co-branded guest concierge, and a live dashboard — no engineering.</p>
 
     <div class="stack-g">
-      <div class="ho-field"><label>Place name</label><input class="ho-input" value="Casa Aurelia Rome"></div>
+      <div class="ho-field"><label>Place name</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
 
       <div class="hero-field">
         <span class="ho-tag ho-tag--purps" style="margin-bottom:10px">Works for any place</span>
@@ -84,7 +87,7 @@
       <div class="ho-field">
         <label>Location</label>
         <input class="ho-input" value="Via Germanico, Prati, Rome">
-        <div class="loc-alt"><span>or</span> <button type="button" class="maps-link">🔗 Paste a Google Maps link</button></div>
+        <div class="loc-alt"><span>or</span> <button type="button" class="maps-link"><svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2a5 5 0 0 0 7.1 7.1l1.1-1.1"/></svg>Paste a Google Maps link</button></div>
       </div>
 
       <div class="ho-field">
@@ -102,17 +105,35 @@
     </div>
   </div>
 
-  <aside class="rail">
-    <h3>What drops out</h3>
-    <div class="deliver"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7Z"/><path d="M8 8h3v3H8V8Zm5 0h3v3h-3V8ZM8 13h3v3H8v-3Zm5 0h3v3h-3v-3Z"/></svg></div><div><div class="t">Branded QR posters, one per placement</div><div class="d">Headout-coloured, logo-in-centre surfaces, each with its own tracking tag so every surface is measured separately.</div></div></div>
-    <div class="deliver"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10 18h4"/><path d="M10 6h4"/></svg></div><div><div class="t" id="storefrontTitle">A co-branded hotel storefront</div><div class="d" id="storefrontDesc">“Casa Aurelia × Headout” concierge: multilingual, weather-aware, bookable in two taps.</div></div></div>
-    <div class="deliver"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></svg></div><div><div class="t">A live partner dashboard</div><div class="d">Impressions, conversions, and commission, updating the instant a booking lands.</div></div></div>
-    <div class="mini-qr">
-      <div class="grid" id="g"></div>
-      <div class="cap">Scan for Headout picks</div>
-      <div class="pl">Casa Aurelia × Headout</div>
+  <aside class="rail" aria-label="What drops out">
+    <div class="rail-card">
+      <div class="rail-title">What drops out</div>
+      <div class="rail-rule"></div>
+      <div class="drop-row">
+        <div class="drop-icon"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><rect x="14" y="14" width="6" height="6" rx="2"/></svg></div>
+        <div class="drop-copy">
+          <div class="t">Branded QR posters — one per placement</div>
+          <div class="d">Headout-coloured, logo-in-centre table-tents — each with its own tracking tag so every surface is measured separately.</div>
+        </div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-icon"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10 6h4"/><path d="M10 18h4"/></svg></div>
+        <div class="drop-copy">
+          <div class="t">A co-branded guest storefront</div>
+          <div class="d">“YOU × Headout” concierge — multilingual, weather-aware, bookable in two taps.</div>
+        </div>
+      </div>
+      <div class="drop-row">
+        <div class="drop-icon"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></svg></div>
+        <div class="drop-copy">
+          <div class="t">A live partner dashboard</div>
+          <div class="d">Impressions, conversions &amp; commission — updating the instant a booking lands.</div>
+        </div>
+      </div>
+      <div class="phone-scene" aria-hidden="true">
+        <img src="../assets/partner-phone-qr-scene.png" width="744" height="648" loading="lazy" decoding="async" alt="">
+      </div>
     </div>
-    <div class="timer"><span class="dot"></span> Generates in ~60 seconds</div>
   </aside>
 </div>
 
@@ -127,10 +148,6 @@
 </nav>
 
 <script>
-  const g=document.getElementById('g');let s=0xC0FFEE;
-  for(let i=0;i<81;i++){s=(s*1103515245+12345)&0x7fffffff;const on=(s>>8)%10>4;
-    const el=document.createElement('i');el.style.background=on?'#cc99ff':'rgba(255,255,255,.12)';g.appendChild(el);}
-
   const typeData={
     hotel:{
       label:'Hotel',
@@ -215,13 +232,26 @@
   };
 
   const chipsEl=document.getElementById('placeChips'), countEl=document.getElementById('placeCount');
-  const typeChips=document.getElementById('typeChips'), placeTypeInput=document.getElementById('placeTypeInput');
+  const typeChips=document.getElementById('typeChips'), placeTypeInput=document.getElementById('placeTypeInput'), placeNameInput=document.getElementById('placeNameInput');
   const placementHelp=document.getElementById('placementHelp');
-  const storefrontTitle=document.getElementById('storefrontTitle'), storefrontDesc=document.getElementById('storefrontDesc');
 
+  function selectedPlacements(){
+    return Array.from(chipsEl.querySelectorAll('.ho-chip.is-selected')).map(c=>c.textContent.trim());
+  }
+  function partnerFlowState(){
+    return {
+      placeName: placeNameInput.value || 'Selected place',
+      placeType: placeTypeInput.value || 'Selected place',
+      placements: selectedPlacements()
+    };
+  }
+  function savePartnerFlowState(){
+    sessionStorage.setItem('partnerFlowSetup',JSON.stringify(partnerFlowState()));
+  }
   function updateCount(){
     const n=chipsEl.querySelectorAll('.ho-chip.is-selected').length;
     countEl.textContent=`${n} placement${n!==1?'s':''} selected. ${n} tracked QR${n!==1?'s':''} generated.`;
+    savePartnerFlowState();
   }
   function bindPlacementChips(){
     chipsEl.querySelectorAll('.ho-chip').forEach(c=>c.addEventListener('click',()=>{
@@ -233,8 +263,6 @@
     const data=typeData[typeKey]||typeData.custom;
     if(updateInput) placeTypeInput.value=data.label;
     placementHelp.textContent=data.help;
-    storefrontTitle.textContent=data.storefront;
-    storefrontDesc.textContent=data.desc;
     chipsEl.innerHTML=data.options.map(option=>{
       const selected=data.selected.includes(option)?' is-selected':'';
       return `<button type="button" class="ho-chip${selected}">${option}</button>`;
@@ -251,6 +279,10 @@
     typeChips.querySelectorAll('.ho-chip').forEach(c=>c.classList.remove('is-selected'));
     renderPlacements('custom',false);
   });
+  placeNameInput.addEventListener('input',()=>{
+    savePartnerFlowState();
+  });
+  document.querySelectorAll('a[href="02-generated-output.html"]').forEach(link=>link.addEventListener('click',savePartnerFlowState));
   renderPlacements('hotel');
 </script>
 </body>

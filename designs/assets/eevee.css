@@ -124,6 +124,12 @@ button{font-family:inherit}
 .ho-btn--lg{font-size:18px;line-height:24px;padding:16px 30px}
 .ho-btn--block{display:flex;width:100%}
 
+/* ── Eevee/Oak-compatible inline icons ── */
+.ee-icon{width:18px;height:18px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ee-icon--fill{fill:currentColor;stroke:0}
+.ee-icon--sm{width:14px;height:14px}
+.ee-icon--xs{width:10px;height:10px;stroke-width:2.5}
+
 /* ── input / form field (get_component input) ── */
 .ho-field{display:flex;flex-direction:column;gap:6px}
 .ho-field label{font-size:13px;font-weight:500;color:var(--text-2)}

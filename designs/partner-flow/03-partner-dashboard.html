@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../assets/eevee.css">
 <style>
   body{background:var(--surface-1)}
-  .ho-header .rng{font-size:13px;color:var(--text-2);background:#fff;border:1px solid var(--divider-dark);padding:7px 12px;border-radius:var(--r-8)}
+  .ho-header .rng{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);background:#fff;border:1px solid var(--divider-dark);padding:7px 12px;border-radius:var(--r-8)}
   .wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
   .ph{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
   .ph .sub{color:var(--text-3);font-size:14px;margin-top:4px}
@@ -52,13 +52,14 @@
   .q{font-size:12.5px;color:var(--text-2);padding:7px 0;display:flex;gap:8px}
   .q .c{font-weight:600;color:var(--text-primary)}
   .toast{position:fixed;bottom:24px;right:24px;pointer-events:none}
+  .toast .ic{width:28px;height:28px;border-radius:var(--r-8);display:grid;place-items:center;background:rgba(255,255,255,.12);color:var(--okay-400);flex:none}
   @media(max-width:860px){.tiles{grid-template-columns:1fr}.cols{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <header class="ho-header">
   <a class="ho-logo" href="../index.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
-  <span class="rng">Last 14 days ▾</span>
+  <span class="rng">Last 14 days <svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
 </header>
 
 <div class="wrap">
@@ -75,10 +76,10 @@
       <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 30 L40 26 L80 28 L120 18 L160 20 L200 12 L240 14 L300 6 V38 H0 Z" fill="#fff"/></svg>
     </div>
     <div class="tile t-conv">
-      <span class="tag">scan → book</span>
+      <span class="tag">scan to book</span>
       <div class="lbl">Conversions</div>
       <div class="big">8.3%</div>
-      <div class="meta">84 scans → 31 chats → 7 bookings</div>
+      <div class="meta">84 scans to 31 chats to 7 bookings</div>
       <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 32 L50 30 L100 24 L150 26 L200 16 L250 18 L300 10 V38 H0 Z" fill="#fff"/></svg>
     </div>
     <div class="tile t-comm">
@@ -92,7 +93,7 @@
 
   <div class="cols">
     <div class="card">
-      <h3>The funnel <span class="more">scan → chat → book</span></h3>
+      <h3>The funnel <span class="more">scan to chat to book</span></h3>
       <div class="funnel">
         <div class="fr"><span class="fl">Impressions</span><div class="bar"><i style="width:100%">2,540</i></div><span class="pct"></span></div>
         <div class="fr"><span class="fl">Scans</span><div class="bar"><i style="width:33%">84</i></div><span class="pct">3.3%</span></div>
@@ -135,18 +136,18 @@
 
 <nav class="journey-nav">
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="02-generated-output.html">← Generated output</a>
+    <a class="ho-btn ho-btn--secondary" href="02-generated-output.html">Generated output</a>
   </div>
   <div class="journey-meta">Step 3 · Partner dashboard</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="04-place-type-switcher.html">Show any-place engine →</a>
+    <a class="ho-btn ho-btn--primary" href="04-place-type-switcher.html">Show any-place engine</a>
   </div>
 </nav>
 
 <div class="toast">
   <div class="ho-toast ho-toast--dark">
-    <span class="ic">🎉</span>
-    <div><div style="font-weight:600">New booking · Leonardo Experience</div><div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:2px">Bookings 7 → 8 · +€1.92 · via lobby QR</div></div>
+    <span class="ic"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <div><div style="font-weight:600">New booking · Leonardo Experience</div><div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:2px">Bookings 7 to 8 · +€1.92 · via lobby QR</div></div>
   </div>
 </div>
 </body>
