@@ -37,6 +37,7 @@
 .pf-sheen::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);
   transform:skewX(-18deg);pointer-events:none;display:none}
+.pf-sheen--qr::after{display:block;animation:pfSweep 3.6s ease-in-out infinite}
 @keyframes pfSweep{0%{left:-60%}28%,100%{left:140%}}
 
 /* ── glow pulse halo ── */
