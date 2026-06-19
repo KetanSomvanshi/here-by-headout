@@ -140,6 +140,8 @@
     font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--okay-700);
     background:var(--okay-200);border-radius:var(--r-pill);padding:4px 9px}
   .go-cta .live-dot i{width:6px;height:6px;border-radius:50%;background:var(--okay-500)}
+  .go-cta .arr{flex:none;margin-left:auto;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--purps);color:#fff}
+  .go-cta .arr .ee-icon{width:16px;height:16px;stroke-width:2.4}
   @media(max-width:380px){.go-cta .live-dot{display:none}}
 
   @media(max-width:860px){.layout{grid-template-columns:1fr;gap:34px}.rail{position:static}}
@@ -225,8 +227,8 @@
 
     <a class="go-cta" href="../guest-flow/01-map-storefront.html?v=journey">
       <span class="ic"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M10 18.5h4"/></svg></span>
-      <span class="tx"><b>Preview the guest scan</b><span>See the storefront your QR opens</span></span>
-      <span class="live-dot"><i></i>Live</span>
+      <span class="tx"><b>Preview guest scan</b><span>See the storefront your QR opens</span></span>
+      <span class="arr"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
     </a>
   </aside>
 </div>
@@ -239,7 +241,7 @@
   </div>
   <div class="journey-meta">Step 2 of 4 · QR kit ready</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="../guest-flow/01-map-storefront.html?v=journey">See what guests see</a>
+    <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
   </div>
 </nav>
 

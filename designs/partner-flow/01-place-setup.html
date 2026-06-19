@@ -27,8 +27,10 @@
   .brand{display:inline-flex;align-items:center;gap:10px}
   .brand img{height:19px;width:auto;display:block}
   .brand .by{font-size:12px;color:var(--text-white-translucent);font-weight:500;border-left:1px solid var(--white-a20);padding-left:10px}
+  .nav-status{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .nav .step{font-size:12.5px;font-weight:600;color:#fff;background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:8px 14px}
   .nav .step b{color:var(--purps-100)}
+  .nav .ho-btn{padding:10px 18px;font-size:14px}
 
   /* ── full-width page header ── */
   .page-head{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:14px 28px 0}
@@ -113,7 +115,10 @@
       <a class="ho-logo" href="00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-white.svg" alt="HERE by Headout"></a>
       <span class="by">for partners</span>
     </span>
-    <span class="step">Step <b>1</b> of 4 · Set up your place</span>
+    <span class="nav-status">
+      <span class="step">Step <b>1</b> of 4 · Set up your place</span>
+      <a class="ho-btn ho-btn--primary" href="02-generated-output.html">Generate QR kit</a>
+    </span>
   </div>
 </nav>
 
