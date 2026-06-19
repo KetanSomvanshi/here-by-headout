@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HERE by Headout — Architecture</title>
+<style>
+  :root{
+    --ground:#0d0a18; --ground-2:#15102a;
+    --text:#f4f1fb; --muted:#b4abd1;
+    --accent:#c79cff; --accent-2:#ff66af; --live:#49ee9c;
+    --line:rgba(255,255,255,.11); --panel:rgba(255,255,255,.045);
+    --grad:linear-gradient(90deg,#cc99ff,#ff66af);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:16px; --r-sm:11px; --r-pill:999px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ground);color:var(--text);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  ::selection{background:rgba(255,102,175,.35)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+  /* atmosphere: a single restrained glow */
+  .bg{position:fixed;inset:0;z-index:-1;pointer-events:none}
+  .bg::before{content:"";position:absolute;width:680px;height:680px;border-radius:50%;
+    background:radial-gradient(circle,rgba(128,0,255,.34),transparent 68%);top:-260px;right:-160px}
+  .bg::after{content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,102,175,.14),transparent 70%);bottom:-220px;left:-180px}
+
+  /* ── eyebrow / labels ── */
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    background:var(--panel);border:1px solid var(--line);padding:7px 13px;border-radius:var(--r-pill)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--live);
+    box-shadow:0 0 0 0 rgba(73,238,156,.5);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(73,238,156,.5)}70%{box-shadow:0 0 0 11px rgba(73,238,156,0)}100%{box-shadow:0 0 0 0 rgba(73,238,156,0)}}
+
+  /* ── hero ── */
+  header.hero{padding:74px 0 26px}
+  .brandline{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:42px}
+  .logo{font-weight:700;letter-spacing:.04em;font-size:15px}
+  .logo span{color:var(--muted);font-weight:500}
+  h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.025em;font-weight:700;
+    margin:20px 0 0;max-width:15ch}
+  .lede{color:var(--muted);font-size:clamp(15px,2.1vw,18px);max-width:60ch;margin:18px 0 0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--text);background:var(--panel);
+    border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 13px}
+  .chip b{color:var(--accent);font-weight:600}
+
+  /* ── THE LOOP (the orchestrated moment) ── */
+  .loop{margin:46px 0 8px;background:linear-gradient(170deg,var(--ground-2),rgba(21,16,42,.4));
+    border:1px solid var(--line);border-radius:24px;padding:34px 26px 30px;position:relative;overflow:hidden}
+  .loop-cap{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted);margin-bottom:26px}
+  .loop-cap b{color:var(--text);font-weight:600}
+  .flow{display:grid;grid-template-columns:repeat(5,1fr);gap:0;align-items:stretch;position:relative}
+  .node{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:11px;padding:0 8px}
+  .node .ic{width:54px;height:54px;border-radius:15px;display:grid;place-items:center;
+    background:var(--panel);border:1px solid var(--line);color:var(--accent)}
+  .node.pay .ic{color:var(--live);border-color:rgba(73,238,156,.4);background:rgba(73,238,156,.08)}
+  .node .ic svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .node .t{font-size:13.5px;font-weight:600}
+  .node .s{font-size:11.5px;color:var(--muted);line-height:1.4}
+  /* connector line behind the row */
+  .flow::before{content:"";position:absolute;left:10%;right:10%;top:27px;height:2px;
+    background:linear-gradient(90deg,rgba(199,156,255,.25),rgba(255,102,175,.25));z-index:0}
+  .runner{position:absolute;top:23px;left:10%;width:10px;height:10px;border-radius:50%;z-index:1;
+    background:#fff;box-shadow:0 0 14px 3px rgba(255,255,255,.7);animation:run 5.6s cubic-bezier(.6,0,.4,1) infinite}
+  @keyframes run{0%{left:10%;opacity:0}6%{opacity:1}74%{left:78%;opacity:1}82%{left:78%;opacity:0}100%{left:78%;opacity:0}}
+  .node>*{position:relative;z-index:2}
+  .coin{position:absolute;top:-6px;left:50%;transform:translateX(-50%);font-family:var(--mono);
+    font-weight:600;font-size:13px;color:var(--live);opacity:0;animation:coin 5.6s ease-out infinite;pointer-events:none}
+  @keyframes coin{0%,70%{opacity:0;transform:translate(-50%,4px)}76%{opacity:1;transform:translate(-50%,-14px)}92%{opacity:1;transform:translate(-50%,-24px)}100%{opacity:0;transform:translate(-50%,-30px)}}
+
+  /* ── sections ── */
+  section{padding:54px 0;border-top:1px solid var(--line)}
+  .shead{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .snum{font-family:var(--mono);font-size:13px;color:var(--accent-2)}
+  h2{font-size:clamp(22px,3.2vw,30px);letter-spacing:-.02em;font-weight:700;margin:0}
+  .sdesc{color:var(--muted);font-size:15px;max-width:64ch;margin:0 0 28px}
+
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+
+  /* component diagram */
+  .arch{display:grid;gap:14px}
+  .tier{padding:18px 18px 20px}
+  .tier>.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .boxes{display:flex;flex-wrap:wrap;gap:10px}
+  .box{flex:1 1 150px;min-width:140px;background:var(--ground-2);border:1px solid var(--line);
+    border-radius:var(--r-sm);padding:13px 14px}
+  .box .bt{font-size:13.5px;font-weight:600}
+  .box .bs{font-size:11.5px;color:var(--muted);margin-top:3px;font-family:var(--mono)}
+  .box.accent{border-color:rgba(199,156,255,.4);background:linear-gradient(160deg,rgba(199,156,255,.12),transparent)}
+  .box.live{border-color:rgba(73,238,156,.38)}
+  .box.live .bt{color:var(--live)}
+  .tierflow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px;gap:8px;
+    font-family:var(--mono);letter-spacing:.05em}
+  .tierflow svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+  /* data model */
+  .erd{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .ent{padding:0;overflow:hidden}
+  .ent h3{margin:0;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;
+    padding:11px 14px;background:linear-gradient(90deg,rgba(199,156,255,.16),transparent);
+    border-bottom:1px solid var(--line);color:var(--accent)}
+  .ent ul{list-style:none;margin:0;padding:10px 14px 13px;display:flex;flex-direction:column;gap:5px}
+  .ent li{font-size:12.5px;color:var(--muted);display:flex;justify-content:space-between;gap:10px}
+  .ent li b{color:var(--text);font-weight:500}
+  .ent li .ty{font-family:var(--mono);font-size:10.5px;color:var(--accent-2);opacity:.85}
+  .rel{font-size:12.5px;color:var(--muted);margin-top:16px;font-family:var(--mono);text-align:center}
+  .rel b{color:var(--accent)}
+
+  /* constraint cards */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .card{padding:20px}
+  .card .k{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:10px}
+  .card h3{margin:0 0 7px;font-size:16px;font-weight:600}
+  .card p{margin:0;font-size:13.5px;color:var(--muted)}
+
+  /* deploy */
+  .deploy{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .dpath{padding:20px}
+  .dpath .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.05em;
+    padding:4px 10px;border-radius:var(--r-pill);margin-bottom:12px}
+  .dpath.a .tag{color:#ffd9a8;background:rgba(249,115,22,.16);border:1px solid rgba(249,115,22,.3)}
+  .dpath.b .tag{color:var(--accent);background:rgba(199,156,255,.13);border:1px solid rgba(199,156,255,.3)}
+  .dpath h3{margin:0 0 6px;font-size:17px}
+  .dpath p{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+  .dpath code{font-family:var(--mono);font-size:12px;color:var(--text);background:var(--ground);
+    border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:block;white-space:pre-wrap}
+
+  /* milestone rail */
+  .rail{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .step{padding:14px 14px 16px;position:relative}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--ground);font-weight:700;
+    width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--accent);margin-bottom:10px}
+  .step.done .n{background:var(--live)}
+  .step .st{font-size:13.5px;font-weight:600}
+  .step .ss{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+  footer{padding:46px 0 70px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  .flinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .flinks a{font-family:var(--mono);font-size:12px;text-decoration:none;background:var(--panel);
+    border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 13px;transition:border-color .2s,color .2s}
+  .flinks a:hover{border-color:var(--accent);color:var(--accent)}
+
+  @media(max-width:760px){
+    .flow{grid-template-columns:repeat(2,1fr);gap:22px 8px}
+    .flow::before,.runner,.coin{display:none}
+    .deploy{grid-template-columns:1fr}
+    .rail{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .runner,.coin,.dot{animation:none}
+    html{scroll-behavior:auto}
+    .runner{opacity:0}
+  }
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brandline">
+      <div class="logo">HERE <span>· by Headout</span></div>
+      <span class="eyebrow"><span class="dot"></span> System architecture</span>
+    </div>
+
+    <h1>Any physical place, earning <span class="grad">while you host.</span></h1>
+    <p class="lede">A guest scans a QR on the wall, books on Headout, and the place earns commission — attributed to the exact spot, live. This is how that loop is built: one Python process, a SQLite file, and server-sent events. No Docker, no external services.</p>
+
+    <div class="chips">
+      <span class="chip"><b>FastAPI</b></span>
+      <span class="chip"><b>SQLite</b> · one file</span>
+      <span class="chip"><b>SSE</b> · live, no Redis</span>
+      <span class="chip">QR · <b>segno</b></span>
+      <span class="chip">posters · <b>Pillow</b></span>
+    </div>
+
+    <!-- THE LOOP -->
+    <div class="loop">
+      <div class="loop-cap"><span class="dot"></span> <b>The money loop</b> — scan to commission, nothing faked</div>
+      <div class="flow">
+        <span class="runner" aria-hidden="true"></span>
+        <div class="node">
+          <span class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h6v6h-6z"/></svg></span>
+          <span class="t">Scan</span><span class="s">QR on the wall<br>/here/{token}</span>
+        </div>
+        <div class="node">
+          <span class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M10 18.5h4"/></svg></span>
+          <span class="t">Storefront</span><span class="s">co-branded page<br>attributed by spot</span>
+        </div>
+        <div class="node">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span>
+          <span class="t">Book</span><span class="s">on Headout<br>POST /bookings</span>
+        </div>
+        <div class="node pay">
+          <span class="coin" aria-hidden="true">+€3.04</span>
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+          <span class="t">Commission</span><span class="s">gmv × 8%<br>tied to the spot</span>
+        </div>
+        <div class="node">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V5"/><path d="m4 15 4-4 4 3 7-7"/><path d="M18 7h3v3"/></svg></span>
+          <span class="t">Live dashboard</span><span class="s">SSE ping<br>no refresh</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SYSTEM -->
+<section id="system">
+  <div class="wrap">
+    <div class="shead"><span class="snum">01</span><h2>One process, three tiers</h2></div>
+    <p class="sdesc">The browser talks JSON for everything and holds one long-lived SSE connection for the live feed. The backend owns QR generation, scan attribution, booking capture, and the funnel. SQLite is a file on disk — there is no database server to run.</p>
+
+    <div class="arch">
+      <div class="tier panel">
+        <div class="lbl">Frontend · demo/frontend (served by StaticFiles)</div>
+        <div class="boxes">
+          <div class="box"><div class="bt">Place setup</div><div class="bs">POST /places</div></div>
+          <div class="box"><div class="bt">QR kit</div><div class="bs">/posters</div></div>
+          <div class="box"><div class="bt">Guest storefront</div><div class="bs">/here · /events</div></div>
+          <div class="box live"><div class="bt">Dashboard</div><div class="bs">EventSource /stream</div></div>
+        </div>
+      </div>
+
+      <div class="tierflow"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg> JSON + Server-Sent Events</div>
+
+      <div class="tier panel">
+        <div class="lbl">FastAPI · demo/backend/app</div>
+        <div class="boxes">
+          <div class="box">routers<div class="bs">places · tracking · bookings · analytics</div></div>
+          <div class="box accent">services<div class="bs">qr (segno) · posters (Pillow)</div></div>
+          <div class="box live">events_bus<div class="bs">in-process SSE fan-out</div></div>
+          <div class="box">utils<div class="bs">slugify · commission</div></div>
+        </div>
+      </div>
+
+      <div class="tierflow"><svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg> SQLModel session</div>
+
+      <div class="tier panel">
+        <div class="lbl">Storage</div>
+        <div class="boxes">
+          <div class="box accent">SQLite — here.db<div class="bs">one file · swap to Postgres later = one line</div></div>
+          <div class="box">posters/<div class="bs">generated PNGs on disk</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA MODEL -->
+<section id="data">
+  <div class="wrap">
+    <div class="shead"><span class="snum">02</span><h2>Data model</h2></div>
+    <p class="sdesc">Five tables. Attribution lives in the <code style="font-family:var(--mono);font-size:.85em;color:var(--accent)">qr_token</code> on each placement, so every scan and booking traces back to the exact spot — no cookies, no integration.</p>
+
+    <div class="erd">
+      <div class="ent panel"><h3>Partner</h3><ul>
+        <li><b>id</b><span class="ty">uuid</span></li><li><b>email</b><span class="ty">str</span></li><li><b>created_at</b><span class="ty">ts</span></li>
+      </ul></div>
+      <div class="ent panel"><h3>Place</h3><ul>
+        <li><b>name</b><span class="ty">str</span></li><li><b>type</b><span class="ty">str</span></li>
+        <li><b>location</b><span class="ty">str</span></li><li><b>slug</b><span class="ty">unique</span></li>
+      </ul></div>
+      <div class="ent panel"><h3>Placement</h3><ul>
+        <li><b>label</b><span class="ty">str</span></li><li><b>surface_slug</b><span class="ty">str</span></li>
+        <li><b>qr_token</b><span class="ty">unique</span></li>
+      </ul></div>
+      <div class="ent panel"><h3>Event</h3><ul>
+        <li><b>placement_id</b><span class="ty">fk</span></li><li><b>kind</b><span class="ty">scan…</span></li>
+        <li><b>created_at</b><span class="ty">ts</span></li>
+      </ul></div>
+      <div class="ent panel"><h3>Booking</h3><ul>
+        <li><b>experience</b><span class="ty">str</span></li><li><b>gmv</b><span class="ty">float</span></li>
+        <li><b>commission</b><span class="ty">×0.08</span></li>
+      </ul></div>
+    </div>
+    <p class="rel">Partner <b>1—∞</b> Place <b>1—∞</b> Placement <b>1—∞</b> Event &nbsp;·&nbsp; Placement <b>1—∞</b> Booking</p>
+  </div>
+</section>
+
+<!-- WHY THIS SHAPE -->
+<section id="why">
+  <div class="wrap">
+    <div class="shead"><span class="snum">03</span><h2>Why this shape</h2></div>
+    <p class="sdesc">Every dependency was cut until only Python was left. Each choice below is deliberate, and each has a known upgrade path if the demo graduates.</p>
+    <div class="cards">
+      <div class="card panel"><div class="k">Database</div><h3>SQLite, not a server</h3><p>A file in the repo. Zero setup, instant reset (delete the file). Swapping to Postgres is a single connection-string change in SQLModel.</p></div>
+      <div class="card panel"><div class="k">Live</div><h3>SSE, not Supabase</h3><p>The dashboard holds one connection; a booking publishes to an in-process bus and fans out. No Redis, no replication — one worker is the trade.</p></div>
+      <div class="card panel"><div class="k">Runtime</div><h3>One process, no Docker</h3><p>The entire dependency is “a box that runs Python.” Run it with one command locally; ship it as one process.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPLOY -->
+<section id="deploy">
+  <div class="wrap">
+    <div class="shead"><span class="snum">04</span><h2>Ship it two ways</h2></div>
+    <p class="sdesc">SSE needs a long-lived process, so serverless is out. Both paths below run a normal process — one for the live pitch, one for a durable URL.</p>
+    <div class="deploy">
+      <div class="dpath a panel">
+        <span class="tag">For the demo · $0</span>
+        <h3>Local + Cloudflare Tunnel</h3>
+        <p>Run on your laptop, expose a public URL so a phone can scan the QR. Nothing deployed; full control.</p>
+        <code>uvicorn app.main:app --port 8000
+cloudflared tunnel --url http://localhost:8000</code>
+      </div>
+      <div class="dpath b panel">
+        <span class="tag">For a durable URL</span>
+        <h3>Fly.io + volume</h3>
+        <p>Always-on single machine, SQLite on a mounted volume so data survives restarts. SSE stays connected.</p>
+        <code>fly volumes create here_data --size 1
+fly deploy   # auto_stop_machines = false</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILD = TESTS -->
+<section id="build">
+  <div class="wrap">
+    <div class="shead"><span class="snum">05</span><h2>Build is test-driven</h2></div>
+    <p class="sdesc">Every behavior the prototype faked is pinned as an executable test. Each milestone turns a test group from red to green — “the demo still works” becomes a checkable fact.</p>
+    <div class="rail">
+      <div class="step panel"><span class="n">1</span><div class="st">Scaffold</div><div class="ss">app boots, frontend served</div></div>
+      <div class="step panel"><span class="n">2</span><div class="st">Places</div><div class="ss">setup + unique tokens</div></div>
+      <div class="step panel"><span class="n">3</span><div class="st">Posters</div><div class="ss">real QR PNGs</div></div>
+      <div class="step panel"><span class="n">4</span><div class="st">Scan</div><div class="ss">/here attribution</div></div>
+      <div class="step panel"><span class="n">5</span><div class="st">Bookings</div><div class="ss">commission at 8%</div></div>
+      <div class="step panel"><span class="n">6</span><div class="st">SSE + analytics</div><div class="ss">live funnel</div></div>
+      <div class="step panel"><span class="n">7</span><div class="st">Seed + verify</div><div class="ss">full loop on localhost</div></div>
+      <div class="step panel"><span class="n">8</span><div class="st">Host</div><div class="ss">tunnel / Fly</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Built for Hackin&rsquo;26 · HERE by Headout. The plan, the contract, and the diagrams live in the repo.
+    <div class="flinks">
+      <a href="demo/backend/MASTER_PLAN.md">MASTER_PLAN.md</a>
+      <a href="demo/backend/ARCHITECTURE.md">ARCHITECTURE.md</a>
+      <a href="demo/backend/TESTING.md">TESTING.md</a>
+      <a href="demo/backend/LOCAL_DEV.md">LOCAL_DEV.md</a>
+      <a href="demo/backend/HOSTING.md">HOSTING.md</a>
+      <a href="index.html">← Master Doc</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

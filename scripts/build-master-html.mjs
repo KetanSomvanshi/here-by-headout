@@ -9,8 +9,7 @@ const pagesPath = path.join(root, "index.html");
 
 const siteNav = [
   { label: "📋 Master Doc", href: "index.html", active: true },
-  { label: "🎬 Guest Trailer", href: "trailer-guest.html" },
-  { label: "🤝 Partner Trailer", href: "trailer-partner.html" },
+  { label: "🧭 Architecture", href: "architecture.html" },
 ];
 
 const markdown = fs.readFileSync(inputPath, "utf8");
