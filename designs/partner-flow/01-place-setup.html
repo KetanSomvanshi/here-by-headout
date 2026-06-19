@@ -22,6 +22,8 @@
   .hint{font-size:12px;color:var(--text-primary);margin-top:10px;font-weight:500}
   .ho-field .help{margin:2px 0 4px}
   .chips .add{border-style:dashed;color:var(--text-3)}
+  .type-custom-field{display:none;margin-top:14px}
+  .type-custom-field.is-visible{display:block}
   .opt{color:var(--grey-500);font-weight:400}
   .loc-alt{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--text-3)}
   .loc-alt .maps-link{border:0;font:inherit;cursor:pointer;font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill);display:inline-flex;align-items:center;gap:5px}
@@ -68,7 +70,7 @@
 
       <div class="hero-field">
         <span class="ho-tag ho-tag--purps" style="margin-bottom:10px">Works for any place</span>
-        <div class="ho-field"><label>Place type</label><input class="ho-input" id="placeTypeInput" value="Hotel" placeholder="Type anything — a hotel, a café, a venue…"></div>
+        <div class="ho-field"><label>Place type</label></div>
         <div class="chips" id="typeChips" aria-label="Place type options">
           <button type="button" class="ho-chip is-selected" data-type="hotel">Hotel</button>
           <button type="button" class="ho-chip" data-type="cafe">Café</button>
@@ -80,6 +82,10 @@
           <button type="button" class="ho-chip" data-type="short-stay-host">Short-stay host</button>
           <button type="button" class="ho-chip" data-type="gym">Gym</button>
           <button type="button" class="ho-chip" data-type="custom">+ anything with footfall</button>
+        </div>
+        <div class="ho-field type-custom-field" id="customTypeField">
+          <label for="placeTypeInput">Custom place type</label>
+          <input class="ho-input" id="placeTypeInput" placeholder="e.g. Museum shop, campus desk, spa reception">
         </div>
         <div class="hint" id="typeHint">The same engine re-skins for hotels, cafés, venues, desks, and any trusted surface with footfall.</div>
       </div>
@@ -232,16 +238,21 @@
   };
 
   const chipsEl=document.getElementById('placeChips'), countEl=document.getElementById('placeCount');
-  const typeChips=document.getElementById('typeChips'), placeTypeInput=document.getElementById('placeTypeInput'), placeNameInput=document.getElementById('placeNameInput');
+  const typeChips=document.getElementById('typeChips'), placeTypeInput=document.getElementById('placeTypeInput'), customTypeField=document.getElementById('customTypeField'), placeNameInput=document.getElementById('placeNameInput');
   const placementHelp=document.getElementById('placementHelp');
+  let currentTypeKey='hotel';
 
   function selectedPlacements(){
     return Array.from(chipsEl.querySelectorAll('.ho-chip.is-selected')).map(c=>c.textContent.trim());
   }
+  function selectedPlaceType(){
+    if(currentTypeKey==='custom') return placeTypeInput.value.trim() || typeData.custom.label;
+    return (typeData[currentTypeKey]||typeData.custom).label;
+  }
   function partnerFlowState(){
     return {
       placeName: placeNameInput.value || 'Selected place',
-      placeType: placeTypeInput.value || 'Selected place',
+      placeType: selectedPlaceType(),
       placements: selectedPlacements()
     };
   }
@@ -261,7 +272,11 @@
   }
   function renderPlacements(typeKey, updateInput=true){
     const data=typeData[typeKey]||typeData.custom;
-    if(updateInput) placeTypeInput.value=data.label;
+    currentTypeKey=typeData[typeKey]?typeKey:'custom';
+    const isCustom=currentTypeKey==='custom';
+    customTypeField.classList.toggle('is-visible',isCustom);
+    if(!isCustom) placeTypeInput.value='';
+    if(isCustom&&updateInput) placeTypeInput.focus();
     placementHelp.textContent=data.help;
     chipsEl.innerHTML=data.options.map(option=>{
       const selected=data.selected.includes(option)?' is-selected':'';
@@ -276,8 +291,7 @@
     renderPlacements(chip.dataset.type);
   }));
   placeTypeInput.addEventListener('input',()=>{
-    typeChips.querySelectorAll('.ho-chip').forEach(c=>c.classList.remove('is-selected'));
-    renderPlacements('custom',false);
+    savePartnerFlowState();
   });
   placeNameInput.addEventListener('input',()=>{
     savePartnerFlowState();
