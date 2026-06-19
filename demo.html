@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HERE by Headout — Demo</title>
+<style>
+  :root{
+    --ground:#0d0a18; --ground-2:#15102a;
+    --text:#f4f1fb; --muted:#b4abd1;
+    --accent:#c79cff; --accent-2:#ff66af; --live:#49ee9c;
+    --line:rgba(255,255,255,.11); --panel:rgba(255,255,255,.045);
+    --grad:linear-gradient(90deg,#cc99ff,#ff66af);
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --r:16px; --r-pill:999px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ground);color:var(--text);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit}
+  ::selection{background:rgba(255,102,175,.35)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+
+  .bg{position:fixed;inset:0;z-index:-1;pointer-events:none}
+  .bg::before{content:"";position:absolute;width:680px;height:680px;border-radius:50%;
+    background:radial-gradient(circle,rgba(128,0,255,.34),transparent 68%);top:-260px;right:-160px}
+  .bg::after{content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,102,175,.14),transparent 70%);bottom:-220px;left:-180px}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:11px;font-weight:600;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    background:var(--panel);border:1px solid var(--line);padding:7px 13px;border-radius:var(--r-pill)}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--live);
+    box-shadow:0 0 0 0 rgba(73,238,156,.5);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(73,238,156,.5)}70%{box-shadow:0 0 0 11px rgba(73,238,156,0)}100%{box-shadow:0 0 0 0 rgba(73,238,156,0)}}
+
+  header.hero{padding:74px 0 26px}
+  .brandline{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:42px}
+  .logo{font-weight:700;letter-spacing:.04em;font-size:15px}
+  .logo span{color:var(--muted);font-weight:500}
+  h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.025em;font-weight:700;
+    margin:18px 0 0;max-width:16ch}
+  .lede{color:var(--muted);font-size:clamp(15px,2.1vw,18px);max-width:60ch;margin:18px 0 0}
+
+  /* ── THE VIDEO (the orchestrated moment) ── */
+  .stage{margin:40px 0 6px;position:relative;border-radius:24px;padding:5px;
+    background:linear-gradient(140deg,rgba(199,156,255,.5),rgba(255,102,175,.32) 55%,rgba(73,238,156,.28));
+    box-shadow:0 40px 120px -40px rgba(128,0,255,.55)}
+  .screen{border-radius:20px;overflow:hidden;background:#000;position:relative;display:block}
+  .screen video{display:block;width:100%;height:auto;border-radius:20px}
+  .bar{display:flex;align-items:center;gap:12px;padding:13px 18px;
+    background:linear-gradient(170deg,var(--ground-2),rgba(21,16,42,.55));
+    border-bottom:1px solid var(--line)}
+  .traffic{display:flex;gap:7px}
+  .traffic i{width:11px;height:11px;border-radius:50%;display:block}
+  .traffic i:nth-child(1){background:#ff5f57}.traffic i:nth-child(2){background:#febc2e}.traffic i:nth-child(3){background:#28c840}
+  .url{flex:1;font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;
+    background:var(--ground);border:1px solid var(--line);border-radius:var(--r-pill);padding:6px 14px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .url b{color:var(--accent);font-weight:500}
+  .meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);font-family:var(--mono)}
+
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .chip{font-family:var(--mono);font-size:12px;color:var(--text);background:var(--panel);
+    border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 13px}
+  .chip b{color:var(--accent);font-weight:600}
+
+  /* what's in the video */
+  section{padding:54px 0;border-top:1px solid var(--line)}
+  .shead{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .snum{font-family:var(--mono);font-size:13px;color:var(--accent-2)}
+  h2{font-size:clamp(22px,3.2vw,30px);letter-spacing:-.02em;font-weight:700;margin:0}
+  .sdesc{color:var(--muted);font-size:15px;max-width:64ch;margin:0 0 28px}
+
+  .beats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .beat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 16px 20px}
+  .beat .t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:10px}
+  .beat h3{margin:0 0 6px;font-size:15.5px;font-weight:600}
+  .beat p{margin:0;font-size:13px;color:var(--muted)}
+
+  footer{padding:46px 0 70px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  .flinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .flinks a{font-family:var(--mono);font-size:12px;text-decoration:none;background:var(--panel);
+    border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 13px;transition:border-color .2s,color .2s}
+  .flinks a:hover{border-color:var(--accent);color:var(--accent)}
+
+  @media(max-width:760px){
+    .beats{grid-template-columns:repeat(2,1fr)}
+    .meta{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brandline">
+      <div class="logo">HERE <span>· by Headout</span></div>
+      <span class="eyebrow"><span class="dot"></span> Demo · Hackin&rsquo;26</span>
+    </div>
+
+    <h1>Watch a place turn into a <span class="grad">storefront.</span></h1>
+    <p class="lede">Two minutes, end to end: a partner sets up a place, a guest scans the QR on the wall, books on Headout, and the commission lands on the dashboard — live.</p>
+
+    <!-- THE VIDEO -->
+    <div class="stage">
+      <div class="screen">
+        <div class="bar">
+          <div class="traffic" aria-hidden="true"><i></i><i></i><i></i></div>
+          <span class="url">ketansomvanshi.github.io/here-by-headout/<b>demo</b></span>
+          <span class="meta"><span class="dot"></span> the money loop</span>
+        </div>
+        <video controls preload="metadata" playsinline
+               poster="designs/assets/partner-phone-qr-scene.png">
+          <source src="demo-videos/final-deck-video.mp4" type="video/mp4">
+          Your browser can&rsquo;t play embedded video.
+          <a href="demo-videos/final-deck-video.mp4">Download the demo video</a> instead.
+        </video>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip">runtime · <b>~2 min</b></span>
+      <span class="chip"><b>1080p</b> · MP4</span>
+      <span class="chip">scan → book → <b>commission</b></span>
+      <span class="chip">live · <b>no refresh</b></span>
+    </div>
+  </div>
+</header>
+
+<!-- WHAT YOU'LL SEE -->
+<section id="beats">
+  <div class="wrap">
+    <div class="shead"><span class="snum">01</span><h2>What you&rsquo;ll see</h2></div>
+    <p class="sdesc">The whole pitch is one loop. Each beat in the video maps to a real backend job — nothing on screen is faked.</p>
+    <div class="beats">
+      <div class="beat"><div class="t">Setup</div><h3>Claim a place</h3><p>A partner names their place and its surfaces, and gets a QR kit back in seconds.</p></div>
+      <div class="beat"><div class="t">Scan</div><h3>Guest at the wall</h3><p>A phone scans the QR; a co-branded storefront opens, attributed to that exact spot.</p></div>
+      <div class="beat"><div class="t">Book</div><h3>Books on Headout</h3><p>The guest books an experience. Commission is captured at 8%, tied to the placement.</p></div>
+      <div class="beat"><div class="t">Live</div><h3>Dashboard pings</h3><p>The earning shows up on the partner dashboard instantly over SSE — no refresh.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Built for Hackin&rsquo;26 · HERE by Headout. The full story, architecture, and the test-driven plan live in the repo.
+    <div class="flinks">
+      <a href="index.html">← Master Doc</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="demo-videos/final-deck-video.mp4">Open video file</a>
+      <a href="https://github.com/KetanSomvanshi/here-by-headout">GitHub repo</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

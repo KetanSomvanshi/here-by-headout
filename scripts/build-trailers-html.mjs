@@ -21,6 +21,7 @@ const pages = [
 
 const baseNav = [
   { label: "📋 Master Doc", href: "index.html" },
+  { label: "🎬 Demo", href: "demo.html" },
   { label: "🧭 Architecture", href: "architecture.html" },
 ];
 

@@ -9,6 +9,7 @@ const pagesPath = path.join(root, "index.html");
 
 const siteNav = [
   { label: "📋 Master Doc", href: "index.html", active: true },
+  { label: "🎬 Demo", href: "demo.html" },
   { label: "🧭 Architecture", href: "architecture.html" },
 ];
 
