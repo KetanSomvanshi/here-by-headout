@@ -11,7 +11,7 @@
   body{background:var(--surface-dark-primary-1);color:var(--text-white)}
 
   /* ── generating → reveal overlay (cinematic dark) ── */
-  .gen{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;transition:opacity .55s ease;color:#fff}
+  .gen{position:fixed;inset:0;z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;transition:opacity .38s ease;color:#fff}
   .gen.is-gone{opacity:0;pointer-events:none}
   .gen .kick{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--purps-100);background:var(--white-a10);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:24px}
   .gen h2{color:#fff;max-width:460px;margin:0 auto}
@@ -49,7 +49,8 @@
   .nav .done .d{width:7px;height:7px;border-radius:50%;background:var(--okay-400);box-shadow:0 0 0 4px rgba(73,238,156,.25)}
 
   /* ── layout ── */
-  .layout{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:18px 28px 84px;display:grid;grid-template-columns:1.42fr 1fr;gap:48px;align-items:start}
+  .layout{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:18px 28px 84px;display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:start}
+  .main-col{max-width:440px;justify-self:center}
 
   /* ── copy on the dark stage ── */
   .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
@@ -83,8 +84,10 @@
   .qr-asset-card figcaption span{font-weight:600;color:var(--text-1)}
   .track{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--text-3);margin-top:3px}
 
-  /* actions + note (on the dark stage, below the card) */
-  .qr-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  /* download actions live in the card header so they're above the fold */
+  .qr-actions{display:flex;gap:10px;margin:0 0 14px}
+  .qr-actions .ho-btn{flex:1;white-space:nowrap}
+  /* note on the dark stage, below the card */
   .scan-tag{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-white-translucent);
     background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-12);padding:11px 13px;margin-top:14px;line-height:1.5}
   .scan-tag .ee-icon{width:15px;height:15px;color:var(--purps-100);stroke-width:2.4;flex:none}
@@ -120,7 +123,22 @@
   .nm-row .ic .ee-icon{width:17px;height:17px;stroke-width:2.2}
   .nm-row .tx b{display:block;font-size:14px;font-weight:600;color:#fff}
   .nm-row .tx span{font-size:12.5px;color:var(--text-white-translucent);line-height:1.45}
-  .rail .go{margin-top:18px;width:100%}
+  /* "see it live" CTA — clean white card, no icon */
+  .go-cta{display:flex;align-items:center;gap:13px;width:100%;margin-top:20px;text-align:left;cursor:pointer;
+    border-radius:var(--r-16);padding:15px 18px;color:var(--text-1);text-decoration:none;
+    background:#fff;box-shadow:0 14px 34px rgba(0,0,0,.34);
+    transition:transform .18s ease,box-shadow .18s ease}
+  .go-cta:hover{transform:translateY(-1px);box-shadow:0 20px 46px rgba(0,0,0,.42)}
+  .go-cta:active{transform:translateY(0)}
+  .go-cta .ic{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--purps-20);color:var(--purps)}
+  .go-cta .ic .ee-icon{width:20px;height:20px;stroke-width:2.2}
+  .go-cta .tx b{display:block;font-size:15px;font-weight:600;line-height:1.25;color:var(--text-1)}
+  .go-cta .tx span{font-size:12px;color:var(--text-3)}
+  .go-cta .live-dot{flex:none;margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+    font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--okay-700);
+    background:var(--okay-200);border-radius:var(--r-pill);padding:4px 9px}
+  .go-cta .live-dot i{width:6px;height:6px;border-radius:50%;background:var(--okay-500)}
+  @media(max-width:380px){.go-cta .live-dot{display:none}}
 
   @media(max-width:860px){.layout{grid-template-columns:1fr;gap:34px}.rail{position:static}}
   @media (prefers-reduced-motion: reduce){.spot{animation:none;opacity:1}}
@@ -154,15 +172,10 @@
 
 <div class="layout">
   <div class="main-col">
-    <span class="kicker" data-reveal="up"><span class="dot"></span> Step 2 of 4 · QR kit ready</span>
-    <h1 class="headline display-m" data-reveal="up" style="--reveal-delay:60ms">Your QR kit is <span class="grad">ready to earn</span></h1>
-    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Every placement has its own branded poster and unique link. Download the kit, put the posters where guests already ask for plans, then watch commission land by spot.</p>
-
-    <section class="swipe-sheet pf-sheen" data-reveal="rise" style="--reveal-delay:180ms" aria-label="Generated QR posters">
+    <section class="swipe-sheet pf-sheen" data-reveal="rise" aria-label="Generated QR posters">
       <div class="swipe-head">
         <div>
           <div class="swipe-title">Swipe through your QR posters</div>
-          <div class="qs-h" id="qrSetSummary">Your QR set · <b>4 placements</b>, each with its own unique link</div>
           <div class="poster-count" id="posterCount">Poster 1 of 4</div>
         </div>
         <div class="swipe-controls">
@@ -170,22 +183,26 @@
           <button class="swipe-btn" id="nextQr" type="button" aria-label="Next QR"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
         </div>
       </div>
+      <div class="qr-actions">
+        <button class="ho-btn ho-btn--primary ho-btn--sm" id="downloadAll">Download all posters</button>
+        <button class="ho-btn ho-btn--secondary ho-btn--sm" id="downloadCurrent">This poster</button>
+      </div>
       <div class="swipe-track" id="qrSwipeTrack"></div>
       <div class="swipe-dots" id="qrDots" aria-label="QR posters"></div>
     </section>
 
-    <div class="qr-actions" data-reveal="up" style="--reveal-delay:240ms">
-      <button class="ho-btn ho-btn--primary ho-btn--lg" id="downloadAll">Download all posters</button>
-      <button class="ho-btn ho-btn--secondary ho-btn--lg" id="downloadCurrent" style="background:var(--white-a10);color:#fff;border-color:var(--white-a20)">Download this poster</button>
-    </div>
-    <div class="scan-tag" data-reveal="up" style="--reveal-delay:300ms">
+    <div class="scan-tag" data-reveal="up" style="--reveal-delay:240ms">
       <svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
       Each visual exports with its own unique link, so every QR spot can be compared in your dashboard.
     </div>
   </div>
 
-  <aside class="rail" aria-label="Your QR spots and what happens next" data-reveal="left">
-    <div class="rail-cap">Your QR spots <span class="live"><span class="d"></span>Tracked</span></div>
+  <aside class="rail" aria-label="Your QR spots and what happens next">
+    <span class="kicker" data-reveal="up"><span class="dot"></span> Step 2 of 4 · QR kit ready</span>
+    <h1 class="headline display-s" data-reveal="up" style="--reveal-delay:60ms">Your QR kit is <span class="grad">ready to earn</span></h1>
+    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Every placement has its own branded poster. Download the kit, put the posters where guests already ask for plans, then watch commission land by spot.</p>
+
+    <div class="rail-cap" data-reveal="up" style="--reveal-delay:180ms">Your QR spots <span class="live"><span class="d"></span>Tracked</span></div>
     <div class="rail-sub" id="railSub">4 placements · 4 unique links</div>
     <div class="spots" id="spotList"></div>
 
@@ -204,7 +221,11 @@
       </div>
     </div>
 
-    <a class="ho-btn ho-btn--white ho-btn--lg go" href="../guest-flow/01-map-storefront.html?v=journey">Preview the guest scan</a>
+    <a class="go-cta" href="../guest-flow/01-map-storefront.html?v=journey">
+      <span class="ic"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M10 18.5h4"/></svg></span>
+      <span class="tx"><b>Preview the guest scan</b><span>See the storefront your QR opens</span></span>
+      <span class="live-dot"><i></i>Live</span>
+    </a>
   </aside>
 </div>
 </div>
@@ -230,8 +251,8 @@
   };
   const QR_ASSETS=[
     {src:'../assets/qr-asset-stay.png',label:'Stay poster'},
-    {src:'../assets/qr-asset-ticket.png',label:'Ticket poster'},
     {src:'../assets/qr-asset-polaroid.png',label:'Photo poster'},
+    {src:'../assets/qr-asset-ticket.png',label:'Ticket poster'},
     {src:'../assets/qr-asset-rome.png',label:'Destination poster'}
   ];
   function readSetup(){
@@ -253,7 +274,7 @@
     return `<article class="swipe-slide" data-index="${index}" data-surface="${esc(surface)}" data-placement="${esc(placement)}" data-asset="${esc(asset.label)}">
       <figure class="qr-asset-card">
         <img src="${esc(asset.src)}" width="524" height="924" loading="${index===0?'eager':'lazy'}" decoding="async" alt="${esc(asset.label)} for ${esc(placement)} at ${esc(placeName)}">
-        <figcaption><span>${esc(placement)}</span><code class="track">/here/${esc(placeSlug)}?surface=${esc(surface)}</code></figcaption>
+        <figcaption><span>${esc(placement)}</span></figcaption>
       </figure>
     </article>`;
   }
@@ -264,7 +285,6 @@
     dots.forEach((dot,i)=>dot.classList.toggle('is-active',i===index));
     prevQr.disabled=index===0;
     nextQr.disabled=index===slides.length-1;
-    downloadCurrent.textContent=`Download ${slides[index]?.dataset.placement||'current'} poster`;
     posterCount.textContent=`Poster ${Math.min(index+1,slides.length)} of ${slides.length}`;
     highlightSpot(index);
   }
@@ -346,7 +366,6 @@
         <span class="ix">${index+1}</span>
         <span class="sd">
           <span class="nm">${esc(placement)}</span>
-          <code class="lnk">/here/${esc(placeSlug)}?surface=${esc(slugify(placement))}</code>
         </span>
         <svg class="ee-icon chk" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
       </button>`).join('');
@@ -359,7 +378,6 @@
     const placeSlug=slugify(placeName);
     const n=placements.length;
     document.getElementById('liveStatus').textContent=`${placeName} QR kit ready`;
-    document.getElementById('qrSetSummary').innerHTML=`Your QR set · <b>${n} placement${n!==1?'s':''}</b>, each with its own unique link`;
     document.getElementById('railSub').textContent=`${n} placement${n!==1?'s':''} · ${n} unique link${n!==1?'s':''}`;
     document.getElementById('downloadAll').textContent=`Download ${n} poster${n!==1?'s':''}`;
     qrSwipeTrack.innerHTML=placements.map((placement,index)=>renderSlide({placeName,placeSlug,placement,index})).join('');
@@ -404,15 +422,15 @@
       setTimeout(()=>{
         gen.classList.add('is-gone');
         if(window.PF){ PF.reveal(); }
-      }, reduced?300:1400);
+      }, reduced?200:850);
     }
     if(reduced){ finish(); return; }
     let p=0;
     const iv=setInterval(()=>{
-      p=Math.min(100,p+ (p<70?6:3));
+      p=Math.min(100,p+ (p<70?10:6));
       bar.style.width=p+'%';
-      if(p>=100){ clearInterval(iv); setTimeout(finish,160); }
-    },70);
+      if(p>=100){ clearInterval(iv); setTimeout(finish,120); }
+    },42);
   })();
 
   if(window.PF){
