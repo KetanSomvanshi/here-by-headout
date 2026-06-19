@@ -100,7 +100,9 @@ the hackathon (Alembic optional later).
 
 ## 6. Build order (milestones)
 
-All built and verified **locally** (`uv run uvicorn`) before any hosting.
+All built and verified **locally** (`uv run uvicorn`) before any hosting. Each milestone
+is **test-driven**: a matching group in `tests/` already encodes the contract (see
+`TESTING.md`) — build until it goes green, run `uv run pytest` after each step.
 
 1. **Scaffold** — FastAPI (`uv`), SQLModel + SQLite engine, `create_all` on startup,
    `/health`, `StaticFiles` serving `../frontend`, in-process event bus.
@@ -124,7 +126,8 @@ demo/
     MASTER_PLAN.md      # this file
     LOCAL_DEV.md        # local-first runbook (no Docker)
     HOSTING.md          # tunnel + Fly.io deploy
-    pyproject.toml      # uv-managed deps
+    TESTING.md          # test-driven spec + how to run the suite
+    pyproject.toml      # uv-managed deps (+ [dev] = pytest/httpx)
     .env.example        # documented env vars
     fly.toml            # Fly.io config (durable host)
     Dockerfile          # build recipe for Fly only (NOT a local runtime dep)
@@ -132,9 +135,10 @@ demo/
     posters/            # generated poster PNGs (gitignored)
     app/
       main.py           # FastAPI app, CORS, StaticFiles (../frontend), startup create_all + seed
-      config.py         # settings from env (.env locally)
-      db.py             # SQLModel engine + session dependency
+      config.py         # settings from env (.env locally); SEED_ON_STARTUP gate
+      db.py             # SQLModel engine + get_session dependency (overridden in tests)
       models.py         # SQLModel tables (data model §4)
+      utils.py          # slugify(), commission()  ← pure, unit-tested
       events_bus.py     # in-process asyncio fan-out for SSE
       seed.py           # demo data on startup
       routers/
@@ -146,6 +150,10 @@ demo/
       services/
         qr.py           # segno QR generation
         posters.py      # Pillow poster compositing
+    tests/              # pytest suite — the executable contract (see TESTING.md)
+      conftest.py       # in-memory DB + API-built fixtures
+      test_*.py         # one group per milestone
+      unit/test_helpers.py
 ```
 
 ## 8. Demo strategy
