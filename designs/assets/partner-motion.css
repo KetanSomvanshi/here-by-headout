@@ -57,8 +57,8 @@
   background:radial-gradient(circle,rgba(255,102,175,.22),transparent 70%);bottom:-160px;left:-80px;pointer-events:none}
 .pf-dark > *{position:relative;z-index:1}
 
-/* ── live "just landed" ping toast (top-anchored, distinct from .toast) ── */
-.pf-ping{position:fixed;top:18px;right:18px;z-index:50;display:flex;align-items:center;gap:10px;
+/* ── live "just landed" ping toast (bottom-anchored, clear of top nav CTAs) ── */
+.pf-ping{position:fixed;bottom:18px;right:18px;z-index:50;display:flex;align-items:center;gap:10px;
   background:var(--white);border:1px solid var(--divider);border-radius:var(--r-12);
   padding:11px 14px;box-shadow:var(--shadow-3);min-width:230px;
   transform:translateX(120%);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .42s}
