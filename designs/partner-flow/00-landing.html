@@ -90,16 +90,31 @@
 
   /* steps */
   .steps{max-width:1080px;margin:0 auto;padding:78px 28px}
-  .steps-h{text-align:center;margin-bottom:44px}
+  .steps-h{text-align:center;margin-bottom:48px}
   .steps-h h2{color:#fff}
   .steps-h p{color:var(--text-white-translucent);margin-top:10px;font-size:16px}
-  .step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-  .step{position:relative;background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-20);padding:28px 26px;color:#fff;overflow:hidden}
-  .step .n{font-family:var(--font-hd);font-weight:500;font-size:15px;color:var(--purps-100);display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--r-8);background:var(--white-a10);border:1px solid var(--white-a20);margin-bottom:16px}
+  .step-grid{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .step{position:relative;background:linear-gradient(180deg,var(--white-a10),rgba(255,255,255,.015));
+    border:1px solid var(--white-a20);border-radius:var(--r-20);padding:30px 26px 28px;color:#fff;overflow:hidden;
+    transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+  .step::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--purps),var(--candy-500));opacity:.5;transition:opacity .28s ease}
+  .step:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--purps) 50%,var(--white-a20));
+    box-shadow:0 26px 54px rgba(128,0,255,.24)}
+  .step:hover::before{opacity:1}
+  .step:hover .ic{color:#fff;border-color:color-mix(in srgb,var(--purps) 50%,var(--white-a20))}
+  .step .n{font-family:var(--font-hd);font-weight:500;font-size:18px;color:#fff;display:inline-flex;align-items:center;justify-content:center;
+    width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--purps),var(--candy-500));
+    box-shadow:0 10px 24px rgba(128,0,255,.45);margin-bottom:18px}
   .step h3{font-size:19px;font-weight:600;margin-bottom:8px}
   .step p{font-size:14px;line-height:22px;color:var(--text-white-translucent)}
-  .step .ic{position:absolute;top:24px;right:22px;color:var(--purps-100);opacity:.7}
-  .step .ic .ee-icon{width:30px;height:30px;stroke-width:1.6}
+  .step .ic{position:absolute;top:26px;right:24px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+    background:var(--white-a10);border:1px solid var(--white-a20);color:var(--purps-100);transition:.28s}
+  .step .ic .ee-icon{width:22px;height:22px;stroke-width:1.8}
+  /* 1 → 2 → 3 flow connectors */
+  .conn{position:absolute;top:51px;width:12px;height:12px;z-index:5;opacity:.85;
+    border-top:2px solid var(--purps-100);border-right:2px solid var(--purps-100);transform:translateX(-50%) rotate(45deg)}
+  .conn.c1{left:33.333%} .conn.c2{left:66.666%}
 
   /* closing CTA */
   .closer{max-width:920px;margin:0 auto;padding:20px 28px 96px;text-align:center}
@@ -112,6 +127,7 @@
     .hero h1,.lede{max-width:none}
     .stage{min-height:440px;margin-top:18px}
     .step-grid{grid-template-columns:1fr}
+    .conn{display:none}
   }
 </style>
 </head>
@@ -200,6 +216,8 @@
       <h3>Earn on every booking</h3>
       <p>Guests book on Headout, commission lands in your dashboard the instant it happens.</p>
     </div>
+    <span class="conn c1" aria-hidden="true"></span>
+    <span class="conn c2" aria-hidden="true"></span>
   </div>
 </section>
 
