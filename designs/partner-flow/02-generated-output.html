@@ -44,7 +44,7 @@
   .nav .inner{max-width:1120px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
   .brand{display:inline-flex;align-items:center;gap:10px}
   .brand img{height:19px;width:auto;display:block}
-  .brand .by{font-size:13px;color:var(--text-white-translucent);font-weight:500;border-left:1px solid var(--white-a20);padding-left:10px}
+  .brand .by{font-size:12px;color:var(--text-white-translucent);font-weight:500;border-left:1px solid var(--white-a20);padding-left:10px}
   .nav .done{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#fff;background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:8px 14px}
   .nav .done .d{width:7px;height:7px;border-radius:50%;background:var(--okay-400);box-shadow:0 0 0 4px rgba(73,238,156,.25)}
 
@@ -109,9 +109,9 @@
   .spot.is-active{border-color:var(--purps-100);background:color-mix(in srgb,var(--purps) 18%,transparent);
     box-shadow:0 0 0 1px var(--purps-100),0 12px 30px color-mix(in srgb,var(--purps) 26%,transparent)}
   .spot .ix{flex:none;width:24px;height:24px;border-radius:var(--r-8);display:grid;place-items:center;
-    font-family:var(--font-hd);font-weight:500;font-size:13px;color:var(--purps-100);background:var(--white-a10);border:1px solid var(--white-a20)}
+    font-family:var(--font-hd);font-weight:500;font-size:12px;color:var(--purps-100);background:var(--white-a10);border:1px solid var(--white-a20)}
   .spot .sd{min-width:0}
-  .spot .nm{font-size:13px;font-weight:600;color:#fff;line-height:1.3}
+  .spot .nm{font-size:12px;font-weight:600;color:#fff;line-height:1.3}
   .spot .lnk{display:block;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--purps-100);
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .spot .chk{width:15px;height:15px;color:var(--okay-400);stroke-width:2.6;flex:none;margin-left:auto}
@@ -296,7 +296,7 @@
     if(!toast){
       toast=document.createElement('div');
       toast.className='toast';
-      toast.style.cssText='position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(12px);background:var(--grey-900);color:#fff;border-radius:var(--r-pill);padding:10px 14px;font-size:13px;font-weight:500;box-shadow:var(--shadow-2);opacity:0;transition:.18s;z-index:80';
+      toast.style.cssText='position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(12px);background:var(--grey-900);color:#fff;border-radius:var(--r-pill);padding:10px 14px;font-size:12px;font-weight:500;box-shadow:var(--shadow-2);opacity:0;transition:.18s;z-index:80';
       document.body.appendChild(toast);
     }
     toast.textContent=message;
