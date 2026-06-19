@@ -1,0 +1,13 @@
+# runtime artifacts
+here.db
+here.db-journal
+posters/
+
+# python
+.venv/
+__pycache__/
+*.pyc
+
+# env
+.env
+.env.local

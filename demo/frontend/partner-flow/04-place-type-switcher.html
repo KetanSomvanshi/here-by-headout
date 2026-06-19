@@ -1,0 +1,284 @@
+<!-- @dsCard group="Partner Flow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>04 · Place-Type Switcher</title>
+<link rel="stylesheet" href="../assets/eevee.css">
+<link rel="stylesheet" href="../assets/partner-motion.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  body{background:var(--surface-1)}
+  .types .ho-chip{cursor:pointer}
+  .pcard.is-in{transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s,filter .35s}
+  .pcard.is-in.is-emph{transform:translateY(-6px) scale(1.015)}
+  .pcard.is-emph .phone{box-shadow:0 0 0 3px var(--purps),0 18px 44px rgba(128,0,255,.28)}
+  .pcard.is-in.is-dim{opacity:.62;filter:saturate(.85)}
+  /* dark closing band */
+  .reveal-band{margin-top:56px}
+  .reveal-band .inner{max-width:1080px;margin:0 auto;padding:64px 28px;text-align:center}
+  .reveal-band h2{color:#fff;max-width:620px;margin:0 auto}
+  .reveal-band p{color:var(--text-white-translucent);font-size:16px;max-width:520px;margin:12px auto 0}
+  .reveal-stat{display:inline-flex;align-items:center;gap:18px;margin:30px 0 28px;font-family:var(--font-hd);font-weight:500}
+  .reveal-stat .v{font-size:48px;color:#fff;line-height:1}
+  .reveal-stat .x{font-size:24px;color:var(--purps-100)}
+  .reveal-stat .l{font-size:12px;font-weight:500;color:var(--text-white-translucent);font-family:var(--font-ht);text-align:left}
+  .reveal-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 24px 64px;text-align:center}
+  .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text-primary);background:var(--purps-20);padding:6px 12px;border-radius:var(--r-pill);margin-bottom:14px}
+  .lede{color:var(--text-2);max-width:600px;margin:8px auto 0}
+  .types{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:22px 0 6px}
+  .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0 2px}
+  .same{font-size:12px;color:var(--text-primary);font-weight:500;margin-bottom:24px}
+  .same b{font-weight:700}
+  .phones{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .phone{border:7px solid var(--grey-900);border-radius:28px;overflow:hidden;background:#fff;box-shadow:var(--shadow-2);text-align:left}
+  /* Headout-forward co-brand header (same brand for every place type) */
+  .ms-hd{padding:9px 11px}
+  .ms-promo{background:var(--purps);color:#fff;text-align:center;font-size:8.5px;font-weight:500;padding:4px 6px;margin:-9px -11px 8px}
+  .ms-cb{display:flex;align-items:center;gap:5px;font-weight:600;font-size:12.5px;color:var(--text-1)}
+  .ms-cb .x{color:var(--grey-400);font-weight:300} .ms-cb img{height:11px}
+  .ms-type{font-size:10px;color:var(--text-3);margin-top:2px}
+  .ms-map{height:94px;position:relative;z-index:0}
+  .ms-body{padding:10px 11px 11px}
+  .ms-ask{display:flex;justify-content:space-between;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--divider-dark);border-radius:var(--r-pill);padding:6px 9px;font-size:10.5px;color:var(--text-3);box-shadow:var(--shadow-1)}
+  .ms-ask .send{flex:none;min-width:26px;height:20px;border-radius:var(--r-pill);background:var(--purps);color:#fff;display:grid;place-items:center;font-size:9.5px;font-weight:600;padding:0 7px}
+  .ms-chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+  .ms-chips span{font-size:9.5px;font-weight:500;background:var(--purps-20);color:var(--text-primary);padding:3px 7px;border-radius:var(--r-pill)}
+  .ms-card{border:1px solid var(--divider);border-radius:var(--r-12);overflow:hidden}
+  .ms-card .img{height:72px;background:var(--grey-200)} .ms-card .img img{width:100%;height:100%;object-fit:cover}
+  .ms-c2{padding:8px 9px 9px}
+  .ms-rt{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--text-3);margin-bottom:3px} .ms-rt .st{width:10px;height:10px;color:var(--star);flex:none} .ms-rt b{color:var(--text-1);font-weight:600;font-size:10.5px}
+  .ms-t{font-weight:600;font-size:10px;line-height:1.25;color:var(--text-1)}
+  .ms-why{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 8px}
+  .ms-why span{display:inline-flex;align-items:center;gap:3px;font-size:8.5px;font-weight:600;background:var(--okay-200);color:var(--okay-700);padding:2px 6px;border-radius:var(--r-4)}
+  .ms-why .ee-icon{width:9px;height:9px;stroke-width:2.5}
+  .ms-pr{display:flex;justify-content:space-between;align-items:center}
+  .ms-pr .price{font-weight:600;font-size:12px;color:var(--text-1)} .ms-pr .price small{font-weight:300;font-size:10px;color:var(--text-3)}
+  .ms-pr .gwas{font-size:10px;color:var(--grey-500);text-decoration:line-through;margin-left:3px}
+  .ms-pr .book{background:var(--purps);color:#fff;font-size:9.5px;font-weight:500;padding:4px 10px;border-radius:var(--r-pill)}
+  /* mini-map markers */
+  .mkico{background:none!important;border:0!important}
+  .mini-pin{width:30px;height:30px;border-radius:50%;background-size:cover;background-position:center;border:2.5px solid #fff;box-shadow:0 3px 8px rgba(17,17,17,.3)}
+  .mini-here{display:grid;place-items:center}
+  .mini-here .r{width:38px;height:38px;border-radius:50%;background:rgba(128,0,255,.16);display:grid;place-items:center}
+  .mini-here .c{width:12px;height:12px;border-radius:50%;background:var(--purps);border:2.5px solid #fff;box-shadow:0 0 0 2px var(--purps)}
+  .label{text-align:center;font-size:12px;color:var(--text-3);font-style:italic;margin-top:10px}
+  @media(max-width:860px){.phones{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.phones{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="ho-header">
+  <a class="ho-logo" href="00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-purps.svg" alt="HERE by Headout"></a>
+  <span style="font-size:12px;color:var(--text-2)">The reveal · one engine, every place</span>
+</header>
+
+<div class="wrap">
+  <span class="kicker">Same engine · any trusted surface</span>
+  <h1 class="display-s">One Headout Here, every kind of place</h1>
+  <p class="lede para-m">The setup form re-skins the same guest map storefront for whatever has footfall. Same Headout brand, same real inventory. The guest just asks in context.</p>
+  <div class="hero-actions">
+    <a class="ho-btn ho-btn--primary" href="01-place-setup.html">Set up your place</a>
+  </div>
+
+  <div class="types" id="typeChips">
+    <button type="button" class="ho-chip is-selected" data-type="hotel">Hotel</button>
+    <button type="button" class="ho-chip" data-type="cafe">Café</button>
+    <button type="button" class="ho-chip" data-type="venue">Venue</button>
+    <button type="button" class="ho-chip" data-type="tourist-desk">Tourist desk</button>
+  </div>
+  <div class="same">Same Headout brand &amp; map storefront · only the <b>context</b> changes</div>
+
+  <div class="phones">
+    <!-- HOTEL -->
+    <div class="pcard" data-type="hotel" data-reveal="up" style="--reveal-delay:0ms">
+      <div class="phone">
+        <div class="ms-hd">
+          <div class="ms-promo">Headout picks for guests</div>
+          <div class="ms-cb">Casa Aurelia <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Hotel · Rome</div>
+        </div>
+        <div class="ms-map" id="m1"></div>
+        <div class="ms-body">
+          <div class="ms-ask">It’s raining with a 6-yr-old… <span class="send">Go</span></div>
+          <div class="ms-chips"><span>Today</span><span>Kid-friendly</span><span>Rainy day</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c1" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><svg class="st ee-icon ee-icon--fill" viewBox="0 0 20 20" aria-hidden="true"><path d="m10 1.7 2.5 5.1 5.6.8-4 4 1 5.5-5-2.6-5 2.6 1-5.5-4-4 5.5-.8L10 1.7Z"/></svg><b>4.4</b><span>(50,776)</span></div>
+              <div class="ms-t">Vatican Museums &amp; Sistine Chapel Skip-the-Line</div>
+              <div class="ms-why"><span>Indoor <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>650m <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>15:30 <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €38<span class="gwas">€56</span></span><span class="book">Book</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="label">“What to do this afternoon?”</div>
+    </div>
+
+    <!-- CAFÉ -->
+    <div class="pcard" data-type="cafe" data-reveal="up" style="--reveal-delay:100ms">
+      <div class="phone">
+        <div class="ms-hd">
+          <div class="ms-promo">Headout picks for guests</div>
+          <div class="ms-cb">Caffè Prati <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Café · Rome</div>
+        </div>
+        <div class="ms-map" id="m2"></div>
+        <div class="ms-body">
+          <div class="ms-ask">What’s good tonight nearby? <span class="send">Go</span></div>
+          <div class="ms-chips"><span>Tonight</span><span>After this</span><span>Under 2 hrs</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c2" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><svg class="st ee-icon ee-icon--fill" viewBox="0 0 20 20" aria-hidden="true"><path d="m10 1.7 2.5 5.1 5.6.8-4 4 1 5.5-5-2.6-5 2.6 1-5.5-4-4 5.5-.8L10 1.7Z"/></svg><b>4.7</b><span>(1,240)</span></div>
+              <div class="ms-t">Evening Food Tour &amp; Wine Tasting</div>
+              <div class="ms-why"><span>Tonight <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>19:30 <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>1.4km <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €55</span><span class="book">Book</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="label">“What’s good tonight?”</div>
+    </div>
+
+    <!-- VENUE -->
+    <div class="pcard" data-type="venue" data-reveal="up" style="--reveal-delay:200ms">
+      <div class="phone">
+        <div class="ms-hd">
+          <div class="ms-promo">Headout picks for guests</div>
+          <div class="ms-cb">Teatro Sistina <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Venue · Rome</div>
+        </div>
+        <div class="ms-map" id="m3"></div>
+        <div class="ms-body">
+          <div class="ms-ask">Anything after the show? <span class="send">Go</span></div>
+          <div class="ms-chips"><span>After the show</span><span>Late night</span><span>Walkable</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c3" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><svg class="st ee-icon ee-icon--fill" viewBox="0 0 20 20" aria-hidden="true"><path d="m10 1.7 2.5 5.1 5.6.8-4 4 1 5.5-5-2.6-5 2.6 1-5.5-4-4 5.5-.8L10 1.7Z"/></svg><b>4.4</b><span>(26,773)</span></div>
+              <div class="ms-t">Colosseum Under the Moon Night Tour</div>
+              <div class="ms-why"><span>Open late <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>22:00 <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>1.4km <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €49</span><span class="book">Book</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="label">“After the show?”</div>
+    </div>
+
+    <!-- TOURIST DESK -->
+    <div class="pcard" data-type="tourist-desk" data-reveal="up" style="--reveal-delay:300ms">
+      <div class="phone">
+        <div class="ms-hd">
+          <div class="ms-promo">Headout picks for guests</div>
+          <div class="ms-cb">Prati Visitor Desk <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Tourist desk · Rome</div>
+        </div>
+        <div class="ms-map" id="m4"></div>
+        <div class="ms-body">
+          <div class="ms-ask">In my language, skip the line <span class="send">Go</span></div>
+          <div class="ms-chips"><span>Today</span><span>Skip the line</span><span>In my language</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c4" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><svg class="st ee-icon ee-icon--fill" viewBox="0 0 20 20" aria-hidden="true"><path d="m10 1.7 2.5 5.1 5.6.8-4 4 1 5.5-5-2.6-5 2.6 1-5.5-4-4 5.5-.8L10 1.7Z"/></svg><b>4.0</b><span>(2,454)</span></div>
+              <div class="ms-t">St. Peter’s Basilica Entry with Audio Guide</div>
+              <div class="ms-why"><span>日本語 <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>1.2km <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span><span>Audio <svg class="ee-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg></span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €6</span><span class="book">Book</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="label">“In my language.”</div>
+    </div>
+  </div>
+</div>
+
+<section class="reveal-band pf-dark">
+  <div class="inner">
+    <span class="kicker" style="background:var(--white-a10);color:var(--purps-100)" data-reveal="up">The reveal</span>
+    <h2 class="display-m" data-reveal="up" style="--reveal-delay:80ms">One engine. Every kind of place.</h2>
+    <p data-reveal="up" style="--reveal-delay:140ms">Same Headout brand, same real inventory. Only the guest's context changes. Set it up once, for whatever has footfall.</p>
+    <div class="reveal-stat" data-reveal="up" style="--reveal-delay:200ms">
+      <span class="v">1</span><span class="l">engine &amp;<br>storefront</span>
+      <span class="x">×</span>
+      <span class="v">∞</span><span class="l">trusted<br>places</span>
+    </div>
+    <div class="reveal-actions" data-reveal="up" style="--reveal-delay:260ms">
+      <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html">Set up your place</a>
+    </div>
+  </div>
+</section>
+
+<div id="rail"></div>
+<nav class="journey-nav">
+  <div class="journey-actions">
+    <a class="ho-btn ho-btn--secondary" href="03-partner-dashboard.html?v=journey">Earnings</a>
+  </div>
+  <div class="journey-meta">Optional proof · Any place</div>
+  <div class="journey-actions">
+    <a class="ho-btn ho-btn--secondary" href="../index.html">All screens</a>
+    <a class="ho-btn ho-btn--primary" href="01-place-setup.html">Set up your place</a>
+  </div>
+</nav>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const THUMB=u=>u+"?w=110&h=110&fit=crop&crop=faces,edges&auto=format,compress";
+  const IMG=u=>u+"?w=380&h=230&fit=crop&crop=faces,edges&auto=format,compress";
+  const VATICAN="https://cdn-imgix.headout.com/media/images/1ece8bc22bd7b6ad591897b0646852ba-6796---Rome---Premium-Small-Group-Guided-Tour-of-Vatican-Museum---Sistine-Chapel--10.jpg";
+  const FOOD="https://cdn-imgix.headout.com/media/images/0a9c4f723d892fb0920cae52d5824eb9-20052-07.jpg";
+  const COLOSSEUM="https://cdn-imgix.headout.com/media/images/ad49e83c507e0fd1ffe2791aae977a0c-22943-rome-express-tour-of-rome-by-golf-cart-02.jpg";
+  const STPETERS="https://cdn-imgix.headout.com/microbrands-content-image/image/ee6dbf1e76326e45ff0e13c90e1acc2e-St.%20peter%27s%20basilica%20interior.jpg";
+
+  function mini(id, center, zoom, placeLL, pinLL, pinImg){
+    const m=L.map(id,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,
+      doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView(center,zoom);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(m);
+    L.marker(placeLL,{icon:L.divIcon({className:'mkico',iconSize:[38,38],iconAnchor:[19,19],
+      html:'<div class="mini-here"><div class="r"><div class="c"></div></div></div>'})}).addTo(m);
+    L.marker(pinLL,{icon:L.divIcon({className:'mkico',iconSize:[30,30],iconAnchor:[15,15],
+      html:`<div class="mini-pin" style="background-image:url('${THUMB(pinImg)}')"></div>`})}).addTo(m);
+    setTimeout(()=>m.invalidateSize(),160);
+  }
+
+  document.getElementById('c1').src=IMG(VATICAN);
+  document.getElementById('c2').src=IMG(FOOD);
+  document.getElementById('c3').src=IMG(COLOSSEUM);
+  document.getElementById('c4').src=IMG(STPETERS);
+
+  mini('m1',[41.9068,12.4548],15,[41.9070,12.4560],[41.9065,12.4536],VATICAN);
+  mini('m2',[41.9038,12.4665],14,[41.9075,12.4640],[41.9000,12.4690],FOOD);
+  mini('m3',[41.8974,12.4906],13,[41.9046,12.4889],[41.8902,12.4922],COLOSSEUM);
+  mini('m4',[41.9046,12.4555],15,[41.9069,12.4570],[41.9022,12.4539],STPETERS);
+</script>
+<script src="../assets/partner-motion.js"></script>
+<script>
+  // chip-driven emphasis of the matching phone
+  const chips=document.querySelectorAll('#typeChips .ho-chip');
+  const cards=document.querySelectorAll('.pcard');
+  function emphasize(type){
+    cards.forEach(c=>{
+      const match=c.dataset.type===type;
+      c.classList.toggle('is-emph',match);
+      c.classList.toggle('is-dim',!match);
+    });
+  }
+  chips.forEach(chip=>chip.addEventListener('click',()=>{
+    chips.forEach(c=>c.classList.remove('is-selected'));
+    chip.classList.add('is-selected');
+    emphasize(chip.dataset.type);
+  }));
+  emphasize('hotel');
+
+  if(window.PF){
+    PF.rail(['Set up','QR kit','Earnings','Any place'], 3, '#rail');
+    PF.pageTransition();
+  }
+</script>
+</body>
+</html>

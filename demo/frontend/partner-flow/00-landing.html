@@ -1,0 +1,254 @@
+<!-- @dsCard group="Partner Flow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>00 · Partner Landing</title>
+<link rel="stylesheet" href="../assets/eevee.css?v=oak">
+<link rel="stylesheet" href="../assets/partner-motion.css">
+<style>
+  body{background:var(--surface-dark-primary-1)}
+
+  /* top nav */
+  .nav{position:absolute;top:0;left:0;right:0;z-index:5}
+  .nav .inner{max-width:1180px;margin:0 auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .brand{display:inline-flex;align-items:center;gap:10px}
+  .brand img{height:19px;width:auto;display:block}
+  .brand .by{font-size:12px;color:var(--text-white-translucent);font-weight:500;border-left:1px solid var(--white-a20);padding-left:10px}
+  .nav .links{display:flex;align-items:center;gap:26px}
+  .nav .links a{font-size:14px;font-weight:500;color:var(--text-white-translucent)}
+  .nav .links a:hover{color:#fff}
+  .nav .links .ho-btn--white{color:var(--text-1)}
+  .nav .ho-btn{padding:11px 20px;font-size:14px}
+  .nav .nav-cta{background:transparent;color:#fff;border:1.5px solid var(--white-a20)}
+  .nav .nav-cta:hover{background:var(--white-a10);border-color:var(--white-a80)}
+  @media(max-width:780px){.nav .links a:not(.ho-btn){display:none}}
+
+  /* hero */
+  .hero{position:relative;min-height:min(100vh,880px);display:flex;align-items:center}
+  .hero .inner{max-width:1180px;margin:0 auto;padding:118px 28px 64px;position:relative;z-index:1;width:100%;
+    display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.5px;
+    text-transform:uppercase;color:var(--purps-100);background:var(--white-a10);
+    padding:7px 14px;border-radius:var(--r-pill);margin-bottom:22px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--okay-400);box-shadow:0 0 0 4px rgba(73,238,156,.25)}
+  .hero h1{max-width:560px}
+  .hero h1 .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lede{color:var(--text-white-translucent);font-size:17px;line-height:28px;max-width:480px;margin:18px 0 0}
+
+  /* live earnings ticker */
+  .ticker{display:flex;align-items:center;gap:14px;margin:30px 0 0;padding:16px 20px;border-radius:var(--r-16);
+    background:var(--white-a10);border:1px solid var(--white-a20);max-width:430px;backdrop-filter:blur(8px)}
+  .ticker .pulse{width:10px;height:10px;border-radius:50%;background:var(--okay-400);flex:none;box-shadow:0 0 0 0 rgba(73,238,156,.5);animation:tkPulse 2s infinite}
+  @keyframes tkPulse{0%{box-shadow:0 0 0 0 rgba(73,238,156,.5)}70%{box-shadow:0 0 0 12px rgba(73,238,156,0)}100%{box-shadow:0 0 0 0 rgba(73,238,156,0)}}
+  .ticker .amt{font-family:var(--font-hd);font-weight:500;font-size:30px;line-height:1;color:#fff}
+  .ticker .cap{font-size:12.5px;color:var(--text-white-translucent);line-height:1.35}
+  .ticker .cap b{color:#fff;font-weight:600}
+
+  .actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:30px}
+  .trust{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+  .trust span{font-size:12px;font-weight:600;color:#fff;background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:7px 12px}
+
+  /* cinematic stage */
+  .stage{position:relative;display:flex;justify-content:center;align-items:center;min-height:560px}
+  .stage-glow{position:absolute;width:480px;height:480px;border-radius:50%;background:radial-gradient(circle,rgba(128,0,255,.5),transparent 68%);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0}
+  .stage .phone-wrap{position:relative;z-index:1;width:min(430px,96%);filter:drop-shadow(0 40px 80px rgba(0,0,0,.5))}
+  .stage .phone-wrap img{width:100%;height:auto;display:block}
+
+  /* floating proof cards, sequenced loop */
+  .proof{position:absolute;z-index:3;display:flex;align-items:center;gap:10px;background:var(--white);
+    border-radius:var(--r-12);padding:11px 14px;box-shadow:0 18px 44px rgba(0,0,0,.34);
+    opacity:0;animation:proofCycle 6s ease-in-out infinite}
+  .proof .pi{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center}
+  .proof .pi .ee-icon{width:17px;height:17px;stroke-width:2.5}
+  .proof .pt{line-height:1.25}
+  .proof .pt b{display:block;font-size:12px;color:var(--text-1);font-weight:600}
+  .proof .pt span{font-size:10px;color:var(--text-3)}
+  .proof.p1{top:60px;left:-6px;animation-delay:0s}
+  .proof.p1 .pi{background:var(--purps-20);color:var(--purps)}
+  .proof.p2{top:46%;right:-14px;animation-delay:2s}
+  .proof.p2 .pi{background:var(--link-500);color:#fff}
+  .proof.p3{bottom:78px;left:8px;animation-delay:4s}
+  .proof.p3 .pi{background:var(--okay-200);color:var(--okay-700)}
+  @keyframes proofCycle{0%{opacity:0;transform:translateY(14px) scale(.9)}8%{opacity:1;transform:translateY(0) scale(1)}28%{opacity:1;transform:translateY(0) scale(1)}38%{opacity:0;transform:translateY(-10px) scale(.96)}100%{opacity:0}}
+
+  /* floating coin pops (spawned by JS) */
+  .coin{position:absolute;z-index:4;font-family:var(--font-hd);font-weight:500;font-size:18px;color:var(--okay-400);
+    text-shadow:0 2px 10px rgba(0,0,0,.4);pointer-events:none;animation:coinUp 2.4s ease-out forwards}
+  @keyframes coinUp{0%{opacity:0;transform:translateY(0) scale(.7)}15%{opacity:1;transform:translateY(-10px) scale(1.1)}100%{opacity:0;transform:translateY(-90px) scale(1)}}
+
+  /* marquee carousel */
+  .band{border-top:1px solid var(--white-a10);border-bottom:1px solid var(--white-a10);padding:44px 0;background:var(--white-a10);overflow:hidden}
+  .band .bl{text-align:center;font-family:var(--font-hd);font-weight:500;font-size:clamp(24px,3.4vw,34px);line-height:1.15;color:#fff;margin-bottom:26px;padding:0 22px}
+  .band .bl .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .band .bl small{display:block;font-family:var(--font-ht);font-weight:500;font-size:14px;color:var(--text-white-translucent);margin-top:10px}
+  .marquee{display:flex;gap:14px;width:max-content;animation:scrollX 28s linear infinite}
+  .marquee:hover{animation-play-state:paused}
+  .mcard{display:inline-flex;align-items:center;gap:10px;flex:none;color:#fff;background:var(--white-a10);
+    border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:12px 20px;font-size:15px;font-weight:600}
+  .mcard .e{font-size:18px}
+  @keyframes scrollX{to{transform:translateX(-50%)}}
+
+  /* steps */
+  .steps{max-width:1080px;margin:0 auto;padding:78px 28px}
+  .steps-h{text-align:center;margin-bottom:48px}
+  .steps-h h2{color:#fff}
+  .steps-h p{color:var(--text-white-translucent);margin-top:10px;font-size:16px}
+  .step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .step{background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-20);padding:28px 26px;color:#fff;
+    transition:border-color .25s ease,background .25s ease}
+  .step:hover{border-color:color-mix(in srgb,var(--purps) 45%,var(--white-a20));background:color-mix(in srgb,var(--purps) 9%,var(--white-a10))}
+  .step .n{font-family:var(--font-hd);font-weight:500;font-size:16px;color:#fff;display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:50%;background:var(--purps);margin-bottom:18px}
+  .step h3{font-size:18px;font-weight:600;margin-bottom:8px}
+  .step p{font-size:14px;line-height:22px;color:var(--text-white-translucent)}
+
+  /* closing CTA */
+  .closer{max-width:920px;margin:0 auto;padding:20px 28px 96px;text-align:center}
+  .closer h2{color:#fff;margin-bottom:14px}
+  .closer p{color:var(--text-white-translucent);font-size:16px;max-width:520px;margin:0 auto 28px}
+  .journey-peek{margin-top:48px}
+
+  @media(max-width:880px){
+    .hero .inner{grid-template-columns:1fr;gap:8px;padding:128px 22px 40px}
+    .hero h1,.lede{max-width:none}
+    .stage{min-height:440px;margin-top:18px}
+    .step-grid{grid-template-columns:1fr}
+    .conn{display:none}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="inner">
+    <span class="brand">
+      <a class="ho-logo" href="00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-white.svg" alt="HERE by Headout"></a>
+      <span class="by">for partners</span>
+    </span>
+    <span class="links">
+      <a href="#how">How it works</a>
+      <a href="#anywhere">Any place</a>
+      <a class="ho-btn nav-cta" href="01-place-setup.html">Create QR kit</a>
+    </span>
+  </div>
+</nav>
+
+<header class="hero pf-dark">
+  <div class="inner">
+    <div class="copy">
+      <span class="kicker"><span class="dot"></span> Works for any physical place</span>
+      <h1 class="display-l">Turn <span class="grad">any physical place</span> into a Headout storefront.</h1>
+      <p class="lede">Hotels, cafés, hostels, venues, tourist desks, gyms. Any place with footfall. Create branded QR posters in 60 seconds, guests book on Headout, and commission lands live in your dashboard.</p>
+
+      <div class="ticker" data-reveal="up">
+        <span class="pulse"></span>
+        <div>
+          <div class="amt" data-countup="€1,248" data-countup-dur="1600">€1,248</div>
+          <div class="cap">earned by partners <b>this week</b> · updating live</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html">Create my QR kit</a>
+        <a class="ho-btn ho-btn--secondary ho-btn--lg" href="#how" style="background:transparent;color:#fff;border-color:var(--white-a20)">See how it works</a>
+      </div>
+      <div class="trust">
+        <span>Free to create</span><span>No integration</span><span>Earn per booking</span>
+      </div>
+    </div>
+
+    <!-- cinematic stage -->
+    <div class="stage" id="stage" aria-label="How it works: scan, book, earn">
+      <div class="stage-glow"></div>
+      <div class="phone-wrap" data-reveal="scale">
+        <img src="../assets/partner-phone-qr-scene.png" width="744" height="648" alt="A guest scanning a Headout Here QR poster at a partner place" loading="eager" decoding="async">
+      </div>
+      <div class="proof p1"><span class="pi"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><path d="M14 14h6v6h-6z"/></svg></span><span class="pt"><b>Guest scans</b><span>Lobby table-tent</span></span></div>
+      <div class="proof p2"><span class="pi"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></span><span class="pt"><b>Booked on Headout</b><span>Vatican Museums · €38</span></span></div>
+      <div class="proof p3"><span class="pi"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg></span><span class="pt"><b>You earn</b><span>+€3.04 commission</span></span></div>
+    </div>
+  </div>
+</header>
+
+<!-- any place marquee -->
+<section class="band" id="anywhere">
+  <div class="bl" data-reveal="up">One engine. <span class="grad">Every kind of place.</span>
+    <small>If it has footfall, it can be a Headout storefront. Same brand, same real inventory.</small></div>
+  <div class="marquee" id="marquee" aria-hidden="true"></div>
+</section>
+
+<!-- how it works -->
+<section class="steps" id="how">
+  <div class="steps-h" data-reveal="up">
+    <h2 class="display-m">Start earning in 3 steps</h2>
+    <p>Set up once. The same engine re-skins for whatever you run.</p>
+  </div>
+  <div class="step-grid">
+    <div class="step" data-reveal="up" style="--reveal-delay:0ms">
+      <span class="n">1</span>
+      <h3>Set up your place</h3>
+      <p>Name it, pick a type, choose where guests will see the QR. 60 seconds, no integration.</p>
+    </div>
+    <div class="step" data-reveal="up" style="--reveal-delay:100ms">
+      <span class="n">2</span>
+      <h3>Place your branded QR</h3>
+      <p>Download a poster for each QR spot. Every spot gets its own link, so you see what earns most.</p>
+    </div>
+    <div class="step" data-reveal="up" style="--reveal-delay:200ms">
+      <span class="n">3</span>
+      <h3>Earn on every booking</h3>
+      <p>Guests book on Headout, commission lands in your dashboard the instant it happens.</p>
+    </div>
+  </div>
+</section>
+
+<!-- closer -->
+<section class="closer">
+  <h2 class="display-m" data-reveal="up">Your place, earning while you host.</h2>
+  <p data-reveal="up" style="--reveal-delay:80ms">Free to create. No integration. You earn commission only when guests book.</p>
+  <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html" data-reveal="up" style="--reveal-delay:160ms">Create my QR kit</a>
+  <div class="journey-peek" data-reveal="up" style="--reveal-delay:240ms"><div id="rail"></div></div>
+</section>
+
+<script src="../assets/partner-motion.js"></script>
+<script>
+  // place-type marquee (seeded from the setup form's place types)
+  const TYPES=[
+    ['🏨','Hotels'],['☕','Cafés'],['🛏️','Hostels'],['🍸','Lounges'],['🎭','Venues'],
+    ['🗺️','Tourist desks'],['💼','Coworking'],['🏡','Short-stay hosts'],['🏋️','Gyms']
+  ];
+  const card=([e,l])=>`<span class="mcard"><span class="e">${e}</span>${l}</span>`;
+  const set=TYPES.map(card).join('');
+  document.getElementById('marquee').innerHTML=set+set; // duplicated for seamless loop
+
+  // journey progress rail (this is the entry, step 0)
+  PF.rail(['Set up','QR kit','Guest view','Earnings'], -1, '#rail');
+
+  // cinematic coin pops + live ticker climb
+  const stage=document.getElementById('stage');
+  const tick=document.querySelector('.ticker .amt');
+  let total=1248;
+  const AMTS=[1.92,3.04,0.48,2.40,4.10,1.20];
+  function popCoin(){
+    if(PF.reduced) return;
+    const amt=AMTS[Math.floor(Math.random()*AMTS.length)];
+    const c=document.createElement('div');
+    c.className='coin';
+    c.textContent='+€'+amt.toFixed(2);
+    c.style.left=(46+Math.random()*16)+'%';
+    c.style.bottom=(120+Math.random()*60)+'px';
+    stage.appendChild(c);
+    setTimeout(()=>c.remove(),2400);
+    total+=amt;
+    tick.textContent='€'+Math.round(total).toLocaleString();
+    tick.classList.remove('pf-pop');void tick.offsetWidth;tick.classList.add('pf-pop');
+  }
+  // Keep the commission preview subtle: one live update, no floating toast.
+  setTimeout(popCoin, 4200);
+
+  PF.pageTransition();
+</script>
+</body>
+</html>

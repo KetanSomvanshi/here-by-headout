@@ -1,0 +1,567 @@
+<!-- @dsCard group="Guest Flow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 · Guest Map Storefront</title>
+<link rel="stylesheet" href="../assets/eevee.css">
+<link rel="stylesheet" href="../assets/partner-motion.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  /* Map-specific composition using Eevee/Oak tokens and primitives from ../assets/eevee.css. */
+  /* ── cinematic dark stage ── */
+  body{background:var(--surface-dark-primary-1);color:var(--text-white)}
+
+  /* dark nav */
+  .gnav{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1180px;margin:0 auto;padding:22px 28px}
+  .gnav .brand{display:inline-flex;align-items:center;gap:10px}
+  .gnav .brand img{height:18px;display:block}
+  .gnav .brand .by{font-size:13px;color:var(--text-white-translucent);font-weight:500;border-left:1px solid var(--white-a20);padding-left:10px}
+  .gnav .tag{font-size:12px;font-weight:600;color:#fff;background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:7px 13px}
+
+  .stagewrap{position:relative;overflow:hidden;
+    background:linear-gradient(165deg,var(--surface-dark-primary-1),var(--surface-dark-primary-2) 52%,var(--surface-dark-primary-3))}
+  .stagewrap::before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;
+    background:radial-gradient(circle,rgba(128,0,255,.5),transparent 70%);top:-160px;right:-120px;pointer-events:none}
+  .stagewrap::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,102,175,.2),transparent 70%);bottom:-180px;left:-120px;pointer-events:none}
+
+  .layout{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:18px 28px 72px;display:grid;grid-template-columns:1fr 392px;gap:56px;align-items:center}
+
+  /* concise copy column */
+  .copyc{max-width:470px}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--purps-100);background:var(--white-a10);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--candy-500);box-shadow:0 0 0 4px rgba(255,0,122,.22)}
+  .copyc h1{color:#fff;max-width:440px}
+  .copyc h1 .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .copyc .lede{color:var(--text-white-translucent);font-size:17px;line-height:28px;margin-top:16px;max-width:420px}
+  .gp-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+  .gp-pills span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;
+    background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:8px 13px}
+  .gp-pills .ee-icon{width:13px;height:13px;color:var(--okay-400);stroke-width:2.6}
+  .nudge{display:inline-flex;align-items:center;gap:9px;margin-top:28px;border:0;font-family:inherit;cursor:pointer;
+    background:var(--white);color:var(--text-1);border-radius:var(--r-pill);padding:12px 18px 12px 15px;font-size:14px;font-weight:600;
+    box-shadow:0 16px 38px rgba(128,0,255,.32)}
+  .nudge:active{transform:translateY(1px)}
+  .nudge b{color:var(--text-primary)}
+  /* bold earnings payoff CTA — fills the empty stage real estate */
+  .earn-cta{display:block;margin-top:32px;max-width:440px;color:inherit;text-decoration:none;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,rgba(128,0,255,.26),rgba(255,0,122,.16));
+    border:1px solid var(--white-a20);border-radius:var(--r-20);padding:24px 26px;
+    box-shadow:0 18px 44px rgba(0,0,0,.32);transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease}
+  .earn-cta::before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;top:-120px;right:-80px;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,0,122,.32),transparent 70%)}
+  .earn-cta:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--purps) 55%,var(--white-a20));
+    box-shadow:0 30px 60px rgba(128,0,255,.34)}
+  .earn-head{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--purps-100)}
+  .earn-head .d{width:7px;height:7px;border-radius:50%;background:var(--okay-400);box-shadow:0 0 0 0 rgba(73,238,156,.5);animation:earnPulse 2s infinite}
+  @keyframes earnPulse{0%{box-shadow:0 0 0 0 rgba(73,238,156,.5)}70%{box-shadow:0 0 0 10px rgba(73,238,156,0)}100%{box-shadow:0 0 0 0 rgba(73,238,156,0)}}
+  .earn-amt{font-family:var(--font-hd);font-weight:500;font-size:42px;line-height:1;color:#fff;margin:12px 0 4px}
+  .earn-sub{font-size:13px;color:var(--text-white-translucent);line-height:1.4;max-width:300px}
+  .earn-go{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:#fff;color:var(--text-1);
+    font-family:var(--font-ht);font-weight:700;font-size:14.5px;padding:12px 20px;border-radius:var(--r-pill);
+    box-shadow:0 12px 28px rgba(0,0,0,.28)}
+  .earn-go .ee-icon{width:16px;height:16px;stroke-width:2.6;color:var(--purps)}
+  .earn-cta:hover .earn-go{background:var(--purps);color:#fff}
+  .earn-cta:hover .earn-go .ee-icon{color:#fff}
+  .nudge .hand{font-size:18px;animation:nudgeTap 1.5s ease-in-out infinite}
+  @keyframes nudgeTap{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-8deg)}}
+
+  /* stage + glow */
+  .stage{display:flex;justify-content:center;position:relative}
+  .stage::before{content:"";position:absolute;width:430px;height:430px;border-radius:50%;
+    background:radial-gradient(circle,rgba(128,0,255,.42),transparent 64%);top:70px;left:50%;transform:translateX(-50%);z-index:0;pointer-events:none}
+
+  /* ── phone frame ── */
+  .phone{position:relative;z-index:1;width:392px;height:812px;background:var(--black);border-radius:46px;padding:11px;
+    box-shadow:0 50px 100px rgba(0,0,0,.6);animation:phoneFloat 6.5s ease-in-out infinite}
+  @keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+  .phone:hover{animation-play-state:paused}
+  .screen{position:relative;width:100%;height:100%;background:var(--surface-1);border-radius:36px;overflow:hidden}
+  .screen::after{content:"";position:absolute;left:0;right:0;top:300px;height:330px;z-index:5;pointer-events:none;
+    background:linear-gradient(180deg,transparent,rgba(10,6,22,.5) 58%,rgba(10,6,22,.88))}
+
+  /* ── floating co-brand context ── */
+  .gs-hdr{position:absolute;top:14px;left:14px;right:14px;z-index:1000;color:var(--text-primary)}
+  .gs-promo{width:max-content;max-width:100%;color:var(--text-primary);background:color-mix(in srgb,var(--white) 92%,transparent);
+    border:1px solid var(--divider);border-radius:var(--r-pill);box-shadow:var(--shadow-1);backdrop-filter:blur(14px);
+    font-family:var(--font-ht);font-weight:var(--w-semibold);font-size:13px;letter-spacing:.2px;padding:8px 12px;display:flex;align-items:center;gap:7px}
+  .gs-promo .ee-icon{width:15px;height:15px;stroke-width:2.4;color:var(--purps)}
+  .hbody{padding:8px 0 0;background:transparent}
+  .cobrand{display:flex;align-items:center;gap:8px}
+  .cobrand{display:none}
+  .ctx{display:flex;gap:6px;margin-top:4px;flex-wrap:nowrap;overflow:hidden}
+  .ctx .pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-ht);font-size:12px;font-weight:500;
+    background:color-mix(in srgb,var(--white) 90%,transparent);color:var(--text-2);padding:6px 10px;border-radius:var(--r-pill);box-shadow:var(--shadow-1);white-space:nowrap;backdrop-filter:blur(14px)}
+  .ctx .pill .ee-icon{width:13px;height:13px;color:var(--text-primary)}
+  .ctx .wx{cursor:pointer;background:var(--surface-primary-1);color:var(--text-primary);box-shadow:var(--shadow-1)}
+  .ctx .wx:active{transform:translateY(1px)}
+  .arrival{display:none;margin-top:11px;background:var(--white-a80);border:1px solid var(--divider);border-radius:var(--r-12);padding:10px 12px;box-shadow:var(--shadow-1)}
+  .arrival .t{display:flex;align-items:center;gap:7px;font-family:var(--font-ht);font-weight:600;font-size:13px;color:var(--text-1)}
+  .arrival .t .ee-icon{width:15px;height:15px;color:var(--text-primary)}
+  .arrival .d{font-size:11px;color:var(--text-3);margin-top:2px}
+
+  /* ── real map: cinematic dark, brand-tinted ── */
+  #map{position:absolute;inset:0;z-index:1;background:#0c0818}
+  #map .leaflet-tile{filter:brightness(.9) contrast(1.06) saturate(1.18);opacity:.96}
+  /* brand glow baked over the tiles, under the pins */
+  #map::after{content:"";position:absolute;inset:0;z-index:450;pointer-events:none;mix-blend-mode:screen;
+    background:
+      radial-gradient(130% 92% at 50% 10%, rgba(128,0,255,.42), transparent 58%),
+      radial-gradient(110% 80% at 88% 98%, rgba(255,0,122,.26), transparent 60%),
+      radial-gradient(95% 72% at 6% 88%, rgba(0,196,235,.18), transparent 60%);
+    animation:mapGlow 6.5s ease-in-out infinite}
+  @keyframes mapGlow{0%,100%{opacity:.82}50%{opacity:1}}
+  .leaflet-control-attribution{display:none}
+  /* cinematic edge vignette framing the whole map */
+  .map-vig{position:absolute;inset:0;z-index:2;pointer-events:none;
+    box-shadow:inset 0 0 64px 16px rgba(6,3,14,.72), inset 0 0 22px rgba(6,3,14,.5);
+    background:radial-gradient(120% 80% at 50% 34%, transparent 54%, rgba(6,3,14,.5))}
+  /* custom photo marker */
+  .mkico{background:none!important;border:0!important}
+  .mk{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+    transition:opacity .5s ease,transform .3s ease,filter .5s ease}
+  .mk-ph{width:52px;height:52px;border-radius:50%;background-size:cover;background-position:center;
+    border:4px solid var(--white);box-shadow:0 8px 22px color-mix(in srgb,var(--black) 18%,transparent)}
+  .mk-pr{font-family:var(--font-ht);font-weight:600;font-size:10px;line-height:1;background:var(--white);color:var(--text-1);
+    padding:3px 7px;border-radius:var(--r-pill);box-shadow:var(--shadow-1);white-space:nowrap;display:none}
+  .mk.is-out{opacity:.13;filter:grayscale(1);pointer-events:none;transform:scale(.72)}
+  .mk.is-pick{animation:bob 1.6s ease-in-out infinite;z-index:5}
+  .mk.is-pick .mk-ph{border-color:var(--white);box-shadow:0 0 0 3px var(--purps),0 0 28px color-mix(in srgb,var(--purps) 42%,transparent),0 8px 22px color-mix(in srgb,var(--black) 20%,transparent)}
+  .mk.is-pick .mk-pr{background:var(--purps);color:var(--white)}
+  .mk.is-active .mk-ph{transform:scale(1.1);border-color:var(--white);box-shadow:0 0 0 4px var(--candy-500),0 0 30px color-mix(in srgb,var(--candy-500) 40%,transparent),0 8px 22px color-mix(in srgb,var(--black) 22%,transparent)}
+  .mk.is-active .mk-pr{background:var(--candy-500);color:var(--white)}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  /* you are here */
+  .here{display:grid;place-items:center;position:relative}
+  .here .ring{width:78px;height:78px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--okay-400) 42%,transparent),color-mix(in srgb,var(--purps) 18%,transparent) 42%,color-mix(in srgb,var(--purps) 0%,transparent));display:grid;place-items:center;
+    animation:pulse 2.4s ease-out infinite}
+  .here .core{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--purps);border:4px solid var(--white);box-shadow:0 0 0 2px var(--purps),0 10px 24px color-mix(in srgb,var(--purps) 36%,transparent)}
+  .here .core .ee-icon{width:13px;height:13px;color:#fff;stroke-width:2.4}
+  .here .you{display:block;position:absolute;top:calc(50% + 17px);left:50%;transform:translateX(-50%);
+    font-family:var(--font-ht);font-weight:700;font-size:10px;letter-spacing:.2px;color:#fff;white-space:nowrap;
+    background:linear-gradient(120deg,var(--purps),var(--candy-500));padding:3px 9px;border-radius:var(--r-pill);
+    box-shadow:0 5px 16px rgba(0,0,0,.5)}
+  @keyframes pulse{0%{transform:scale(.7);opacity:.85}70%{transform:scale(1.6);opacity:0}100%{opacity:0}}
+  .mk:hover .mk-ph{transform:scale(1.08)}
+  .mk-ph{transition:transform .2s ease}
+  /* live GPS dot */
+  .me{width:16px;height:16px;border-radius:50%;background:var(--link-500);border:3px solid var(--white);
+    box-shadow:0 0 0 7px color-mix(in srgb,var(--link-500) 18%,transparent),var(--shadow-1)}
+  /* ── glowing concierge beams (you → picks) ── */
+  .leaflet-overlay-pane path.beam{stroke-linecap:round;
+    filter:drop-shadow(0 0 5px rgba(178,102,255,.95)) drop-shadow(0 0 13px rgba(178,102,255,.55));
+    animation:beamflow 1.05s linear infinite}
+  @keyframes beamflow{to{stroke-dashoffset:-24}}
+  /* one-shot radar scan ripple from "you are here" */
+  .scan{width:26px;height:26px;border-radius:50%;border:2px solid rgba(178,102,255,.9);
+    box-shadow:0 0 18px rgba(178,102,255,.6);animation:scanout 1.15s ease-out forwards}
+  @keyframes scanout{0%{transform:scale(.35);opacity:.95}100%{transform:scale(11);opacity:0}}
+
+  /* current-location CTA */
+  .locate{position:absolute;right:14px;top:14px;bottom:auto;z-index:1001;width:44px;height:44px;gap:0;border-radius:50%;
+    padding:0;font-size:0;color:var(--text-primary);background:color-mix(in srgb,var(--white) 92%,transparent);
+    backdrop-filter:blur(14px);border:1px solid var(--divider);box-shadow:0 10px 24px color-mix(in srgb,var(--black) 28%,transparent)}
+  .locate:hover{box-shadow:var(--shadow-3)} .locate:active{transform:translateY(1px)}
+  .locate svg{width:20px;height:20px;color:var(--purps)}
+  .locate.busy svg{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* result toast */
+  .gs-toast{position:absolute;top:104px;left:50%;transform:translateX(-50%) translateY(-12px);z-index:900;
+    opacity:0;pointer-events:none;transition:.35s}
+  .gs-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .gs-toast .ee-icon{width:15px;height:15px;stroke-width:2.4}
+
+  /* ── concierge: collapsed FAB → expands on tap ── */
+  .gs-fab{position:absolute;right:14px;bottom:350px;z-index:806;width:54px;height:54px;border-radius:50%;
+    display:grid;place-items:center;border:0;cursor:pointer;color:#fff;
+    background:linear-gradient(135deg,var(--purps),var(--candy-500));
+    box-shadow:0 16px 34px color-mix(in srgb,var(--purps) 48%,transparent);
+    transition:opacity .22s ease,transform .22s ease}
+  .gs-fab .ee-icon{width:24px;height:24px;stroke-width:2.2;position:relative;z-index:1}
+  .gs-fab::after{content:"";position:absolute;inset:0;border-radius:50%;
+    border:2px solid color-mix(in srgb,var(--purps) 60%,transparent);animation:fabPulse 2.3s ease-out infinite;pointer-events:none}
+  @keyframes fabPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.55);opacity:0}}
+  .gs-fab:active{transform:translateY(1px)}
+  .gs-fab.is-hidden{opacity:0;transform:scale(.7);pointer-events:none}
+
+  .gs-chat{position:absolute;left:16px;right:16px;bottom:350px;z-index:805;display:flex;flex-direction:column-reverse;
+    opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .26s ease,transform .26s ease}
+  .gs-chat.is-open{opacity:1;transform:translateY(0);pointer-events:auto}
+  .gs-collapse{align-self:flex-end;margin:0 2px 9px 0;width:32px;height:32px;border-radius:50%;border:1px solid var(--divider);
+    background:color-mix(in srgb,var(--white) 94%,transparent);backdrop-filter:blur(14px);box-shadow:var(--shadow-1);
+    display:grid;place-items:center;cursor:pointer;padding:0}
+  .gs-collapse .ee-icon{width:17px;height:17px;color:var(--text-primary);stroke-width:2.4}
+  .gs-collapse:active{transform:translateY(1px)}
+  .gs-chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 0;scrollbar-width:none}
+  .gs-chips::-webkit-scrollbar{display:none}
+  .gs-chips .ho-chip{flex:0 0 auto;background:color-mix(in srgb,var(--white) 94%,transparent);box-shadow:var(--shadow-1);white-space:nowrap;border-color:var(--divider-dark)}
+  .gs-chips .ho-chip.hot{border-color:var(--purps);color:var(--text-primary);background:var(--purps-20)}
+  .gs-chips .ho-chip .ee-icon{width:13px;height:13px;stroke-width:2.4}
+
+  /* ── bottom sheet ── */
+  .sheet{position:absolute;left:0;right:0;bottom:0;height:314px;z-index:850;border-radius:30px 30px 0 0;
+    background:linear-gradient(180deg,#f4efff 0%,#fbf9ff 96px,var(--white) 200px);
+    box-shadow:0 -18px 48px color-mix(in srgb,var(--purps-900) 22%,transparent);transform:translateY(0);transition:height .42s ease}
+  .sheet.is-up{height:338px}
+  .grab{display:block;width:42px;height:5px;background:var(--grey-300);border:0;border-radius:var(--r-pill);margin:11px auto 10px;padding:0;cursor:pointer}
+  .cards{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;height:calc(100% - 50px);padding:2px 18px 12px;scrollbar-width:none;scroll-snap-type:x mandatory;scroll-padding:18px;overscroll-behavior-x:contain}
+  .cards::-webkit-scrollbar{display:none}
+  .gcard{flex:0 0 300px;scroll-snap-align:center;display:grid;grid-template-columns:122px 1fr;gap:12px;border-radius:var(--r-16);overflow:hidden;background:var(--white);border:1px solid var(--divider);box-shadow:var(--shadow-1);padding:12px;opacity:.6;transform:scale(.95);transition:opacity .22s,transform .22s,border-color .22s,box-shadow .22s}
+  .gcard.is-active{opacity:1;transform:scale(1);border-color:color-mix(in srgb,var(--purps) 38%,var(--divider));
+    box-shadow:0 16px 36px color-mix(in srgb,var(--purps) 18%,transparent)}
+  /* swipe dots */
+  .dots{display:flex;justify-content:center;align-items:center;gap:6px;height:18px}
+  .dots i{width:6px;height:6px;border-radius:50%;background:var(--grey-300);transition:.28s}
+  .dots i.on{width:18px;border-radius:3px;background:var(--purps)}
+  .gcard .media{position:relative;width:100%;min-width:0;height:158px;aspect-ratio:auto;background:var(--grey-200);border-radius:var(--r-12);overflow:hidden}
+  .gcard .media img{width:100%;height:100%;object-fit:cover}
+  .gcard .media .rank{position:absolute;right:-2px;top:-5px;font-family:var(--font-hd);font-weight:500;font-size:50px;line-height:.9;color:var(--purps);
+    text-shadow:2px 2px 0 var(--white),-2px 2px 0 var(--white),2px -2px 0 var(--white),-2px -2px 0 var(--white),0 8px 18px color-mix(in srgb,var(--purps) 28%,transparent)}
+  .gcard .b{padding:2px 0 0;min-width:0;display:flex;flex-direction:column}
+  .grating{display:flex;align-items:center;flex-wrap:wrap;gap:3px 5px;font-family:var(--font-ht);font-size:12px;color:var(--candy-600);margin-bottom:6px}
+  .grating .st{width:13px;height:13px;color:var(--candy-500)}
+  .grating b{color:var(--candy-600);font-weight:700;font-size:13px}
+  .grating .count{font-size:11px;font-weight:500;color:var(--text-3)}
+  .gbooked{display:inline-flex;align-items:center;gap:3px;margin-left:auto;font-family:var(--font-ht);font-size:10.5px;font-weight:700;
+    color:var(--purps);background:var(--purps-20);padding:2px 8px;border-radius:var(--r-pill);white-space:nowrap}
+  .gbooked .ee-icon{width:11px;height:11px;stroke-width:2.4}
+  .gcard .ttl{font-family:var(--font-ht);font-weight:var(--w-semibold);font-size:18px;line-height:22px;color:var(--text-2);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:44px}
+  .why{display:flex;flex-wrap:nowrap;overflow:hidden;gap:4px;margin:7px 0 8px}
+  .why span{flex:0 0 auto;display:inline-flex;align-items:center;gap:3px;font-family:var(--font-ht);font-size:9.5px;font-weight:600;white-space:nowrap;
+    background:var(--okay-200);color:var(--okay-700);padding:3px 7px;border-radius:var(--r-pill)}
+  .why span.dist{background:var(--purps-20);color:var(--text-primary)}
+  .why .ee-icon{color:currentColor}
+  .gfoot{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+  .gbook{width:100%;border:0;cursor:pointer;font-family:var(--font-ht);font-weight:700;font-size:13px;color:#fff;
+    background:linear-gradient(120deg,var(--purps),var(--candy-500));border-radius:var(--r-pill);padding:9px 12px;
+    box-shadow:0 8px 18px color-mix(in srgb,var(--purps) 30%,transparent)}
+  .gbook:active{transform:translateY(1px)}
+  .gprice{display:flex;align-items:baseline;flex-wrap:nowrap;gap:6px;white-space:nowrap}
+  .gprice .amt{font-family:var(--font-ht);font-weight:var(--w-bold);font-size:17px;color:var(--text-2)}
+  .gprice .amt small{font-weight:var(--w-semibold);font-size:14px;color:var(--text-2)}
+  .gprice .gwas{font-size:12px;color:var(--grey-500);text-decoration:line-through}
+
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;gap:32px;justify-items:center;text-align:center;padding-top:8px}
+    .copyc{max-width:520px}
+    .copyc h1,.copyc .lede{max-width:none}
+    .gp-pills{justify-content:center}
+    .phone{margin:0 auto}
+  }
+  @media (prefers-reduced-motion: reduce){.phone,.nudge .hand,#map::after{animation:none}
+    .leaflet-overlay-pane path.beam,.scan{animation:none}}
+</style>
+</head>
+<body>
+<nav class="gnav">
+  <span class="brand">
+    <a class="ho-logo" href="../partner-flow/00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-white.svg" alt="HERE by Headout"></a>
+    <span class="by">guest preview</span>
+  </span>
+  <span class="tag">After the scan</span>
+</nav>
+
+<div class="stagewrap">
+<div class="layout">
+  <!-- ─────────── CONCISE COPY ─────────── -->
+  <div class="copyc">
+    <span class="kicker" data-reveal="up"><span class="dot"></span> What your QR opens</span>
+    <h1 class="display-l" data-reveal="up" style="--reveal-delay:60ms">Scan once. <span class="grad">Ask anything.</span> Book in two taps.</h1>
+    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Guests land on a Casa&nbsp;Aurelia&nbsp;×&nbsp;Headout storefront. A live map of nearby experiences with a concierge, all bookable on the spot.</p>
+    <div class="gp-pills" data-reveal="up" style="--reveal-delay:180ms">
+      <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Co-branded</span>
+      <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Bookable</span>
+      <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Tracked</span>
+    </div>
+    <button class="nudge" type="button" onclick="askRainy()" data-reveal="up" style="--reveal-delay:240ms"><span class="hand">👆</span> Try it. Tap <b>“Rainy day + kids”</b></button>
+    <a class="earn-cta" href="../partner-flow/03-partner-dashboard.html?v=journey" data-reveal="up" style="--reveal-delay:320ms" aria-label="See your earnings dashboard">
+      <span class="earn-head"><span class="d"></span> Every scan here earns you</span>
+      <div class="earn-amt" data-countup="€1,248" data-countup-dur="1700">€1,248</div>
+      <div class="earn-sub">commission landed from QR scans like this, this week.</div>
+      <span class="earn-go"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></svg> See your earnings</span>
+    </a>
+  </div>
+
+  <!-- ─────────── PHONE ─────────── -->
+  <div class="stage">
+   <div class="phone"><div class="screen">
+
+    <!-- map -->
+    <div id="map"></div>
+    <div class="map-vig"></div>
+
+    <!-- header -->
+    <div class="gs-hdr">
+      <div class="gs-promo"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12c4-7 12-7 16 0-4 7-12 7-16 0Z"/><path d="M9 12h6"/></svg> headout × CASA AURELIA</div>
+      <div class="hbody">
+        <div class="cobrand">
+          <span class="pl">Casa Aurelia</span><span class="x">×</span>
+          <span class="ho-logo"><img src="../assets/headout-logo-purps.svg" alt="Headout"></span>
+        </div>
+        <div class="arrival">
+          <div class="t"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><path d="M14 14h6v6h-6z"/></svg>Scanned from the lobby QR</div>
+          <div class="d">Recommendations start near Casa Aurelia and stay bookable.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- current-location CTA -->
+    <button class="locate ho-btn ho-btn--secondary ho-btn--sm" id="locate" onclick="locateMe()" aria-label="Use my current location">
+      <svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+        <path d="M12 1.5V4"/><path d="M12 20v2.5"/><path d="M1.5 12H4"/><path d="M20 12h2.5"/></svg>
+      Near me
+    </button>
+
+    <!-- result toast -->
+    <div class="gs-toast" id="toast"><div class="ho-toast ho-toast--dark"><span class="ic"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v5"/><path d="M12 16v5"/><path d="M3 12h5"/><path d="M16 12h5"/><path d="m6.3 6.3 3.5 3.5"/><path d="m14.2 14.2 3.5 3.5"/><path d="m17.7 6.3-3.5 3.5"/><path d="m9.8 14.2-3.5 3.5"/></svg></span>
+      <span id="toastTxt">3 rainy-day picks near you</span></div></div>
+
+    <!-- concierge: collapsed launcher -->
+    <button class="gs-fab" id="conciergeFab" type="button" onclick="toggleConcierge()" aria-label="Ask the Headout concierge">
+      <svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 3.9L17.5 8l-3.9 1.6L12 13.5 10.4 9.6 6.5 8l3.9-1.1L12 3Z"/><path d="M18 14l.8 2 2 .8-2 .8L18 20l-.8-2-2-.8 2-.8L18 14Z"/></svg>
+    </button>
+
+    <!-- concierge: expanded -->
+    <div class="gs-chat" id="chat">
+      <button class="gs-collapse" type="button" onclick="toggleConcierge()" aria-label="Hide concierge"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="gs-chips">
+        <button class="ho-chip hot" onclick="askRainy()"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><path d="M4 13h16"/><path d="M12 13v5a3 3 0 0 1-6 0"/></svg>Rainy day + kids</button>
+        <button class="ho-chip" onclick="resetMap()">Today</button>
+        <button class="ho-chip" onclick="resetMap()">Near me</button>
+        <button class="ho-chip" onclick="resetMap()">Skip-the-line</button>
+        <button class="ho-chip" onclick="resetMap()">Under 2 hrs</button>
+      </div>
+    </div>
+
+    <!-- bottom sheet -->
+    <div class="sheet" id="sheet">
+      <button class="grab" type="button" onclick="toggleSheet()" aria-label="Toggle recommendations sheet"></button>
+      <div class="cards" id="cards"></div>
+      <div class="dots" id="dots"></div>
+    </div>
+
+   </div></div>
+  </div>
+
+  </div>
+</div>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  // Real Headout Rome inventory (titles · ratings · reviews · prices · catalogue images from headout.com/things-to-do-city-rome).
+  // Every entry is a SELLABLE experience, no dead POIs.
+  const IMG = u => u + "?w=480&h=300&fit=crop&crop=faces,edges&auto=format,compress";
+  const THUMB = u => u + "?w=120&h=120&fit=crop&crop=faces,edges&auto=format,compress";
+  const DATA = {
+    vaticanMuseums:{
+      t:"Vatican Museums & Sistine Chapel Skip-the-Line", ll:[41.9065,12.4536],
+      img:"https://cdn-imgix.headout.com/media/images/1ece8bc22bd7b6ad591897b0646852ba-6796---Rome---Premium-Small-Group-Guided-Tour-of-Vatican-Museum---Sistine-Chapel--10.jpg",
+      r:"4.4", rv:"50,776", bk:"2M+", p:"38", was:"56", off:"33",
+      why:[["Indoor"],["650m","dist"],["15:30"]] },
+    pantheon:{
+      t:"Rome Pantheon Fast-Track Tickets", ll:[41.8986,12.4769],
+      img:"https://cdn-imgix.headout.com/media/images/72eb4916697e1c9b3c630c98de69a73d-Rome%20Pantheon.jpg",
+      r:"4.4", rv:"6,952", bk:"500K+", p:"6", was:"10", off:"37",
+      why:[["Indoor"],["2.1km","dist"],["Open now"]] },
+    stpeters:{
+      t:"St. Peter's Basilica Entry with Audio Guide", ll:[41.9022,12.4539],
+      img:"https://cdn-imgix.headout.com/microbrands-content-image/image/ee6dbf1e76326e45ff0e13c90e1acc2e-St.%20peter%27s%20basilica%20interior.jpg",
+      r:"4.0", rv:"2,454", bk:"300K+", p:"6",
+      why:[["Indoor"],["1.2km","dist"],["Audio guide"]] },
+    colosseum:{
+      t:"Colosseum, Palatine Hill & Roman Forum Pass", ll:[41.8902,12.4922],
+      img:"https://cdn-imgix.headout.com/media/images/ad49e83c507e0fd1ffe2791aae977a0c-22943-rome-express-tour-of-rome-by-golf-cart-02.jpg",
+      r:"4.4", rv:"26,773", bk:"3M+", p:"25", was:"36", off:"31",
+      why:[["4.2km","dist"],["Outdoor"]] },
+    vaticanGuided:{
+      t:"Vatican, Sistine Chapel & St. Peter's Guided Tour", ll:[41.9088,12.4520],
+      img:"https://cdn-imgix.headout.com/media/images/99b94099-8abe-402b-82dd-ed75e7c15dbf-1758181203869-312421.jpg",
+      r:"4.4", rv:"22,058", bk:"800K+", p:"69",
+      why:[["Indoor"],["3.5 hrs"],["650m","dist"]] }
+  };
+  const PICKS = ["vaticanMuseums","pantheon","stpeters"];
+  const PEEK  = ["vaticanMuseums","colosseum","pantheon","stpeters"];
+  const HERE  = [41.9075,12.4565];
+  const markers = {};
+  let currentCardIds = [];
+  let activeCardId = null;
+  let carouselTimer = null;
+
+  /* ---------- map ---------- */
+  const map = L.map('map',{zoomControl:false,scrollWheelZoom:false,attributionControl:true})
+    .setView([41.900,12.470],13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    {subdomains:'abcd',maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+
+  // glowing concierge beams: you-are-here → recommended picks
+  const beamLayer = L.layerGroup().addTo(map);
+  function clearBeams(){ beamLayer.clearLayers(); }
+  function drawBeams(ids){
+    clearBeams();
+    ids.forEach(id=>{ if(DATA[id]) L.polyline([HERE,DATA[id].ll],
+      {className:'beam',color:'#b266ff',weight:2,opacity:.9,dashArray:'2 10'}).addTo(beamLayer); });
+  }
+  function scanPing(){
+    const m=L.marker(HERE,{interactive:false,zIndexOffset:300,icon:L.divIcon({className:'mkico',
+      iconSize:[26,26],iconAnchor:[13,13],html:'<div class="scan"></div>'})}).addTo(map);
+    setTimeout(()=>m.remove(),1300);
+  }
+
+  // you-are-here
+  L.marker(HERE,{interactive:false,zIndexOffset:2000,icon:L.divIcon({className:'mkico',
+    html:'<div class="here"><div class="ring"><div class="core"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 9h.01"/><path d="M9 13h.01"/><path d="M9 17h.01"/><path d="M15 9h.01"/><path d="M15 13h.01"/><path d="M15 17h.01"/></svg></div></div><div class="you">Casa Aurelia</div></div>',
+    iconSize:[64,64],iconAnchor:[32,32]})}).addTo(map);
+
+  // experience pins
+  Object.entries(DATA).forEach(([id,d])=>{
+    const m = L.marker(d.ll,{icon:L.divIcon({className:'mkico',iconSize:[60,62],iconAnchor:[30,30],
+      html:`<div class="mk" data-id="${id}">
+        <span class="mk-ph" style="background-image:url('${THUMB(d.img)}')"></span>
+        <span class="mk-pr">€${d.p}</span></div>`})}).addTo(map);
+    m.on('click',()=>{ const el=m._icon.querySelector('.mk'); if(el.classList.contains('is-out'))return;
+      if(!currentCardIds.includes(id)){
+        const base = currentCardIds.length ? currentCardIds : PEEK;
+        renderCards([id, ...base.filter(x=>x!==id)], false);
+      }
+      setSheet(true); scrollCardIntoView(id); });
+    markers[id]=m;
+  });
+  function frameBounds(lls){
+    map.flyToBounds(L.latLngBounds(lls),
+      {paddingTopLeft:[34,106],paddingBottomRight:[34,250],duration:.8,maxZoom:16}); }
+  // frame the central pins
+  frameBounds([HERE,...Object.values(DATA).map(d=>d.ll)]);
+  setTimeout(()=>map.invalidateSize(),120);
+
+  /* ---------- current location CTA ---------- */
+  function locateMe(){
+    const btn=document.getElementById('locate'); btn.classList.add('busy'); toast("Finding your location…");
+    const done=()=>btn.classList.remove('busy');
+    if(!navigator.geolocation){ frameBounds([HERE,...PEEK.map(id=>DATA[id].ll)]); toast("Showing Casa Aurelia"); return done(); }
+    navigator.geolocation.getCurrentPosition(
+      pos=>{ const ll=[pos.coords.latitude,pos.coords.longitude];
+        if(window._meMk) window._meMk.remove();
+        window._meMk=L.marker(ll,{interactive:false,icon:L.divIcon({className:'mkico',iconSize:[16,16],iconAnchor:[8,8],
+          html:'<div class="me"></div>'})}).addTo(map);
+        map.flyTo(ll,15,{duration:.9}); toast("Centred on your location"); done(); },
+      ()=>{ frameBounds([HERE,...PEEK.map(id=>DATA[id].ll)]); toast("Showing experiences near Casa Aurelia"); done(); },
+      {enableHighAccuracy:true,timeout:6000,maximumAge:60000});
+  }
+
+  function mkClass(id,cls,on){ const el=markers[id]._icon&&markers[id]._icon.querySelector('.mk');
+    if(el) el.classList.toggle(cls,on); }
+  function renderDots(n){ document.getElementById('dots').innerHTML = Array.from({length:n},()=>'<i></i>').join(''); }
+  function setActiveDot(i){ document.querySelectorAll('#dots i').forEach((el,idx)=>el.classList.toggle('on',idx===i)); }
+  function focusExperience(id,{pan=true,scroll=false}={}){
+    if(!id || !DATA[id]) return;
+    activeCardId=id;
+    Object.keys(DATA).forEach(key=>mkClass(key,'is-active',key===id));
+    document.querySelectorAll('.gcard').forEach(card=>{
+      card.classList.toggle('is-active',card.dataset.id===id);
+    });
+    setActiveDot(currentCardIds.indexOf(id));
+    if(scroll) document.querySelector(`.gcard[data-id="${id}"]`)?.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+    if(pan) map.flyTo(DATA[id].ll,Math.max(map.getZoom(),15),{duration:.55});
+  }
+  function scrollCardIntoView(id){ focusExperience(id,{pan:true,scroll:true}); }
+  function focusCenteredCard(){
+    const c=document.getElementById('cards');
+    const cards=[...c.querySelectorAll('.gcard')];
+    if(!cards.length) return;
+    const center=c.getBoundingClientRect().left + c.clientWidth/2;
+    const nearest=cards.reduce((best,card)=>{
+      const r=card.getBoundingClientRect();
+      const distance=Math.abs((r.left+r.width/2)-center);
+      return !best || distance<best.distance ? {card,distance} : best;
+    },null)?.card;
+    if(nearest && nearest.dataset.id!==activeCardId) focusExperience(nearest.dataset.id,{pan:true,scroll:false});
+  }
+  function bindCarousel(){
+    const c=document.getElementById('cards');
+    c.onscroll=()=>{
+      clearTimeout(carouselTimer);
+      carouselTimer=setTimeout(focusCenteredCard,80);
+    };
+  }
+
+  /* ---------- cards ---------- */
+  function renderCards(ids, ranked){
+    currentCardIds=ids.slice();
+    renderDots(ids.length);
+    const c=document.getElementById('cards'); c.innerHTML='';
+    const checkIcon = '<svg class="ee-icon ee-icon--xs" viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10 4 4 8-8"/></svg>';
+    const starIcon = '<svg class="st ee-icon ee-icon--fill" viewBox="0 0 20 20" aria-hidden="true"><path d="m10 1.7 2.5 5.1 5.6.8-4 4 1 5.5-5-2.6-5 2.6 1-5.5-4-4 5.5-.8L10 1.7Z"/></svg>';
+    ids.forEach((id,i)=>{
+      const d=DATA[id];
+      const rank = `<div class="rank">${i+1}</div>`;
+      const match = ranked ? ['Best rainy-day fit','Closest indoor pick','Easy with kids'][i] : ['Popular nearby','Most booked','Open now','Easy walk'][i%4];
+      const why = [[match,'dist'],...d.why].slice(0,2).map(w=>`<span class="${w[1]||''}">${w[0]}${checkIcon}</span>`).join('');
+      const price = d.was
+        ? `<span class="amt"><small>from</small> €${d.p}</span><span class="gwas">€${d.was}</span><span class="ho-off">${d.off}% off</span>`
+        : `<span class="amt"><small>from</small> €${d.p}</span>`;
+      c.insertAdjacentHTML('beforeend',`
+        <div class="gcard ho-card" data-id="${id}" onclick="scrollCardIntoView('${id}')">
+          <div class="media"><img src="${IMG(d.img)}" alt="" loading="lazy">${rank}</div>
+          <div class="b">
+            <div class="grating ho-rating">${starIcon}<b>${d.r}</b>
+              <span class="count">(${d.rv})</span>
+              <span class="gbooked"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>${d.bk} booked</span></div>
+            <div class="ttl">${d.t}</div>
+            <div class="why">${why}</div>
+            <div class="gfoot"><div class="gprice">${price}</div>
+              <button class="gbook" type="button" onclick="event.stopPropagation();book('${id}')">Book now</button></div>
+          </div>
+        </div>`);
+    });
+    bindCarousel();
+    requestAnimationFrame(()=>focusExperience(ids[0],{pan:false,scroll:false}));
+  }
+
+  /* ---------- sheet + interactions ---------- */
+  function setSheet(up){
+    document.getElementById('sheet').classList.toggle('is-up',up);
+  }
+  function toggleSheet(){ setSheet(!document.getElementById('sheet').classList.contains('is-up')); }
+  function book(id){ const d=DATA[id]; if(d) toast(`Opening Headout checkout · from €${d.p}`); }
+
+  /* ---------- concierge (collapsed FAB ↔ expanded) ---------- */
+  function setConcierge(open){
+    document.getElementById('chat').classList.toggle('is-open',open);
+    document.getElementById('conciergeFab').classList.toggle('is-hidden',open);
+  }
+  function toggleConcierge(){ setConcierge(!document.getElementById('chat').classList.contains('is-open')); }
+  function toast(txt){ const t=document.getElementById('toast');
+    document.getElementById('toastTxt').textContent=txt; t.classList.add('show');
+    clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),2600); }
+
+  function askRainy(){
+    Object.keys(DATA).forEach(id=>{ const pick=PICKS.includes(id);
+      mkClass(id,'is-pick',pick); mkClass(id,'is-out',!pick); });
+    renderCards(PICKS,true); setSheet(true); setConcierge(true); toast("Filtered to 3 indoor picks near you");
+    drawBeams(PICKS); scanPing();
+    frameBounds([HERE,...PICKS.map(id=>DATA[id].ll)]);
+  }
+  function toggleRain(){ const wx=document.getElementById('wx');
+    const label=wx.querySelector('span');
+    if(label.textContent.includes('Sunny')){ label.textContent="17° · Raining"; askRainy(); }
+    else { label.textContent="24° · Sunny"; resetMap(); } }
+  function resetMap(){
+    Object.keys(DATA).forEach(id=>{ mkClass(id,'is-out',false); mkClass(id,'is-pick',false); });
+    clearBeams();
+    renderCards(PEEK,false); setSheet(false);
+    frameBounds([HERE,...Object.values(DATA).map(d=>d.ll)]);
+  }
+
+  renderCards(PEEK,false);
+</script>
+<script src="../assets/partner-motion.js"></script>
+<script>if(window.PF){ PF.reveal(); PF.pageTransition(); }</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Headout Here · Partner Flow Designs</title>
+<link rel="stylesheet" href="assets/eevee.css">
+<style>
+  body{background:var(--surface-1)}
+  .hero{background:linear-gradient(165deg,var(--purps-900),var(--purps-800) 55%,var(--purps-600));color:#fff;padding:48px 28px 64px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(128,0,255,.5),transparent 70%);top:-130px;right:-110px}
+  .inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
+  .inner .logo img{height:20px;filter:none}
+  .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--purps-100);background:rgba(255,255,255,.12);padding:7px 14px;border-radius:var(--r-pill);margin:22px 0 18px}
+  .hero h1{max-width:760px}
+  .hero h1 .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lede{color:rgba(255,255,255,.8);font-size:17px;max-width:600px;margin-top:14px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .meta .tag{font-size:12px;font-weight:500;color:#fff;background:rgba(255,255,255,.12);padding:7px 13px;border-radius:var(--r-pill)}
+  .wrap{max-width:1080px;margin:-32px auto 0;padding:0 28px 40px;position:relative;z-index:2}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;color:inherit;background:#fff;border-radius:var(--r-16);overflow:hidden;box-shadow:var(--shadow-1);border:1px solid var(--divider);transition:transform .18s,box-shadow .18s}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-3)}
+  .thumb{height:230px;overflow:hidden;position:relative;background:#fff;border-bottom:1px solid var(--divider)}
+  .thumb iframe{width:1280px;height:820px;border:0;transform:scale(.36);transform-origin:top left;pointer-events:none}
+  .num{position:absolute;top:14px;left:14px;width:30px;height:30px;border-radius:var(--r-8);background:var(--purps);color:#fff;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 4px 12px rgba(128,0,255,.35)}
+  .cap{padding:18px 22px 20px}
+  .cap h3{font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .cap .arrow{color:var(--purps);transition:transform .18s}
+  .card:hover .arrow{transform:translateX(4px)}
+  .cap p{color:var(--text-2);font-size:14px;margin-top:5px}
+  .full{grid-column:1 / -1}
+  .full .thumb{height:200px}
+  .foot{max-width:1080px;margin:0 auto;padding:0 28px 56px;color:var(--text-3);font-size:13px;line-height:1.7}
+  .foot b{color:var(--text-2)} .foot a{color:var(--text-primary);font-weight:600}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="inner">
+      <a class="ho-logo logo" href="../index.html" aria-label="HERE by Headout"><img src="assets/here-lockup-white.svg" alt="HERE by Headout"></a>
+      <span class="kicker">Hackin '26 · Design</span>
+      <h1 class="display-l">The <span class="grad">partner &amp; guest flows</span>, end to end.</h1>
+      <p class="lede">How any trusted place becomes a Headout-branded storefront. Set up in 60 seconds, generate a branded QR, and watch commission land live. Then see what the guest gets when they scan it. Built on the real Eevee design system.</p>
+      <div class="meta">
+        <span class="tag">6 screens</span><span class="tag">Mobile + desktop</span><span class="tag">Seed data: Rome</span><span class="tag">Eevee tokens · Halyard</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="grid">
+      <a class="card full" href="partner-flow/00-landing.html">
+        <div class="thumb"><span class="num">0</span><iframe src="partner-flow/00-landing.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Partner Landing</h3><p>The banner partners hit first. The “partner flow, end to end” pitch with a live-commission preview, then one tap into the 60-second setup.</p></div>
+      </a>
+      <a class="card" href="partner-flow/01-place-setup.html">
+        <div class="thumb"><span class="num">1</span><iframe src="partner-flow/01-place-setup.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Place Setup</h3><p>The 60-second form. The place-type field is the place-agnostic promise.</p></div>
+      </a>
+      <a class="card" href="partner-flow/02-generated-output.html">
+        <div class="thumb"><span class="num">2</span><iframe src="partner-flow/02-generated-output.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Generated Output</h3><p>The branded Headout QR poster, storefront preview &amp; embed snippet.</p></div>
+      </a>
+      <a class="card" href="partner-flow/03-partner-dashboard.html">
+        <div class="thumb"><span class="num">3</span><iframe src="partner-flow/03-partner-dashboard.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Partner Dashboard</h3><p>Impressions · Conversions · Commission. The live scoreboard.</p></div>
+      </a>
+      <a class="card" href="partner-flow/04-place-type-switcher.html">
+        <div class="thumb"><span class="num" style="background:var(--grey-600)">+</span><iframe src="partner-flow/04-place-type-switcher.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Place-Type Switcher <span style="font-weight:600;font-size:.7em;color:var(--purps);background:var(--purps-20);padding:2px 8px;border-radius:999px;vertical-align:middle">BONUS</span></h3><p>Optional deep-dive on the place-agnostic promise: hotel, café, venue, desk. One engine, one brand. (The 3-step flow ends on the dashboard.)</p></div>
+      </a>
+      <a class="card full" href="guest-flow/01-map-storefront.html">
+        <div class="thumb"><span class="num" style="background:var(--candy-500);box-shadow:0 4px 12px rgba(255,0,122,.35)">G</span><iframe src="guest-flow/01-map-storefront.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Guest Storefront · After the Scan</h3><p>Where the guest lands: a live map of Headout experiences around the place, with the concierge floating on top. Ask, and the map filters to bookable picks.</p></div>
+      </a>
+      <a class="card full" href="foundations/index.html">
+        <div class="thumb"><span class="num">✦</span><iframe src="foundations/index.html" loading="lazy" scrolling="no"></iframe></div>
+        <div class="cap"><h3>Foundations</h3><p>The real Eevee token set, Halyard type &amp; brand components every screen is built on.</p></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p><b>Brand fidelity:</b> built on Headout's real <b>Eevee design system</b>. Tokens, text styles &amp; component anatomy pulled live from the <b>oak</b> MCP, real <b>Halyard</b> from Adobe Fonts, and the official Headout logo. · <a href="../">Back to master doc</a></p>
+  </div>
+</body>
+</html>
