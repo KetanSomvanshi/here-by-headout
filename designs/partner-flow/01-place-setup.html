@@ -23,7 +23,7 @@
   .chips .add{border-style:dashed;color:var(--text-3)}
   .opt{color:var(--grey-500);font-weight:400}
   .loc-alt{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--text-3)}
-  .loc-alt .maps-link{font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill)}
+  .loc-alt .maps-link{border:0;font:inherit;cursor:pointer;font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill)}
   .colorpick{display:flex;align-items:center;gap:10px}
   .colorpick .sw{width:38px;height:38px;border-radius:var(--r-8);flex:none;border:1px solid var(--divider-dark)}
   .commission{display:flex;align-items:center;gap:16px}
@@ -48,7 +48,7 @@
 </head>
 <body>
 <header class="ho-header">
-  <a class="ho-logo" href="../index.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
+  <a class="ho-logo" href="00-landing.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
   <span class="step">Step <b>1 of 2</b> · Set up your place</span>
 </header>
 
@@ -76,7 +76,7 @@
       <div class="ho-field">
         <label>Location</label>
         <input class="ho-input" value="Via Germanico, Prati, Rome">
-        <div class="loc-alt"><span>or</span> <a href="#" class="maps-link">🔗 Paste a Google Maps link</a></div>
+        <div class="loc-alt"><span>or</span> <button type="button" class="maps-link">🔗 Paste a Google Maps link</button></div>
       </div>
 
       <div class="ho-field">
@@ -96,7 +96,7 @@
       </div>
 
       <div style="margin-top:10px">
-        <button class="ho-btn ho-btn--primary ho-btn--lg">Generate Headout Here →</button>
+        <a class="ho-btn ho-btn--primary ho-btn--lg" href="02-generated-output.html">Generate Headout Here →</a>
         <p class="cta-note">No login. No code. You’ll get a branded QR poster, storefront &amp; dashboard.</p>
       </div>
     </div>
@@ -115,6 +115,16 @@
     <div class="timer"><span class="dot"></span> Generates in ~60 seconds</div>
   </aside>
 </div>
+
+<nav class="journey-nav">
+  <div class="journey-actions">
+    <a class="ho-btn ho-btn--secondary" href="00-landing.html">← Partner landing</a>
+  </div>
+  <div class="journey-meta">Step 1 · Set up the place</div>
+  <div class="journey-actions">
+    <a class="ho-btn ho-btn--primary" href="02-generated-output.html">Generate output →</a>
+  </div>
+</nav>
 
 <script>
   const g=document.getElementById('g');let s=0xC0FFEE;

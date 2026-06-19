@@ -219,6 +219,18 @@ button{font-family:inherit}
 .ho-tabbar .tab{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:500;color:var(--grey-600)}
 .ho-tabbar .tab.is-active{color:var(--purps)}
 
+/* ── demo journey controls ── */
+.journey-nav{max-width:1080px;margin:0 auto;padding:0 24px 44px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.journey-nav .journey-meta{font-size:12px;font-weight:500;color:var(--text-3);text-align:center}
+.journey-nav .journey-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.journey-nav--dark .journey-meta{color:rgba(255,255,255,.66)}
+@media(max-width:640px){
+  .journey-nav{align-items:stretch;flex-direction:column}
+  .journey-nav .journey-meta{text-align:left}
+  .journey-nav .journey-actions{width:100%}
+  .journey-nav .journey-actions .ho-btn{flex:1}
+}
+
 /* ── helpers ── */
 .ho-divider{height:1px;background:var(--divider);border:0}
 .muted{color:var(--text-3)}
