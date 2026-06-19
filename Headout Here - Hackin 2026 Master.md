@@ -4,6 +4,10 @@
 > Replaces the earlier Launchpad brief, GTM plan, and handoff docs.
 > Last updated: 2026-06-18 · Team size: 3 · Stack: Replit · Data: polished mock (Rome)
 
+**▶︎ Try it live**
+- **Start here — partner flow:** [ketansomvanshi.github.io/here-by-headout/designs/partner-flow/00-landing.html](https://ketansomvanshi.github.io/here-by-headout/designs/partner-flow/00-landing.html)
+- Demo video: [/demo.html](https://ketansomvanshi.github.io/here-by-headout/demo.html) · Architecture: [/architecture.html](https://ketansomvanshi.github.io/here-by-headout/architecture.html) · Guest storefront: [/designs/guest-flow/01-map-storefront.html](https://ketansomvanshi.github.io/here-by-headout/designs/guest-flow/01-map-storefront.html)
+
 ---
 
 ## Table of Contents

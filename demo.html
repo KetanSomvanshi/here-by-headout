@@ -70,6 +70,15 @@
     border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 13px}
   .chip b{color:var(--accent);font-weight:600}
 
+  /* CTA */
+  .cta-row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:28px}
+  .cta{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-weight:600;font-size:15px;
+    color:var(--ground);background:var(--grad);border-radius:var(--r-pill);padding:13px 22px;
+    box-shadow:0 16px 40px -14px rgba(255,102,175,.6);transition:transform .15s,box-shadow .2s}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 22px 52px -14px rgba(255,102,175,.75)}
+  .cta svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .cta-note{font-size:13px;color:var(--muted)}
+
   /* what's in the video */
   section{padding:54px 0;border-top:1px solid var(--line)}
   .shead{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
@@ -131,6 +140,14 @@
       <span class="chip"><b>1080p</b> · MP4</span>
       <span class="chip">scan → book → <b>commission</b></span>
       <span class="chip">live · <b>no refresh</b></span>
+    </div>
+
+    <div class="cta-row">
+      <a class="cta" href="designs/partner-flow/00-landing.html">
+        Start the partner flow
+        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+      </a>
+      <span class="cta-note">Claim a place and generate a QR kit — same loop as the video.</span>
     </div>
   </div>
 </header>
