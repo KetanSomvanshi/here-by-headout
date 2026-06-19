@@ -1,0 +1,368 @@
+<!-- @dsCard group="Guest Flow" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>01 · Guest Map Storefront</title>
+<link rel="stylesheet" href="../assets/eevee.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+  body{background:var(--surface-1)}
+  .ho-header .step{font-size:13px;color:var(--text-2)} .ho-header .step b{color:var(--text-primary);font-weight:600}
+  .layout{max-width:1080px;margin:0 auto;padding:28px 24px 64px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+  .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text-primary);background:var(--purps-20);padding:6px 12px;border-radius:var(--r-pill);margin-bottom:14px}
+  .stage{display:flex;justify-content:center}
+
+  /* ── phone frame ── */
+  .phone{width:392px;height:812px;background:#000;border-radius:46px;padding:11px;box-shadow:var(--shadow-3);position:sticky;top:20px}
+  .screen{position:relative;width:100%;height:100%;background:var(--grey-200);border-radius:36px;overflow:hidden}
+
+  /* ── co-brand header ── */
+  .gs-hdr{position:absolute;top:0;left:0;right:0;z-index:1000}
+  .gs-promo{background:var(--purps);color:#fff;text-align:center;font-family:var(--font-ht);font-weight:500;
+    font-size:11px;padding:7px 14px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .hbody{padding:12px 16px 18px;background:linear-gradient(180deg,#fff 60%,rgba(255,255,255,0))}
+  .cobrand{display:flex;align-items:center;gap:8px}
+  .cobrand .pl{font-family:var(--font-ht);font-weight:600;font-size:16px;color:var(--text-1)}
+  .cobrand .x{color:var(--grey-400);font-weight:300}
+  .cobrand .ho-logo img{height:16px}
+  .ctx{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+  .ctx .pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-ht);font-size:12px;font-weight:500;
+    background:#fff;color:var(--text-2);padding:5px 10px;border-radius:var(--r-pill);box-shadow:var(--shadow-1)}
+  .ctx .wx{cursor:pointer;background:var(--purps-20);color:var(--text-primary);box-shadow:none}
+  .ctx .wx:active{transform:translateY(1px)}
+
+  /* ── real map ── */
+  #map{position:absolute;inset:0;z-index:1;background:#e8e6e0}
+  .leaflet-control-attribution{font-size:9px;opacity:.7}
+  /* custom photo marker */
+  .mkico{background:none!important;border:0!important}
+  .mk{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+    transition:opacity .5s ease,transform .3s ease,filter .5s ease}
+  .mk-ph{width:46px;height:46px;border-radius:50%;background-size:cover;background-position:center;
+    border:3px solid #fff;box-shadow:0 4px 10px rgba(17,17,17,.32)}
+  .mk-pr{font-family:var(--font-ht);font-weight:600;font-size:10px;line-height:1;background:#fff;color:var(--text-1);
+    padding:3px 7px;border-radius:var(--r-pill);box-shadow:var(--shadow-1);white-space:nowrap}
+  .mk.is-out{opacity:.22;filter:grayscale(1);pointer-events:none;transform:scale(.78)}
+  .mk.is-pick{animation:bob 1.6s ease-in-out infinite;z-index:5}
+  .mk.is-pick .mk-ph{border-color:var(--candy-500);box-shadow:0 0 0 2px var(--candy-500),0 6px 16px rgba(255,0,122,.45)}
+  .mk.is-pick .mk-pr{background:var(--candy-500);color:#fff}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+  /* you are here */
+  .here{display:grid;place-items:center}
+  .here .ring{width:64px;height:64px;border-radius:50%;background:rgba(128,0,255,.16);display:grid;place-items:center;
+    animation:pulse 2.4s ease-out infinite}
+  .here .core{width:18px;height:18px;border-radius:50%;background:var(--purps);border:3px solid #fff;box-shadow:0 0 0 2px var(--purps)}
+  .here .you{position:absolute;top:-14px;white-space:nowrap;font-family:var(--font-ht);font-size:10px;font-weight:600;
+    color:var(--text-primary);background:#fff;padding:2px 7px;border-radius:var(--r-pill);box-shadow:var(--shadow-1)}
+  @keyframes pulse{0%{transform:scale(.7);opacity:.85}70%{transform:scale(1.6);opacity:0}100%{opacity:0}}
+  .mk:hover .mk-ph{transform:scale(1.08)}
+  .mk-ph{transition:transform .2s ease}
+  /* live GPS dot */
+  .me{width:16px;height:16px;border-radius:50%;background:var(--link-500);border:3px solid #fff;
+    box-shadow:0 0 0 7px rgba(19,85,240,.18),var(--shadow-1)}
+
+  /* current-location CTA */
+  .locate{position:absolute;top:130px;right:16px;z-index:820;display:inline-flex;align-items:center;gap:7px;
+    background:#fff;border:0;border-radius:var(--r-pill);padding:9px 14px;cursor:pointer;
+    font-family:var(--font-ht);font-weight:600;font-size:13px;color:var(--text-primary);box-shadow:var(--shadow-2)}
+  .locate:hover{box-shadow:var(--shadow-3)} .locate:active{transform:translateY(1px)}
+  .locate svg{width:17px;height:17px;color:var(--purps)}
+  .locate.busy svg{animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* result toast */
+  .gs-toast{position:absolute;top:112px;left:50%;transform:translateX(-50%) translateY(-12px);z-index:900;
+    opacity:0;pointer-events:none;transition:.35s}
+  .gs-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ── floating concierge ── */
+  .gs-chat{position:absolute;left:14px;right:14px;bottom:188px;z-index:800;transition:bottom .42s ease}
+  .gs-chips{display:flex;gap:7px;overflow-x:auto;padding-bottom:9px;scrollbar-width:none}
+  .gs-chips::-webkit-scrollbar{display:none}
+  .gs-chips .ho-chip{flex:0 0 auto;background:#fff;box-shadow:var(--shadow-1);white-space:nowrap}
+  .gs-chips .ho-chip.hot{border-color:var(--candy-500);color:var(--candy-600)}
+  .askbar{display:flex;align-items:center;gap:10px;background:#fff;border-radius:var(--r-pill);
+    padding:11px 11px 11px 18px;box-shadow:var(--shadow-3)}
+  .askbar input{flex:1;border:0;outline:0;font-family:var(--font-ht);font-weight:300;font-size:14px;color:var(--text-1);background:none}
+  .askbar input::placeholder{color:var(--grey-500)}
+  .askbar .send{flex:none;width:38px;height:38px;border-radius:50%;background:var(--cta-primary);color:#fff;border:0;
+    display:grid;place-items:center;cursor:pointer;font-size:17px}
+  .askbar .send:active{transform:translateY(1px)}
+
+  /* ── bottom sheet ── */
+  .sheet{position:absolute;left:0;right:0;bottom:0;z-index:850;background:#fff;border-radius:var(--r-20) var(--r-20) 0 0;
+    box-shadow:0 -10px 34px rgba(17,17,17,.16);transform:translateY(73%);transition:transform .42s ease}
+  .sheet.is-up{transform:translateY(0)}
+  .grab{width:40px;height:4px;background:var(--grey-300);border-radius:var(--r-pill);margin:9px auto 6px;cursor:pointer}
+  .sheet-h{display:flex;justify-content:space-between;align-items:baseline;padding:2px 18px 10px}
+  .sheet-h .sub{font-size:12px;color:var(--text-3)}
+  .cards{display:flex;gap:13px;overflow-x:auto;padding:2px 18px 20px;scrollbar-width:none}
+  .cards::-webkit-scrollbar{display:none}
+  .gcard{flex:0 0 240px;border-radius:var(--r-16);overflow:hidden;background:#fff;border:1px solid var(--divider);box-shadow:var(--shadow-1)}
+  .gcard .media{position:relative;height:124px;background:var(--grey-200)}
+  .gcard .media img{width:100%;height:100%;object-fit:cover}
+  .gcard .media .rank{position:absolute;left:8px;bottom:-8px;font-family:var(--font-hd);font-weight:500;font-size:52px;
+    line-height:1;color:#fff;text-shadow:0 2px 12px rgba(17,17,17,.5);padding-left:4px}
+  .gcard .b{padding:11px 13px 13px}
+  .grating{display:flex;align-items:center;gap:5px;font-family:var(--font-ht);font-size:11px;color:var(--text-3);margin-bottom:5px}
+  .grating .st{color:var(--star)}
+  .grating b{color:var(--text-1);font-weight:600;font-size:12px}
+  .grating .dotsep{color:var(--grey-400)}
+  .gcard .ttl{font-family:var(--font-ht);font-weight:600;font-size:14px;line-height:18px;color:var(--text-1);
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px}
+  .why{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 11px}
+  .why span{display:inline-flex;align-items:center;gap:3px;font-family:var(--font-ht);font-size:10px;font-weight:600;
+    background:var(--okay-200);color:var(--okay-700);padding:2px 7px;border-radius:var(--r-4)}
+  .why span.dist{background:var(--purps-20);color:var(--text-primary)}
+  .grow{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+  .gprice{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px}
+  .gprice .amt{font-family:var(--font-ht);font-weight:600;font-size:16px;color:var(--text-1)}
+  .gprice .amt small{font-weight:300;font-size:11px;color:var(--text-3)}
+  .gprice .gwas{font-size:12px;color:var(--grey-500);text-decoration:line-through}
+
+  /* ── annotation rail ── */
+  .rail{position:sticky;top:20px}
+  .rail .lede{color:var(--text-2);margin-bottom:24px}
+  .ann{display:flex;gap:13px;margin-bottom:18px}
+  .ann .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--purps-20);color:var(--text-primary);
+    font-family:var(--font-ht);font-weight:600;font-size:13px;display:grid;place-items:center}
+  .ann .t{font-family:var(--font-ht);font-weight:600;font-size:14px;color:var(--text-1)}
+  .ann .d{font-size:13px;color:var(--text-2);margin-top:3px;line-height:1.55}
+  .demohint{display:flex;align-items:center;gap:10px;background:var(--mustard-200);color:var(--mustard-800);
+    border-radius:var(--r-12);padding:12px 14px;font-size:13px;font-weight:500;margin-top:8px}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.phone{position:static;margin:0 auto}.rail{position:static}}
+</style>
+</head>
+<body>
+<header class="ho-header">
+  <a class="ho-logo" href="../index.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
+  <span class="step">Guest flow · <b>After the scan</b></span>
+</header>
+
+<div class="layout">
+  <!-- ─────────── PHONE ─────────── -->
+  <div class="stage">
+   <div class="phone"><div class="screen">
+
+    <!-- map -->
+    <div id="map"></div>
+
+    <!-- header -->
+    <div class="gs-hdr">
+      <div class="gs-promo">✨ Headout-curated experiences · special picks for Casa Aurelia guests</div>
+      <div class="hbody">
+        <div class="cobrand">
+          <span class="pl">Casa Aurelia</span><span class="x">×</span>
+          <span class="ho-logo"><img src="../assets/headout-logo-purps.svg" alt="Headout"></span>
+        </div>
+        <div class="ctx">
+          <span class="pill">📍 Prati, Rome</span>
+          <span class="pill wx" id="wx" onclick="toggleRain()">☀️ 24° · Sunny</span>
+          <span class="pill">🕒 3:10 PM</span>
+          <span class="pill">🌐 EN</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- current-location CTA -->
+    <button class="locate" id="locate" onclick="locateMe()" aria-label="Use my current location">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none"/>
+        <line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/>
+        <line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/></svg>
+      Near me
+    </button>
+
+    <!-- result toast -->
+    <div class="gs-toast" id="toast"><div class="ho-toast ho-toast--dark"><span class="ic">✨</span>
+      <span id="toastTxt">3 rainy-day picks near you</span></div></div>
+
+    <!-- concierge -->
+    <div class="gs-chat" id="chat">
+      <div class="gs-chips">
+        <button class="ho-chip hot" onclick="askRainy()">☔ Rainy day + kids</button>
+        <button class="ho-chip" onclick="resetMap()">Today</button>
+        <button class="ho-chip" onclick="resetMap()">Near me</button>
+        <button class="ho-chip" onclick="resetMap()">Skip-the-line</button>
+        <button class="ho-chip" onclick="resetMap()">Under 2 hrs</button>
+      </div>
+      <div class="askbar">
+        <input id="ask" placeholder="Ask what to do next… in any language">
+        <button class="send" onclick="askRainy()" aria-label="Send">↑</button>
+      </div>
+    </div>
+
+    <!-- bottom sheet -->
+    <div class="sheet" id="sheet">
+      <div class="grab" onclick="toggleSheet()"></div>
+      <div class="sheet-h">
+        <span class="heading-s" id="sheetTitle">Popular experiences near you</span>
+        <span class="sub" id="sheetSub">5 bookable nearby</span>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+
+   </div></div>
+  </div>
+
+  <!-- ─────────── ANNOTATION RAIL ─────────── -->
+  <aside class="rail">
+    <span class="kicker">Guest storefront · the post-scan screen</span>
+    <h2 class="display-xs">A map of Headout, right where they're standing</h2>
+    <p class="lede para-m">The guest scans the partner's QR and lands here — a live map of bookable Headout experiences around <b>this exact place</b>, with the concierge floating on top. Real Rome inventory, real photography, real ratings &amp; prices.</p>
+
+    <div class="ann"><span class="n">1</span><div><div class="t">Co-brand arrival</div><div class="d">“Casa Aurelia × Headout” + the Headout promo strip and live context (place · weather · time · language). Every scan is a Headout brand impression.</div></div></div>
+    <div class="ann"><span class="n">2</span><div><div class="t">Only sellable experiences on the map</div><div class="d">Headout sells experiences, not places — so every pin is a <b>bookable Headout experience</b> (rating · reviews · price · Book), shown with its real catalogue photo. No dead POIs, no cafés you can't transact.</div></div></div>
+    <div class="ann"><span class="n">3</span><div><div class="t">Ask, and the map answers</div><div class="d">The concierge runs the deterministic filters; matching pins stay, the rest fade out and the picks rise in the sheet with their “why it fits” chips.</div></div></div>
+    <div class="ann"><span class="n">4</span><div><div class="t">Tap a pin → book</div><div class="d">Each card is a native Headout experience card — rating, “% off”, from-price → Book. Two taps to a QR-attributed booking.</div></div></div>
+
+    <div class="demohint">▶ Tap <b>“☔ Rainy day + kids”</b> or the weather pill to watch the map filter to indoor picks (the §11 demo beat).</div>
+  </aside>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  // Real Headout Rome inventory (titles · ratings · reviews · prices · catalogue images from headout.com/things-to-do-city-rome).
+  // Every entry is a SELLABLE experience — no dead POIs.
+  const IMG = u => u + "?w=480&h=300&fit=crop&crop=faces,edges&auto=format,compress";
+  const THUMB = u => u + "?w=120&h=120&fit=crop&crop=faces,edges&auto=format,compress";
+  const DATA = {
+    vaticanMuseums:{
+      t:"Vatican Museums & Sistine Chapel Skip-the-Line", ll:[41.9065,12.4536],
+      img:"https://cdn-imgix.headout.com/media/images/1ece8bc22bd7b6ad591897b0646852ba-6796---Rome---Premium-Small-Group-Guided-Tour-of-Vatican-Museum---Sistine-Chapel--10.jpg",
+      r:"4.4", rv:"50,776", bk:"2M+", p:"38", was:"56", off:"33",
+      why:[["Indoor ✓"],["650m ✓","dist"],["15:30 ✓"]] },
+    pantheon:{
+      t:"Rome Pantheon Fast-Track Tickets", ll:[41.8986,12.4769],
+      img:"https://cdn-imgix.headout.com/media/images/72eb4916697e1c9b3c630c98de69a73d-Rome%20Pantheon.jpg",
+      r:"4.4", rv:"6,952", bk:"500K+", p:"6", was:"10", off:"37",
+      why:[["Indoor ✓"],["2.1km ✓","dist"],["Open now ✓"]] },
+    stpeters:{
+      t:"St. Peter's Basilica Entry with Audio Guide", ll:[41.9022,12.4539],
+      img:"https://cdn-imgix.headout.com/microbrands-content-image/image/ee6dbf1e76326e45ff0e13c90e1acc2e-St.%20peter%27s%20basilica%20interior.jpg",
+      r:"4.0", rv:"2,454", bk:"300K+", p:"6",
+      why:[["Indoor ✓"],["1.2km ✓","dist"],["Audio guide ✓"]] },
+    colosseum:{
+      t:"Colosseum, Palatine Hill & Roman Forum Pass", ll:[41.8902,12.4922],
+      img:"https://cdn-imgix.headout.com/media/images/ad49e83c507e0fd1ffe2791aae977a0c-22943-rome-express-tour-of-rome-by-golf-cart-02.jpg",
+      r:"4.4", rv:"26,773", bk:"3M+", p:"25", was:"36", off:"31",
+      why:[["4.2km","dist"],["Outdoor"]] },
+    vaticanGuided:{
+      t:"Vatican, Sistine Chapel & St. Peter's Guided Tour", ll:[41.9088,12.4520],
+      img:"https://cdn-imgix.headout.com/media/images/99b94099-8abe-402b-82dd-ed75e7c15dbf-1758181203869-312421.jpg",
+      r:"4.4", rv:"22,058", bk:"800K+", p:"69",
+      why:[["Indoor"],["3.5 hrs"],["650m","dist"]] }
+  };
+  const PICKS = ["vaticanMuseums","pantheon","stpeters"];
+  const PEEK  = ["vaticanMuseums","colosseum","pantheon","stpeters"];
+  const HERE  = [41.9075,12.4565];
+  const markers = {};
+
+  /* ---------- map ---------- */
+  const map = L.map('map',{zoomControl:false,scrollWheelZoom:false,attributionControl:true})
+    .setView([41.900,12.470],13);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+    {subdomains:'abcd',maxZoom:19,attribution:'© OpenStreetMap © CARTO'}).addTo(map);
+
+  // you-are-here
+  L.marker(HERE,{interactive:false,zIndexOffset:-100,icon:L.divIcon({className:'mkico',
+    html:'<div class="here"><div class="ring"><div class="core"></div></div><div class="you">You\'re here</div></div>',
+    iconSize:[64,64],iconAnchor:[32,32]})}).addTo(map);
+
+  // experience pins
+  Object.entries(DATA).forEach(([id,d])=>{
+    const m = L.marker(d.ll,{icon:L.divIcon({className:'mkico',iconSize:[60,62],iconAnchor:[30,30],
+      html:`<div class="mk" data-id="${id}">
+        <span class="mk-ph" style="background-image:url('${THUMB(d.img)}')"></span>
+        <span class="mk-pr">€${d.p}</span></div>`})}).addTo(map);
+    m.on('click',()=>{ const el=m._icon.querySelector('.mk'); if(el.classList.contains('is-out'))return;
+      renderCards([id],false); setSheet(true); });
+    markers[id]=m;
+  });
+  function frameBounds(lls){
+    map.flyToBounds(L.latLngBounds(lls),
+      {paddingTopLeft:[34,168],paddingBottomRight:[34,250],duration:.8,maxZoom:16}); }
+  // frame the central pins
+  frameBounds([HERE,...Object.values(DATA).map(d=>d.ll)]);
+  setTimeout(()=>map.invalidateSize(),120);
+
+  /* ---------- current location CTA ---------- */
+  function locateMe(){
+    const btn=document.getElementById('locate'); btn.classList.add('busy'); toast("Finding your location…");
+    const done=()=>btn.classList.remove('busy');
+    if(!navigator.geolocation){ frameBounds([HERE,...PEEK.map(id=>DATA[id].ll)]); toast("Showing Casa Aurelia"); return done(); }
+    navigator.geolocation.getCurrentPosition(
+      pos=>{ const ll=[pos.coords.latitude,pos.coords.longitude];
+        if(window._meMk) window._meMk.remove();
+        window._meMk=L.marker(ll,{interactive:false,icon:L.divIcon({className:'mkico',iconSize:[16,16],iconAnchor:[8,8],
+          html:'<div class="me"></div>'})}).addTo(map);
+        map.flyTo(ll,15,{duration:.9}); toast("Centred on your location"); done(); },
+      ()=>{ frameBounds([HERE,...PEEK.map(id=>DATA[id].ll)]); toast("Showing experiences near Casa Aurelia"); done(); },
+      {enableHighAccuracy:true,timeout:6000,maximumAge:60000});
+  }
+
+  function mkClass(id,cls,on){ const el=markers[id]._icon&&markers[id]._icon.querySelector('.mk');
+    if(el) el.classList.toggle(cls,on); }
+
+  /* ---------- cards ---------- */
+  function renderCards(ids, ranked){
+    const c=document.getElementById('cards'); c.innerHTML='';
+    ids.forEach((id,i)=>{
+      const d=DATA[id];
+      const rank = ranked ? `<div class="rank">${i+1}</div>` : '';
+      const why = d.why.map(w=>`<span class="${w[1]||''}">${w[0]}</span>`).join('');
+      const price = d.was
+        ? `<span class="amt"><small>from</small> €${d.p}</span><span class="gwas">€${d.was}</span><span class="ho-off">${d.off}% off</span>`
+        : `<span class="amt"><small>from</small> €${d.p}</span>`;
+      c.insertAdjacentHTML('beforeend',`
+        <div class="gcard">
+          <div class="media"><img src="${IMG(d.img)}" alt="" loading="lazy">${rank}</div>
+          <div class="b">
+            <div class="grating"><span class="st">★</span><b>${d.r}</b>
+              <span>(${d.rv})</span><span class="dotsep">·</span><span>${d.bk} booked</span></div>
+            <div class="ttl">${d.t}</div>
+            <div class="why">${why}</div>
+            <div class="grow"><div class="gprice">${price}</div>
+              <button class="ho-btn ho-btn--primary ho-btn--sm">Book →</button></div>
+          </div>
+        </div>`);
+    });
+  }
+
+  /* ---------- sheet + interactions ---------- */
+  function setSheet(up){
+    document.getElementById('sheet').classList.toggle('is-up',up);
+    document.getElementById('chat').style.bottom = up ? '486px' : '188px';
+  }
+  function toggleSheet(){ setSheet(!document.getElementById('sheet').classList.contains('is-up')); }
+  function toast(txt){ const t=document.getElementById('toast');
+    document.getElementById('toastTxt').textContent=txt; t.classList.add('show');
+    clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),2600); }
+
+  function askRainy(){
+    Object.keys(DATA).forEach(id=>{ const pick=PICKS.includes(id);
+      mkClass(id,'is-pick',pick); mkClass(id,'is-out',!pick); });
+    document.getElementById('sheetTitle').textContent="3 rainy-day picks for the kids";
+    document.getElementById('sheetSub').textContent="indoor · nearby · available now";
+    document.getElementById('ask').value="It's raining & I have a 6-year-old — what can we do this afternoon?";
+    renderCards(PICKS,true); setSheet(true); toast("Filtered 5 → 3 · indoor, near & open");
+    frameBounds([HERE,...PICKS.map(id=>DATA[id].ll)]);
+  }
+  function toggleRain(){ const wx=document.getElementById('wx');
+    if(wx.textContent.includes('Sunny')){ wx.textContent="☔ 17° · Raining"; askRainy(); }
+    else { wx.textContent="☀️ 24° · Sunny"; resetMap(); } }
+  function resetMap(){
+    Object.keys(DATA).forEach(id=>{ mkClass(id,'is-out',false); mkClass(id,'is-pick',false); });
+    document.getElementById('sheetTitle').textContent="Popular experiences near you";
+    document.getElementById('sheetSub').textContent="5 bookable nearby";
+    document.getElementById('ask').value="";
+    renderCards(PEEK,false); setSheet(false);
+    frameBounds([HERE,...Object.values(DATA).map(d=>d.ll)]);
+  }
+
+  renderCards(PEEK,false);
+</script>
+</body>
+</html>
