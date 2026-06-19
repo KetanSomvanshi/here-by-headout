@@ -124,6 +124,7 @@ demo/
   frontend/             # copy of designs/, wired to the API (served by StaticFiles)
   backend/
     MASTER_PLAN.md      # this file
+    ARCHITECTURE.md     # Mermaid diagrams: context, components, ER, flows, deploy
     LOCAL_DEV.md        # local-first runbook (no Docker)
     HOSTING.md          # tunnel + Fly.io deploy
     TESTING.md          # test-driven spec + how to run the suite

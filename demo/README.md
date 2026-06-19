@@ -12,4 +12,9 @@ demo/
 **Fallback:** the original static prototype is frozen at the repo root in `designs/` and
 is never touched by backend work. If this demo breaks, `designs/` still stands alone.
 
-Start here: [`backend/MASTER_PLAN.md`](backend/MASTER_PLAN.md) → [`backend/LOCAL_DEV.md`](backend/LOCAL_DEV.md).
+Docs:
+- [`backend/MASTER_PLAN.md`](backend/MASTER_PLAN.md) — the plan (stack, data model, API, milestones)
+- [`backend/ARCHITECTURE.md`](backend/ARCHITECTURE.md) — diagrams (context, components, ER, flows, deploy)
+- [`backend/LOCAL_DEV.md`](backend/LOCAL_DEV.md) — run it locally (no Docker)
+- [`backend/TESTING.md`](backend/TESTING.md) — the test-driven contract
+- [`backend/HOSTING.md`](backend/HOSTING.md) — tunnel + Fly.io deploy
