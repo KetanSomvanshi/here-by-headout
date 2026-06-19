@@ -76,6 +76,27 @@ quality, blurry, oversaturated, deformed, duplicated people, plastic skin
 
 ---
 
+## Pacing arc — confident open → fast proof → strong close
+
+Partner trailers sell **trust, not tension**. Open confident and aspirational
+(not "lost"), accelerate through the proof (setup → live → earnings), peak on the
+"any place" montage, land on a clear CTA. Render each i2v clip at 5s and **trim on
+the beat** to the cut lengths below; match the camera move so the film feels of a
+piece.
+
+| Phase | Scenes | Feel | Cut length | Camera (i2v move) |
+|---|---|---|---|---|
+| **Confident open** | 1–2 | Busy, thriving place; the missed moment reframed as opportunity | 3–4s | slow push-in / lateral glide |
+| **The proof** | 3–6 | Setup → QR → guests book → you earn; momentum builds | 1.5–2.5s | locked or slow push-in, snappy |
+| **Fast peak** | 7 | Every kind of place, all earning | 0.5–0.8s | brisk push-in, hard cuts on the beat |
+| **Land + CTA** | 8 + banner | Release, scale, "become a partner" | 4–5s | slow aerial pull-back, settle |
+
+Music + VO are unchanged from `flow-trailer-prompts-partner.md` — reuse its cue
+sheet and hit points (Scene 3 "Generate" tap = first downbeat; Scene 6 commission
+tick = accent chime; Scene 7 cuts on the kick; Scene 8 pull-back = biggest hit).
+
+---
+
 ## Scene 1 — The missed moment · ~4s · CONFIDENT OPEN
 
 **Beat & depth:** the everyday lost booking, framed as *opportunity, not failure*.
@@ -132,14 +153,16 @@ Camera: smooth, slightly slowed lateral glide across the room.
 *(Prefer a Screen Studio capture of the real setup form. i2v fallback below.)*
 
 **Beat & depth:** kill the "this is a big integration" fear in one shot. No
-engineers, no contract, no inventory — just a short form and a button. The owner's
-hands move with easy confidence; the punchline is their face: a quick glance up
-with a hopeful, almost disbelieving *"…that's it?"* The purple Generate button is
-the hero — it should feel alive and inviting under the finger.
+engineers, no contract, no inventory to source — just three quick fields (**place
+name, place type, commission**) and a button. Sixty seconds. The owner's hands
+move with easy confidence; the punchline is their face: a quick glance up with a
+hopeful, almost disbelieving *"…that's it?"* The purple **"Generate Here by
+Headout"** button is the hero — it should feel alive and inviting under the finger.
 
-**Start frame:** close-up of the owner's hands on a tablet showing a clean, short
-setup form; finger hovering near a large glowing purple **Generate** button. Warm
-counter surface, soft light, purple screen-glow.
+**Start frame:** close-up of the owner's hands on a tablet at the counter showing
+a clean, short setup form with a few filled fields; finger hovering near a large
+glowing purple **"Generate Here by Headout"** button. Warm counter surface, soft
+light, purple screen-glow.
 
 **Motion prompt:**
 ```
@@ -246,8 +269,21 @@ and squares it into place with a satisfied, quietly proud smile; the QR pulses
 softly in purple. Brisk, confident, single clean action. Camera: a brisk, slight
 push-in.
 ```
-*Add the "{Place} × Headout" labels in CapCut on the beat (table in the Flow
-sheet), not in FAL. Cut every clip on the kick.*
+**Place lockups — snap a "{Place} × Headout" label onto each cut in CapCut on the
+beat (identical lockup styling = the repeating co-brand motif). NOT in FAL.**
+
+| Cut | Location still | Headout-style label |
+|---|---|---|
+| 1 | Hotel front desk | **Casa Aurelia × Headout** |
+| 2 | Café bar | **Caffè Prati × Headout** |
+| 3 | Hostel reception | **Trastevere Social × Headout** |
+| 4 | Airport lounge desk | **Fiumicino SkyLounge × Headout** |
+| 5 | Theatre box office | **Teatro Argentina × Headout** |
+| 6 | Tourist info desk | **Prati Visitor Desk × Headout** |
+| 7 | Rooftop bar | **Terrazza Borghese × Headout** |
+
+*Casa Aurelia, Caffè Prati, and Prati Visitor Desk are real §9 seed places — keep
+exact; the rest are believable Rome stand-ins. Cut every clip on the kick.*
 
 ---
 
