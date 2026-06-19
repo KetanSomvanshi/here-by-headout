@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>04 · Place-Type Switcher</title>
 <link rel="stylesheet" href="../assets/eevee.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   body{background:var(--surface-1)}
   .wrap{max-width:1080px;margin:0 auto;padding:30px 24px 64px;text-align:center}
@@ -15,20 +16,36 @@
   .same{font-size:13px;color:var(--text-primary);font-weight:500;margin-bottom:24px}
   .same b{font-weight:700}
   .phones{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-  .phone{border:8px solid var(--grey-900);border-radius:28px;overflow:hidden;background:#fff;box-shadow:var(--shadow-2);text-align:left}
-  .ph-head{color:#fff;padding:13px 13px 12px}
-  .ho-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:500;opacity:.9}
-  .cb{font-weight:600;font-size:13.5px;margin-top:3px} .cb .x{font-weight:500;opacity:.85}
-  .ph-type{font-size:10.5px;opacity:.8;margin-top:1px}
-  .ph-body{padding:12px}
-  .ask{background:var(--grey-100);border-radius:var(--r-pill);padding:9px 12px;font-size:11.5px;color:var(--text-2);display:flex;justify-content:space-between;align-items:center;gap:8px}
-  .ask .send{color:#fff;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;flex:none}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
-  .chips span{font-size:10px;padding:4px 8px;border-radius:var(--r-pill)}
-  .rec{border:1px solid var(--divider);border-radius:var(--r-12);padding:10px}
-  .rec .t{font-weight:600;font-size:12px} .rec .why{font-size:10px;color:var(--text-positive);margin:4px 0 8px}
-  .rec .pr{display:flex;justify-content:space-between;align-items:center}
-  .rec .price{font-weight:600;font-size:13px} .rec .book{background:var(--purps);color:#fff;font-size:10.5px;font-weight:500;padding:5px 11px;border-radius:var(--r-pill)}
+  .phone{border:7px solid var(--grey-900);border-radius:28px;overflow:hidden;background:#fff;box-shadow:var(--shadow-2);text-align:left}
+  /* Headout-forward co-brand header (same brand for every place type) */
+  .ms-hd{padding:9px 11px}
+  .ms-promo{background:var(--purps);color:#fff;text-align:center;font-size:8.5px;font-weight:500;padding:4px 6px;margin:-9px -11px 8px}
+  .ms-cb{display:flex;align-items:center;gap:5px;font-weight:600;font-size:12.5px;color:var(--text-1)}
+  .ms-cb .x{color:var(--grey-400);font-weight:300} .ms-cb img{height:11px}
+  .ms-type{font-size:10px;color:var(--text-3);margin-top:2px}
+  .ms-map{height:94px;position:relative;z-index:0}
+  .ms-body{padding:10px 11px 11px}
+  .ms-ask{display:flex;justify-content:space-between;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--divider-dark);border-radius:var(--r-pill);padding:6px 9px;font-size:10.5px;color:var(--text-3);box-shadow:var(--shadow-1)}
+  .ms-ask .send{flex:none;width:18px;height:18px;border-radius:50%;background:var(--purps);color:#fff;display:grid;place-items:center;font-size:10px}
+  .ms-chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+  .ms-chips span{font-size:9.5px;font-weight:500;background:var(--purps-20);color:var(--text-primary);padding:3px 7px;border-radius:var(--r-pill)}
+  .ms-card{border:1px solid var(--divider);border-radius:var(--r-12);overflow:hidden}
+  .ms-card .img{height:72px;background:var(--grey-200)} .ms-card .img img{width:100%;height:100%;object-fit:cover}
+  .ms-c2{padding:8px 9px 9px}
+  .ms-rt{display:flex;align-items:center;gap:4px;font-size:9.5px;color:var(--text-3);margin-bottom:3px} .ms-rt .st{color:var(--star)} .ms-rt b{color:var(--text-1);font-weight:600;font-size:10.5px}
+  .ms-t{font-weight:600;font-size:11px;line-height:1.25;color:var(--text-1)}
+  .ms-why{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 8px}
+  .ms-why span{font-size:8.5px;font-weight:600;background:var(--okay-200);color:var(--okay-700);padding:2px 6px;border-radius:var(--r-4)}
+  .ms-pr{display:flex;justify-content:space-between;align-items:center}
+  .ms-pr .price{font-weight:600;font-size:12px;color:var(--text-1)} .ms-pr .price small{font-weight:300;font-size:9px;color:var(--text-3)}
+  .ms-pr .gwas{font-size:9px;color:var(--grey-500);text-decoration:line-through;margin-left:3px}
+  .ms-pr .book{background:var(--purps);color:#fff;font-size:9.5px;font-weight:500;padding:4px 10px;border-radius:var(--r-pill)}
+  /* mini-map markers */
+  .mkico{background:none!important;border:0!important}
+  .mini-pin{width:30px;height:30px;border-radius:50%;background-size:cover;background-position:center;border:2.5px solid #fff;box-shadow:0 3px 8px rgba(17,17,17,.3)}
+  .mini-here{display:grid;place-items:center}
+  .mini-here .r{width:38px;height:38px;border-radius:50%;background:rgba(128,0,255,.16);display:grid;place-items:center}
+  .mini-here .c{width:12px;height:12px;border-radius:50%;background:var(--purps);border:2.5px solid #fff;box-shadow:0 0 0 2px var(--purps)}
   .label{text-align:center;font-size:12px;color:var(--text-3);font-style:italic;margin-top:10px}
   @media(max-width:860px){.phones{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:520px){.phones{grid-template-columns:1fr}}
@@ -43,7 +60,7 @@
 <div class="wrap">
   <span class="kicker">Same engine · any trusted surface</span>
   <h1 class="display-s">One Headout Here, every kind of place</h1>
-  <p class="lede para-m">The setup form re-skins the same concierge for whatever has footfall — the guest just asks, in context.</p>
+  <p class="lede para-m">The setup form re-skins the same guest map storefront for whatever has footfall — same Headout brand, same real inventory, the guest just asks in context.</p>
 
   <div class="types">
     <span class="ho-chip is-selected">🏨 Hotel</span>
@@ -52,21 +69,30 @@
     <span class="ho-chip">🎭 Venue</span>
     <span class="ho-chip">🗺️ Tourist desk</span>
   </div>
-  <div class="same">Same Headout brand &amp; engine — only the <b>context</b> changes ↓</div>
+  <div class="same">Same Headout brand &amp; map storefront — only the <b>context</b> changes ↓</div>
 
   <div class="phones">
     <!-- HOTEL -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:linear-gradient(135deg,#1B4B5A,#123640)">
-          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
-          <div class="cb">Casa Aurelia <span class="x">× Headout</span></div>
-          <div class="ph-type">Hotel · Rome</div>
+        <div class="ms-hd">
+          <div class="ms-promo">✨ Headout picks for guests</div>
+          <div class="ms-cb">Casa Aurelia <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Hotel · Rome</div>
         </div>
-        <div class="ph-body">
-          <div class="ask">It’s raining with a 6-yr-old… <span class="send" style="background:#1B4B5A">→</span></div>
-          <div class="chips"><span style="background:#EEF4F5;color:#1B4B5A">Today</span><span style="background:#EEF4F5;color:#1B4B5A">Kid-friendly</span><span style="background:#EEF4F5;color:#1B4B5A">Rainy day</span></div>
-          <div class="rec"><div class="t">Leonardo Experience</div><div class="why">Indoor ✓ · 900m ✓ · family ✓</div><div class="pr"><span class="price">€12</span><span class="book">Book</span></div></div>
+        <div class="ms-map" id="m1"></div>
+        <div class="ms-body">
+          <div class="ms-ask">It’s raining with a 6-yr-old… <span class="send">↑</span></div>
+          <div class="ms-chips"><span>Today</span><span>Kid-friendly</span><span>Rainy day</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c1" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><span class="st">★</span><b>4.4</b><span>(50,776)</span></div>
+              <div class="ms-t">Vatican Museums &amp; Sistine Chapel Skip-the-Line</div>
+              <div class="ms-why"><span>Indoor ✓</span><span>650m ✓</span><span>15:30 ✓</span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €38<span class="gwas">€56</span></span><span class="book">Book →</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="label">“What to do this afternoon?”</div>
@@ -75,15 +101,24 @@
     <!-- CAFÉ -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:linear-gradient(135deg,#B5651D,#8a4d16)">
-          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
-          <div class="cb">Caffè Prati <span class="x">× Headout</span></div>
-          <div class="ph-type">Café · Rome</div>
+        <div class="ms-hd">
+          <div class="ms-promo">✨ Headout picks for guests</div>
+          <div class="ms-cb">Caffè Prati <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Café · Rome</div>
         </div>
-        <div class="ph-body">
-          <div class="ask">What’s good tonight nearby? <span class="send" style="background:#B5651D">→</span></div>
-          <div class="chips"><span style="background:#FBF0E6;color:#B5651D">Tonight</span><span style="background:#FBF0E6;color:#B5651D">After this</span><span style="background:#FBF0E6;color:#B5651D">Under 2 hrs</span></div>
-          <div class="rec"><div class="t">Trastevere Food Tour</div><div class="why">Tonight ✓ · 19:30 ✓ · 1.2km ✓</div><div class="pr"><span class="price">€89</span><span class="book">Book</span></div></div>
+        <div class="ms-map" id="m2"></div>
+        <div class="ms-body">
+          <div class="ms-ask">What’s good tonight nearby? <span class="send">↑</span></div>
+          <div class="ms-chips"><span>Tonight</span><span>After this</span><span>Under 2 hrs</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c2" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><span class="st">★</span><b>4.7</b><span>(1,240)</span></div>
+              <div class="ms-t">Evening Food Tour &amp; Wine Tasting</div>
+              <div class="ms-why"><span>Tonight ✓</span><span>19:30 ✓</span><span>1.4km ✓</span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €55</span><span class="book">Book →</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="label">“What’s good tonight?”</div>
@@ -92,15 +127,24 @@
     <!-- VENUE -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:linear-gradient(135deg,#3A1D6E,#2a1550)">
-          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
-          <div class="cb">Teatro Sistina <span class="x">× Headout</span></div>
-          <div class="ph-type">Venue · Rome</div>
+        <div class="ms-hd">
+          <div class="ms-promo">✨ Headout picks for guests</div>
+          <div class="ms-cb">Teatro Sistina <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Venue · Rome</div>
         </div>
-        <div class="ph-body">
-          <div class="ask">Anything after the show? <span class="send" style="background:#3A1D6E">→</span></div>
-          <div class="chips"><span style="background:#EFE9F8;color:#3A1D6E">After the show</span><span style="background:#EFE9F8;color:#3A1D6E">Late night</span><span style="background:#EFE9F8;color:#3A1D6E">Walkable</span></div>
-          <div class="rec"><div class="t">Night Food &amp; Wine Walk</div><div class="why">Open late ✓ · 600m ✓ · 22:00 ✓</div><div class="pr"><span class="price">€55</span><span class="book">Book</span></div></div>
+        <div class="ms-map" id="m3"></div>
+        <div class="ms-body">
+          <div class="ms-ask">Anything after the show? <span class="send">↑</span></div>
+          <div class="ms-chips"><span>After the show</span><span>Late night</span><span>Walkable</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c3" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><span class="st">★</span><b>4.4</b><span>(26,773)</span></div>
+              <div class="ms-t">Colosseum Under the Moon Night Tour</div>
+              <div class="ms-why"><span>Open late ✓</span><span>22:00 ✓</span><span>1.4km ✓</span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €49</span><span class="book">Book →</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="label">“After the show?”</div>
@@ -109,20 +153,60 @@
     <!-- TOURIST DESK -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:linear-gradient(135deg,#2E7D32,#1f5a23)">
-          <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
-          <div class="cb">Prati Visitor Desk <span class="x">× Headout</span></div>
-          <div class="ph-type">Tourist desk · Rome</div>
+        <div class="ms-hd">
+          <div class="ms-promo">✨ Headout picks for guests</div>
+          <div class="ms-cb">Prati Visitor Desk <span class="x">×</span> <img src="../assets/headout-logo-purps.svg" alt="Headout"></div>
+          <div class="ms-type">Tourist desk · Rome</div>
         </div>
-        <div class="ph-body">
-          <div class="ask">In my language, skip the line <span class="send" style="background:#2E7D32">→</span></div>
-          <div class="chips"><span style="background:#E8F5E9;color:#2E7D32">Today</span><span style="background:#E8F5E9;color:#2E7D32">Skip the line</span><span style="background:#E8F5E9;color:#2E7D32">In my language</span></div>
-          <div class="rec"><div class="t">Vatican Skip-the-Line</div><div class="why">日本語 ✓ · 650m ✓ · 15:30 ✓</div><div class="pr"><span class="price">€58</span><span class="book">Book</span></div></div>
+        <div class="ms-map" id="m4"></div>
+        <div class="ms-body">
+          <div class="ms-ask">In my language, skip the line <span class="send">↑</span></div>
+          <div class="ms-chips"><span>Today</span><span>Skip the line</span><span>In my language</span></div>
+          <div class="ms-card">
+            <div class="img"><img id="c4" alt="" loading="lazy"></div>
+            <div class="ms-c2">
+              <div class="ms-rt"><span class="st">★</span><b>4.0</b><span>(2,454)</span></div>
+              <div class="ms-t">St. Peter’s Basilica Entry with Audio Guide</div>
+              <div class="ms-why"><span>日本語 ✓</span><span>1.2km ✓</span><span>Audio ✓</span></div>
+              <div class="ms-pr"><span class="price"><small>from</small> €6</span><span class="book">Book →</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="label">“In my language.”</div>
     </div>
   </div>
 </div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  const THUMB=u=>u+"?w=110&h=110&fit=crop&crop=faces,edges&auto=format,compress";
+  const IMG=u=>u+"?w=380&h=230&fit=crop&crop=faces,edges&auto=format,compress";
+  const VATICAN="https://cdn-imgix.headout.com/media/images/1ece8bc22bd7b6ad591897b0646852ba-6796---Rome---Premium-Small-Group-Guided-Tour-of-Vatican-Museum---Sistine-Chapel--10.jpg";
+  const FOOD="https://cdn-imgix.headout.com/media/images/0a9c4f723d892fb0920cae52d5824eb9-20052-07.jpg";
+  const COLOSSEUM="https://cdn-imgix.headout.com/media/images/ad49e83c507e0fd1ffe2791aae977a0c-22943-rome-express-tour-of-rome-by-golf-cart-02.jpg";
+  const STPETERS="https://cdn-imgix.headout.com/microbrands-content-image/image/ee6dbf1e76326e45ff0e13c90e1acc2e-St.%20peter%27s%20basilica%20interior.jpg";
+
+  function mini(id, center, zoom, placeLL, pinLL, pinImg){
+    const m=L.map(id,{zoomControl:false,attributionControl:false,dragging:false,scrollWheelZoom:false,
+      doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false}).setView(center,zoom);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(m);
+    L.marker(placeLL,{icon:L.divIcon({className:'mkico',iconSize:[38,38],iconAnchor:[19,19],
+      html:'<div class="mini-here"><div class="r"><div class="c"></div></div></div>'})}).addTo(m);
+    L.marker(pinLL,{icon:L.divIcon({className:'mkico',iconSize:[30,30],iconAnchor:[15,15],
+      html:`<div class="mini-pin" style="background-image:url('${THUMB(pinImg)}')"></div>`})}).addTo(m);
+    setTimeout(()=>m.invalidateSize(),160);
+  }
+
+  document.getElementById('c1').src=IMG(VATICAN);
+  document.getElementById('c2').src=IMG(FOOD);
+  document.getElementById('c3').src=IMG(COLOSSEUM);
+  document.getElementById('c4').src=IMG(STPETERS);
+
+  mini('m1',[41.9068,12.4548],15,[41.9070,12.4560],[41.9065,12.4536],VATICAN);
+  mini('m2',[41.9038,12.4665],14,[41.9075,12.4640],[41.9000,12.4690],FOOD);
+  mini('m3',[41.8974,12.4906],13,[41.9046,12.4889],[41.8902,12.4922],COLOSSEUM);
+  mini('m4',[41.9046,12.4555],15,[41.9069,12.4570],[41.9022,12.4539],STPETERS);
+</script>
 </body>
 </html>
