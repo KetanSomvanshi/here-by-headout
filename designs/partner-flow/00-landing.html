@@ -77,8 +77,10 @@
   @keyframes coinUp{0%{opacity:0;transform:translateY(0) scale(.7)}15%{opacity:1;transform:translateY(-10px) scale(1.1)}100%{opacity:0;transform:translateY(-90px) scale(1)}}
 
   /* marquee carousel */
-  .band{border-top:1px solid var(--white-a10);border-bottom:1px solid var(--white-a10);padding:26px 0;background:var(--white-a10);overflow:hidden}
-  .band .bl{text-align:center;font-size:12px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:var(--purps-100);margin-bottom:18px}
+  .band{border-top:1px solid var(--white-a10);border-bottom:1px solid var(--white-a10);padding:44px 0;background:var(--white-a10);overflow:hidden}
+  .band .bl{text-align:center;font-family:var(--font-hd);font-weight:500;font-size:clamp(24px,3.4vw,34px);line-height:1.15;color:#fff;margin-bottom:26px;padding:0 22px}
+  .band .bl .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .band .bl small{display:block;font-family:var(--font-ht);font-weight:500;font-size:14px;color:var(--text-white-translucent);margin-top:10px}
   .marquee{display:flex;gap:14px;width:max-content;animation:scrollX 28s linear infinite}
   .marquee:hover{animation-play-state:paused}
   .mcard{display:inline-flex;align-items:center;gap:10px;flex:none;color:#fff;background:var(--white-a10);
@@ -132,9 +134,9 @@
 <header class="hero pf-dark">
   <div class="inner">
     <div class="copy">
-      <span class="kicker"><span class="dot"></span> Headout Here · for partners</span>
-      <h1 class="display-l">Earn commission when guests <span class="grad">book Headout</span> from your place.</h1>
-      <p class="lede">Create branded QR posters in 60 seconds. Guests scan, book on Headout, and every booking lands live in your dashboard.</p>
+      <span class="kicker"><span class="dot"></span> Works for any physical place</span>
+      <h1 class="display-l">Turn <span class="grad">any physical place</span> into a Headout storefront.</h1>
+      <p class="lede">Hotels, cafés, hostels, venues, tourist desks, gyms. Any place with footfall. Create branded QR posters in 60 seconds, guests book on Headout, and commission lands live in your dashboard.</p>
 
       <div class="ticker" data-reveal="up">
         <span class="pulse"></span>
@@ -168,7 +170,8 @@
 
 <!-- any place marquee -->
 <section class="band" id="anywhere">
-  <div class="bl">Works for any trusted place with footfall</div>
+  <div class="bl" data-reveal="up">One engine. <span class="grad">Every kind of place.</span>
+    <small>If it has footfall, it can be a Headout storefront. Same brand, same real inventory.</small></div>
   <div class="marquee" id="marquee" aria-hidden="true"></div>
 </section>
 
@@ -220,7 +223,7 @@
   document.getElementById('marquee').innerHTML=set+set; // duplicated for seamless loop
 
   // journey progress rail (this is the entry, step 0)
-  PF.rail(['Set up','QR kit','Earnings','Any place'], -1, '#rail');
+  PF.rail(['Set up','QR kit','Earnings'], -1, '#rail');
 
   // cinematic coin pops + live ticker climb
   const stage=document.getElementById('stage');

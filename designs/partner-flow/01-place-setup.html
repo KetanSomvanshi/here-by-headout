@@ -125,17 +125,24 @@
 </style>
 </head>
 <body>
-<header class="ho-header">
-  <a class="ho-logo" href="00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-purps.svg" alt="HERE by Headout"></a>
-  <span class="step">Step <b>1</b> of 4 · Set up your place</span>
-</header>
+<nav class="nav">
+  <div class="inner">
+    <span class="brand">
+      <a class="ho-logo" href="00-landing.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-white.svg" alt="HERE by Headout"></a>
+      <span class="by">for partners</span>
+    </span>
+    <span class="step">Step <b>1</b> of 3 · Set up your place</span>
+  </div>
+</nav>
 
+<div class="stagewrap">
 <div class="layout">
-  <div class="form" data-reveal="up">
-    <span class="kicker">Any physical place · 60 seconds</span>
-    <h1 class="display-s">Create your partner QR kit</h1>
-    <p class="lede para-m">Tell us where guests already ask for plans. Watch your storefront build itself, then get branded QR posters, a guest storefront, and an earnings dashboard.</p>
+  <div class="form-col">
+    <span class="kicker" data-reveal="up"><span class="dot"></span> Any physical place · 60 seconds</span>
+    <h1 class="headline display-m" data-reveal="up" style="--reveal-delay:60ms">Create your partner <span class="grad">QR kit</span></h1>
+    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Tell us where guests already ask for plans. Watch your storefront build itself, then get branded QR posters, a guest storefront, and an earnings dashboard.</p>
 
+    <div class="form" data-reveal="up" style="--reveal-delay:180ms">
     <div class="stack-g">
       <div class="ho-field"><label for="placeNameInput">Place name · required</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
 
@@ -188,12 +195,14 @@
         <p class="cta-note" id="formStatus">Free to create. No integration. You earn commission only when guests book.</p>
       </div>
     </div>
+    </div>
   </div>
 
   <aside class="rail" aria-label="Live storefront preview" data-reveal="left">
     <div class="rail-cap">What your guests will see <span class="live"><span class="d"></span>Live</span></div>
     <div class="rail-sub" id="railSub">Updating as you fill the form</div>
 
+    <div class="pv-stage">
     <div class="pv-phone pf-sheen">
       <div class="pv-promo">Headout picks for guests</div>
       <div class="pv-hd">
@@ -214,6 +223,7 @@
         </div>
       </div>
     </div>
+    </div>
 
     <div class="pv-posters">
       <div class="ph">Branded QR posters <b id="pvPosterCount">4 posters</b></div>
@@ -226,13 +236,14 @@
     </div>
   </aside>
 </div>
+</div>
 
 <div id="rail"></div>
-<nav class="journey-nav">
+<nav class="journey-nav journey-nav--dark">
   <div class="journey-actions">
     <a class="ho-btn ho-btn--secondary" href="00-landing.html">Partner landing</a>
   </div>
-  <div class="journey-meta">Step 1 of 4 · Set up your place</div>
+  <div class="journey-meta">Step 1 of 3 · Set up your place</div>
   <div class="journey-actions">
     <a class="ho-btn ho-btn--primary" href="02-generated-output.html">Generate QR kit</a>
   </div>
@@ -439,8 +450,15 @@
   renderPlacements('hotel');
   addPlacementButton.disabled=true;
 
-  PF.rail(['Set up','QR kit','Earnings','Any place'], 0, '#rail');
+  PF.rail(['Set up','QR kit','Earnings'], 0, '#rail');
   PF.pageTransition();
+
+  // cinematic touch: a live "this is real" ping, like the landing & guest views
+  setTimeout(()=>{ if(!PF.reduced) PF.ping({
+    title:'Storefront preview is live',
+    sub:'Guests see this the moment you publish',
+    icon:'<svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 3.9L17.5 8l-3.9 1.6L12 13.5 10.4 9.6 6.5 8l3.9-1.1L12 3Z"/></svg>'
+  }); }, 2200);
 </script>
 </body>
 </html>
