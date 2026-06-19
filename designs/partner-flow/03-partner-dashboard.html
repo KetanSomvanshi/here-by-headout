@@ -197,11 +197,10 @@
 <div id="rail"></div>
 <nav class="journey-nav">
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="02-generated-output.html?v=journey">QR kit</a>
+    <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Guest view</a>
   </div>
-  <div class="journey-meta">Step 3 of 3 · Your earnings</div>
+  <div class="journey-meta">Step 4 of 4 · Your earnings</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
     <a class="ho-btn ho-btn--primary" href="01-place-setup.html">Set up your place</a>
   </div>
 </nav>
@@ -446,7 +445,7 @@
       setTimeout(()=>{ landBooking(); loop=setInterval(landBooking,3600); }, 2800);
     }
 
-    PF.rail(['Set up','QR kit','Earnings'], 2, '#rail');
+    PF.rail(['Set up','QR kit','Guest view','Earnings'], 3, '#rail');
     PF.pageTransition();
   })();
 </script>
