@@ -6,17 +6,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>01 · Guest Map Storefront</title>
 <link rel="stylesheet" href="../assets/eevee.css">
+<link rel="stylesheet" href="../assets/partner-motion.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   /* Map-specific composition using Eevee/Oak tokens and primitives from ../assets/eevee.css. */
-  body{background:var(--surface-1)}
-  .ho-header .step{font-size:13px;color:var(--text-2)} .ho-header .step b{color:var(--text-primary);font-weight:600}
-  .layout{max-width:1080px;margin:0 auto;padding:28px 24px 64px;display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
-  .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text-primary);background:var(--purps-20);padding:6px 12px;border-radius:var(--r-pill);margin-bottom:14px}
-  .stage{display:flex;justify-content:center}
+  /* ── cinematic dark stage ── */
+  body{background:var(--surface-dark-primary-1);color:var(--text-white)}
+
+  /* dark nav */
+  .gnav{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1180px;margin:0 auto;padding:22px 28px}
+  .gnav .brand{display:inline-flex;align-items:center;gap:10px}
+  .gnav .brand img{height:18px;display:block}
+  .gnav .brand .by{font-size:13px;color:var(--text-white-translucent);font-weight:500;border-left:1px solid var(--white-a20);padding-left:10px}
+  .gnav .tag{font-size:12px;font-weight:600;color:#fff;background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:7px 13px}
+
+  .stagewrap{position:relative;overflow:hidden;
+    background:linear-gradient(165deg,var(--surface-dark-primary-1),var(--surface-dark-primary-2) 52%,var(--surface-dark-primary-3))}
+  .stagewrap::before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;
+    background:radial-gradient(circle,rgba(128,0,255,.5),transparent 70%);top:-160px;right:-120px;pointer-events:none}
+  .stagewrap::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,102,175,.2),transparent 70%);bottom:-180px;left:-120px;pointer-events:none}
+
+  .layout{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:18px 28px 72px;display:grid;grid-template-columns:1fr 392px;gap:56px;align-items:center}
+
+  /* concise copy column */
+  .copyc{max-width:470px}
+  .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--purps-100);background:var(--white-a10);padding:7px 14px;border-radius:var(--r-pill);margin-bottom:20px}
+  .kicker .dot{width:7px;height:7px;border-radius:50%;background:var(--candy-500);box-shadow:0 0 0 4px rgba(255,0,122,.22)}
+  .copyc h1{color:#fff;max-width:440px}
+  .copyc h1 .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .copyc .lede{color:var(--text-white-translucent);font-size:17px;line-height:28px;margin-top:16px;max-width:420px}
+  .gp-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+  .gp-pills span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#fff;
+    background:var(--white-a10);border:1px solid var(--white-a20);border-radius:var(--r-pill);padding:8px 13px}
+  .gp-pills .ee-icon{width:13px;height:13px;color:var(--okay-400);stroke-width:2.6}
+  .nudge{display:inline-flex;align-items:center;gap:9px;margin-top:28px;border:0;font-family:inherit;cursor:pointer;
+    background:var(--white);color:var(--text-1);border-radius:var(--r-pill);padding:12px 18px 12px 15px;font-size:14px;font-weight:600;
+    box-shadow:0 16px 38px rgba(128,0,255,.32)}
+  .nudge:active{transform:translateY(1px)}
+  .nudge b{color:var(--text-primary)}
+  .nudge .hand{font-size:18px;animation:nudgeTap 1.5s ease-in-out infinite}
+  @keyframes nudgeTap{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-8deg)}}
+
+  /* stage + glow */
+  .stage{display:flex;justify-content:center;position:relative}
+  .stage::before{content:"";position:absolute;width:430px;height:430px;border-radius:50%;
+    background:radial-gradient(circle,rgba(128,0,255,.42),transparent 64%);top:70px;left:50%;transform:translateX(-50%);z-index:0;pointer-events:none}
 
   /* ── phone frame ── */
-  .phone{width:392px;height:812px;background:var(--black);border-radius:46px;padding:11px;box-shadow:var(--shadow-3);position:sticky;top:20px}
+  .phone{position:relative;z-index:1;width:392px;height:812px;background:var(--black);border-radius:46px;padding:11px;
+    box-shadow:0 50px 100px rgba(0,0,0,.6);animation:phoneFloat 6.5s ease-in-out infinite}
+  @keyframes phoneFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+  .phone:hover{animation-play-state:paused}
   .screen{position:relative;width:100%;height:100%;background:var(--surface-1);border-radius:36px;overflow:hidden}
   .screen::after{content:"";position:absolute;left:0;right:0;top:284px;height:168px;z-index:5;pointer-events:none;
     background:linear-gradient(180deg,color-mix(in srgb,var(--surface-1) 0%,transparent),color-mix(in srgb,var(--surface-1) 94%,transparent) 78%,var(--surface-1))}
@@ -136,31 +178,40 @@
   .gprice .amt small{font-weight:var(--w-semibold);font-size:14px;color:var(--text-2)}
   .gprice .gwas{font-size:12px;color:var(--grey-500);text-decoration:line-through}
 
-  /* ── annotation rail ── */
-  .rail{position:sticky;top:20px}
-  .rail .lede{color:var(--text-2);margin-bottom:24px}
-  .rail-proof{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 24px}
-  .rail-proof .m{background:var(--white);border:1px solid var(--divider);border-radius:var(--r-12);padding:12px;box-shadow:var(--shadow-1)}
-  .rail-proof .v{font-family:var(--font-hd);font-weight:500;font-size:24px;color:var(--text-primary)}
-  .rail-proof .l{font-size:11px;color:var(--text-3);margin-top:2px}
-  .ann{display:flex;gap:13px;margin-bottom:18px}
-  .ann .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--purps-20);color:var(--text-primary);
-    font-family:var(--font-ht);font-weight:600;font-size:13px;display:grid;place-items:center}
-  .ann .t{font-family:var(--font-ht);font-weight:600;font-size:14px;color:var(--text-1)}
-  .ann .d{font-size:13px;color:var(--text-2);margin-top:3px;line-height:1.55}
-  .demohint{display:flex;align-items:center;gap:10px;background:var(--mustard-200);color:var(--mustard-800);
-    border-radius:var(--r-12);padding:12px 14px;font-size:13px;font-weight:500;margin-top:8px}
-  .demohint .ee-icon{width:18px;height:18px;flex:none;stroke-width:2.4}
-  @media(max-width:900px){.layout{grid-template-columns:1fr}.phone{position:static;margin:0 auto}.rail{position:static}}
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;gap:32px;justify-items:center;text-align:center;padding-top:8px}
+    .copyc{max-width:520px}
+    .copyc h1,.copyc .lede{max-width:none}
+    .gp-pills{justify-content:center}
+    .phone{margin:0 auto}
+  }
+  @media (prefers-reduced-motion: reduce){.phone{animation:none}.nudge .hand{animation:none}}
 </style>
 </head>
 <body>
-<header class="ho-header">
-  <a class="ho-logo" href="../index.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-purps.svg" alt="HERE by Headout"></a>
-  <span class="step">Guest flow · <b>After the scan</b></span>
-</header>
+<nav class="gnav">
+  <span class="brand">
+    <a class="ho-logo" href="../index.html" aria-label="HERE by Headout"><img src="../assets/here-lockup-white.svg" alt="HERE by Headout"></a>
+    <span class="by">guest preview</span>
+  </span>
+  <span class="tag">After the scan</span>
+</nav>
 
+<div class="stagewrap">
 <div class="layout">
+  <!-- ─────────── CONCISE COPY ─────────── -->
+  <div class="copyc">
+    <span class="kicker" data-reveal="up"><span class="dot"></span> What your QR opens</span>
+    <h1 class="display-l" data-reveal="up" style="--reveal-delay:60ms">Scan once. <span class="grad">Ask anything.</span> Book in two taps.</h1>
+    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Guests land on a Casa&nbsp;Aurelia&nbsp;×&nbsp;Headout storefront — a live map of nearby experiences with a concierge, all bookable on the spot.</p>
+    <div class="gp-pills" data-reveal="up" style="--reveal-delay:180ms">
+      <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Co-branded</span>
+      <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Bookable</span>
+      <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Tracked</span>
+    </div>
+    <button class="nudge" type="button" onclick="askRainy()" data-reveal="up" style="--reveal-delay:240ms"><span class="hand">👆</span> Try it — tap <b>“Rainy day + kids”</b></button>
+  </div>
+
   <!-- ─────────── PHONE ─────────── -->
   <div class="stage">
    <div class="phone"><div class="screen">
@@ -231,33 +282,16 @@
    </div></div>
   </div>
 
-  <!-- ─────────── ANNOTATION RAIL ─────────── -->
-  <aside class="rail">
-    <span class="kicker">Partner value · after the scan</span>
-    <h2 class="display-xs">Your QR opens a co-branded booking surface</h2>
-    <p class="lede para-m">Guests do not land on a generic promo page. They see a Casa Aurelia × Headout storefront with nearby experiences they can book immediately.</p>
-
-    <div class="rail-proof">
-      <div class="m"><div class="v">Brand</div><div class="l">your venue stays visible</div></div>
-      <div class="m"><div class="v">Book</div><div class="l">live Headout inventory</div></div>
-      <div class="m"><div class="v">Track</div><div class="l">source-level analytics</div></div>
-    </div>
-
-    <div class="ann"><span class="n">1</span><div><div class="t">The partner handoff is clear</div><div class="d">The guest sees where the scan came from, so the venue feels like part of the recommendation instead of just a poster on the wall.</div></div></div>
-    <div class="ann"><span class="n">2</span><div><div class="t">Everything shown can be booked</div><div class="d">Pins and cards are real Headout experiences with photos, ratings, prices, offers, and a direct Book CTA.</div></div></div>
-    <div class="ann"><span class="n">3</span><div><div class="t">Every action stays attributable</div><div class="d">The QR source carries through to analytics, so partners can see which surface drove impressions, bookings, and commission.</div></div></div>
-
-    <div class="demohint"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>Demo moment: tap <b>Rainy day + kids</b> to show how the storefront responds to guest intent.</div>
-  </aside>
+  </div>
 </div>
 
-<nav class="journey-nav">
+<nav class="journey-nav journey-nav--dark">
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="../partner-flow/02-generated-output.html?v=journey">QR output</a>
+    <a class="ho-btn ho-btn--secondary" href="../partner-flow/02-generated-output.html?v=journey">← QR kit</a>
   </div>
-  <div class="journey-meta">Step 3 · Guest scans the QR</div>
+  <div class="journey-meta">Guest preview · what the scan opens</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="../partner-flow/03-partner-dashboard.html?v=journey">View analytics</a>
+    <a class="ho-btn ho-btn--primary" href="../partner-flow/03-partner-dashboard.html?v=journey">Partner dashboard →</a>
   </div>
 </nav>
 
@@ -448,5 +482,7 @@
 
   renderCards(PEEK,false);
 </script>
+<script src="../assets/partner-motion.js"></script>
+<script>if(window.PF){ PF.reveal(); PF.pageTransition(); }</script>
 </body>
 </html>
