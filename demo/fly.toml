@@ -1,0 +1,19 @@
+app = "here-by-headout"
+primary_region = "fra"
+
+[build]
+
+[env]
+  DATABASE_URL = "sqlite:////data/here.db"   # on the mounted volume
+  CORS_ORIGINS = "https://here-by-headout.fly.dev"
+  APP_BASE_URL = "https://here-by-headout.fly.dev"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false   # keep alive so SSE connections persist
+  min_machines_running = 1
+
+[[mounts]]
+  source = "here_data"
+  destination = "/data"
