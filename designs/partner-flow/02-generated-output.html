@@ -25,27 +25,13 @@
   .swipe-track{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:2px 0 10px;scrollbar-width:none;touch-action:pan-x}
   .swipe-track::-webkit-scrollbar{display:none}
   .swipe-slide{flex:0 0 100%;min-width:100%;scroll-snap-align:start;display:flex;justify-content:center}
-  .swipe-slide .poster{width:min(420px,100%);height:100%}
+  .swipe-slide .qr-asset-card{width:min(380px,100%);margin:0}
   .swipe-dots{display:flex;justify-content:center;gap:7px;margin-top:4px}
   .swipe-dot{width:7px;height:7px;border-radius:50%;border:0;background:var(--grey-300);padding:0;cursor:pointer}
   .swipe-dot.is-active{width:20px;border-radius:var(--r-pill);background:var(--purps)}
-  /* poster */
-  .poster{position:relative;overflow:hidden;background:linear-gradient(165deg,var(--purps-800),var(--purps-600));border-radius:var(--r-16);padding:26px 24px 0;text-align:center;color:#fff;box-shadow:var(--shadow-3)}
-  .pcap{font-size:13px;color:var(--purps-100);font-weight:500}
-  .ptitle{font-family:var(--font-hd);font-weight:500;font-size:24px;margin:4px 0 18px}
-  .qcard{background:#fff;border-radius:var(--r-12);padding:18px;max-width:230px;margin:0 auto}
-  .qr{position:relative;width:190px;height:190px;margin:0 auto;display:grid;grid-template-columns:repeat(21,1fr);grid-template-rows:repeat(21,1fr);gap:1px}
-  .qr i{border-radius:1px}
-  .qr .eye{position:absolute;width:46px;height:46px;border:6px solid var(--purps);border-radius:8px;background:#fff}
-  .qr .eye::after{content:"";position:absolute;inset:8px;background:var(--purps);border-radius:3px}
-  .qr .e1{top:0;left:0}.qr .e2{top:0;right:0}.qr .e3{bottom:0;left:0}
-  .qr .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;background:#fff;border-radius:8px;display:grid;place-items:center;box-shadow:0 0 0 5px #fff}
-  .qr .center img{width:32px;height:auto;display:block}
-  .qcap{margin-top:12px} .qcap .pl{font-weight:600;font-size:14px;color:var(--text-1)} .qcap .ho{font-size:11px;color:var(--text-3)} .qcap .ho b{color:var(--text-primary)}
-  .foot{font-size:11px;color:var(--purps-100);padding:16px 0 0;position:relative;z-index:2}
-  .foot .wm{font-weight:700}
-  .skyline{display:block;width:100%;height:42px;opacity:.25;margin-top:6px}
-  .surf-badge{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:var(--r-pill)}
+  .qr-asset-card img{display:block;width:100%;height:auto;border-radius:var(--r-12);background:var(--surface-2);box-shadow:var(--shadow-2)}
+  .qr-asset-card figcaption{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:10px;font-size:12px;color:var(--text-2)}
+  .qr-asset-card figcaption span{font-weight:600;color:var(--text-1)}
   .track{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--text-3);margin-top:3px}
   .qs-h{font-size:12px;color:var(--text-2);margin-bottom:10px} .qs-h b{color:var(--text-1);font-weight:600}
   .qr-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
@@ -87,7 +73,7 @@
       <button class="ho-btn ho-btn--primary ho-btn--sm" id="downloadCurrent">Download current QR</button>
       <button class="ho-btn ho-btn--secondary ho-btn--sm" id="downloadAll">Download posters</button>
     </div>
-    <div class="scan-tag">Level-H error correction · logo ≤20% · tested on a real phone · each placement scans to a unique tracking tag.</div>
+    <div class="scan-tag">Each visual can be exported per placement with a unique tracking tag for separate reporting.</div>
   </div>
 </div>
 
@@ -102,26 +88,16 @@
 </nav>
 
 <script>
-  function blocked(r,c){
-    if((r<7&&c<7)||(r<7&&c>13)||(r>13&&c<7))return true;
-    if(r>7&&r<13&&c>7&&c<13)return true;
-    return false;
-  }
-  function drawQR(qrEl,seed){
-    qrEl.querySelectorAll('i').forEach(e=>e.remove());
-    let s=seed;
-    for(let r=0;r<21;r++)for(let c=0;c<21;c++){
-      s=(s*1103515245+12345)&0x7fffffff;
-      const i=document.createElement('i');
-      i.style.background=(!blocked(r,c)&&((s>>9)%10>4))?'#8000ff':'transparent';
-      qrEl.appendChild(i);
-    }
-  }
-
   const DEFAULT_SETUP={
     placeName:'Casa Aurelia Rome',
     placements:['Lobby table-tent','Guest room card','Breakfast counter']
   };
+  const QR_ASSETS=[
+    {src:'../assets/qr-asset-ticket.png',label:'Ticket poster'},
+    {src:'../assets/qr-asset-polaroid.png',label:'Photo poster'},
+    {src:'../assets/qr-asset-rome.png',label:'Destination poster'},
+    {src:'../assets/qr-asset-stay.png',label:'Stay poster'}
+  ];
   function readSetup(){
     try{
       const saved=JSON.parse(sessionStorage.getItem('partnerFlowSetup')||'null');
@@ -132,31 +108,17 @@
   function slugify(value){
     return String(value).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'surface';
   }
-  function seedFor(value,index){
-    let seed=0x5EED42+(index*0x9E37);
-    for(const ch of String(value))seed=((seed<<5)-seed+ch.charCodeAt(0))&0x7fffffff;
-    return seed||0x5EED42;
-  }
   function esc(value){
     return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   }
   function renderSlide({placeName,placeSlug,placement,index}){
     const surface=slugify(placement);
-    return `<article class="swipe-slide" data-index="${index}" data-surface="${esc(surface)}" data-placement="${esc(placement)}" data-seed="${seedFor(placement,index)}">
-      <div class="poster">
-        <div class="surf-badge">${esc(placement)}</div>
-        <div class="pcap">Need plans nearby?</div>
-        <div class="ptitle">Scan for Headout picks</div>
-        <div class="qcard">
-          <div class="qr">
-            <div class="eye e1"></div><div class="eye e2"></div><div class="eye e3"></div>
-            <div class="center"><img src="../assets/headout-mark-purps.png" alt="Headout"></div>
-          </div>
-          <div class="qcap"><div class="pl">${esc(placeName)}</div><div class="track">/here/${esc(placeSlug)}?surface=${esc(surface)}</div></div>
-        </div>
-        <div class="foot"><span class="wm">headout</span> · wherever travelers ask what to do next</div>
-        <svg class="skyline" viewBox="0 0 380 46" preserveAspectRatio="none" aria-hidden="true"><path fill="#fff" d="M0 46 V30 h18 v-8 h10 v8 h14 l8-14 8 14 h20 v-18 h12 v18 h22 v-10 h14 v10 h16 v-22 l10-6 10 6 v22 h22 v-12 h12 v12 h26 v-16 h14 v16 h30 v-9 h12 v9 h30 V46 Z"/></svg>
-      </div>
+    const asset=QR_ASSETS[index%QR_ASSETS.length];
+    return `<article class="swipe-slide" data-index="${index}" data-surface="${esc(surface)}" data-placement="${esc(placement)}" data-asset="${esc(asset.label)}">
+      <figure class="qr-asset-card">
+        <img src="${esc(asset.src)}" width="524" height="924" loading="${index===0?'eager':'lazy'}" decoding="async" alt="${esc(asset.label)} for ${esc(placement)} at ${esc(placeName)}">
+        <figcaption><span>${esc(placement)}</span><code class="track">/here/${esc(placeSlug)}?surface=${esc(surface)}</code></figcaption>
+      </figure>
     </article>`;
   }
   function setActiveSlide(index){
@@ -195,9 +157,6 @@
     document.getElementById('downloadAll').textContent=`Download ${placements.length} poster${placements.length!==1?'s':''}`;
     qrSwipeTrack.innerHTML=placements.map((placement,index)=>renderSlide({placeName,placeSlug,placement,index})).join('');
     qrDots.innerHTML=placements.map((_,index)=>`<button class="swipe-dot" type="button" aria-label="Show QR ${index+1}" data-index="${index}"></button>`).join('');
-    qrSwipeTrack.querySelectorAll('.qr').forEach((qrEl,index)=>{
-      drawQR(qrEl,seedFor(placements[index],index));
-    });
     qrDots.querySelectorAll('.swipe-dot').forEach(dot=>dot.addEventListener('click',()=>scrollToSlide(+dot.dataset.index)));
     setActiveSlide(0);
   }
