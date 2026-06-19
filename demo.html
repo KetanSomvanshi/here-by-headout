@@ -41,8 +41,8 @@
 
   header.hero{padding:74px 0 26px}
   .brandline{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:42px}
-  .logo{font-weight:700;letter-spacing:.04em;font-size:15px}
-  .logo span{color:var(--muted);font-weight:500}
+  .logo{display:inline-flex;align-items:center}
+  .logo img{height:20px;width:auto;display:block}
   h1{font-size:clamp(34px,6vw,62px);line-height:1.02;letter-spacing:-.025em;font-weight:700;
     margin:18px 0 0;max-width:16ch}
   .lede{color:var(--muted);font-size:clamp(15px,2.1vw,18px);max-width:60ch;margin:18px 0 0}
@@ -111,7 +111,7 @@
 <header class="hero">
   <div class="wrap">
     <div class="brandline">
-      <div class="logo">HERE <span>· by Headout</span></div>
+      <a class="logo" href="index.html" aria-label="HERE by Headout"><img src="designs/assets/here-lockup-white.svg" alt="HERE by Headout"></a>
       <span class="eyebrow"><span class="dot"></span> Demo · Hackin&rsquo;26</span>
     </div>
 
