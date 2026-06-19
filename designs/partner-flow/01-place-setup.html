@@ -24,6 +24,9 @@
   .chips .add{border-style:dashed;color:var(--text-3)}
   .type-custom-field{display:none;margin-top:14px}
   .type-custom-field.is-visible{display:block}
+  .placement-custom-field{display:none;grid-template-columns:1fr auto;gap:10px;margin-top:12px}
+  .placement-custom-field.is-visible{display:grid}
+  .placement-custom-field label{grid-column:1/-1;margin-bottom:-4px}
   .opt{color:var(--grey-500);font-weight:400}
   .loc-alt{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--text-3)}
   .loc-alt .maps-link{border:0;font:inherit;cursor:pointer;font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill);display:inline-flex;align-items:center;gap:5px}
@@ -56,20 +59,20 @@
 <body>
 <header class="ho-header">
   <a class="ho-logo" href="00-landing.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
-  <span class="step">Step <b>1 of 2</b> · Set up your place</span>
+  <span class="step">Step <b>1</b> · Set up your place</span>
 </header>
 
 <div class="layout">
   <div class="form">
     <span class="kicker">Any physical place · 60 seconds</span>
-    <h1 class="display-s">Generate your Headout Here</h1>
-    <p class="lede para-m">Tell us about the place. We’ll generate a Headout-branded QR, a co-branded guest concierge, and a live dashboard — no engineering.</p>
+    <h1 class="display-s">Set up your partner QR kit</h1>
+    <p class="lede para-m">Tell us where guests discover you. We’ll generate tracked QR posters, a guest storefront, and analytics for each placement.</p>
 
     <div class="stack-g">
       <div class="ho-field"><label>Place name</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
 
       <div class="hero-field">
-        <span class="ho-tag ho-tag--purps" style="margin-bottom:10px">Works for any place</span>
+        <span class="ho-tag ho-tag--purps" style="margin-bottom:10px">Choose a place type</span>
         <div class="ho-field"><label>Place type</label></div>
         <div class="chips" id="typeChips" aria-label="Place type options">
           <button type="button" class="ho-chip is-selected" data-type="hotel">Hotel</button>
@@ -101,19 +104,24 @@
         <p class="help" id="placementHelp">Each hotel placement gets its own branded QR with a unique tracking tag, so your dashboard shows which surface earns the most.</p>
         <div class="chips" id="placeChips">
         </div>
+        <div class="placement-custom-field" id="customPlacementField">
+          <label for="customPlacementInput">Custom QR placement</label>
+          <input class="ho-input" id="customPlacementInput" placeholder="e.g. Pool deck stand">
+          <button class="ho-btn ho-btn--secondary" type="button" id="addPlacementButton">Add</button>
+        </div>
         <div class="hint" id="placeCount">4 placements selected. 4 tracked QRs generated.</div>
       </div>
 
       <div style="margin-top:10px">
-        <a class="ho-btn ho-btn--primary ho-btn--lg" href="02-generated-output.html">Generate Headout Here</a>
-        <p class="cta-note">No login. No code. You’ll get a branded QR poster, storefront &amp; dashboard.</p>
+        <a class="ho-btn ho-btn--primary ho-btn--lg" href="02-generated-output.html">Generate QR kit</a>
+        <p class="cta-note">Next you’ll review the QR posters, then preview what guests see after scanning.</p>
       </div>
     </div>
   </div>
 
-  <aside class="rail" aria-label="What drops out">
+  <aside class="rail" aria-label="What you get">
     <div class="rail-card">
-      <div class="rail-title">What drops out</div>
+      <div class="rail-title">What you get</div>
       <div class="rail-rule"></div>
       <div class="drop-row">
         <div class="drop-icon"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><rect x="14" y="14" width="6" height="6" rx="2"/></svg></div>
@@ -149,7 +157,7 @@
   </div>
   <div class="journey-meta">Step 1 · Set up the place</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="02-generated-output.html">Generate output</a>
+    <a class="ho-btn ho-btn--primary" href="02-generated-output.html">Generate QR kit</a>
   </div>
 </nav>
 
@@ -238,12 +246,13 @@
   };
 
   const chipsEl=document.getElementById('placeChips'), countEl=document.getElementById('placeCount');
+  const customPlacementField=document.getElementById('customPlacementField'), customPlacementInput=document.getElementById('customPlacementInput'), addPlacementButton=document.getElementById('addPlacementButton');
   const typeChips=document.getElementById('typeChips'), placeTypeInput=document.getElementById('placeTypeInput'), customTypeField=document.getElementById('customTypeField'), placeNameInput=document.getElementById('placeNameInput');
   const placementHelp=document.getElementById('placementHelp');
   let currentTypeKey='hotel';
 
   function selectedPlacements(){
-    return Array.from(chipsEl.querySelectorAll('.ho-chip.is-selected')).map(c=>c.textContent.trim());
+    return Array.from(chipsEl.querySelectorAll('.ho-chip.is-selected:not(.add)')).map(c=>c.textContent.trim());
   }
   function selectedPlaceType(){
     if(currentTypeKey==='custom') return placeTypeInput.value.trim() || typeData.custom.label;
@@ -266,15 +275,41 @@
   }
   function bindPlacementChips(){
     chipsEl.querySelectorAll('.ho-chip').forEach(c=>c.addEventListener('click',()=>{
+      if(c.classList.contains('add')){
+        customPlacementField.classList.add('is-visible');
+        customPlacementInput.focus();
+        return;
+      }
       c.classList.toggle('is-selected');
       updateCount();
     }));
+  }
+  function addCustomPlacement(){
+    const label=customPlacementInput.value.trim();
+    if(!label)return;
+    const exists=Array.from(chipsEl.querySelectorAll('.ho-chip:not(.add)')).some(c=>c.textContent.trim().toLowerCase()===label.toLowerCase());
+    if(!exists){
+      const chip=document.createElement('button');
+      chip.type='button';
+      chip.className='ho-chip is-selected';
+      chip.textContent=label;
+      const addChip=chipsEl.querySelector('.ho-chip.add');
+      chipsEl.insertBefore(chip,addChip);
+      chip.addEventListener('click',()=>{
+        chip.classList.toggle('is-selected');
+        updateCount();
+      });
+    }
+    customPlacementInput.value='';
+    updateCount();
   }
   function renderPlacements(typeKey, updateInput=true){
     const data=typeData[typeKey]||typeData.custom;
     currentTypeKey=typeData[typeKey]?typeKey:'custom';
     const isCustom=currentTypeKey==='custom';
     customTypeField.classList.toggle('is-visible',isCustom);
+    customPlacementField.classList.remove('is-visible');
+    customPlacementInput.value='';
     if(!isCustom) placeTypeInput.value='';
     if(isCustom&&updateInput) placeTypeInput.focus();
     placementHelp.textContent=data.help;
@@ -292,6 +327,13 @@
   }));
   placeTypeInput.addEventListener('input',()=>{
     savePartnerFlowState();
+  });
+  addPlacementButton.addEventListener('click',addCustomPlacement);
+  customPlacementInput.addEventListener('keydown',event=>{
+    if(event.key==='Enter'){
+      event.preventDefault();
+      addCustomPlacement();
+    }
   });
   placeNameInput.addEventListener('input',()=>{
     savePartnerFlowState();

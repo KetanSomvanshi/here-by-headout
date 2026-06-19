@@ -8,52 +8,69 @@
 <link rel="stylesheet" href="../assets/eevee.css">
 <style>
   body{background:var(--surface-1)}
-  .ho-header .rng{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);background:#fff;border:1px solid var(--divider-dark);padding:7px 12px;border-radius:var(--r-8)}
+  .ho-header .rng{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-2);background:var(--white);border:1px solid var(--divider-dark);padding:7px 12px;border-radius:var(--r-8)}
   .wrap{max-width:1080px;margin:0 auto;padding:26px 24px 80px}
-  .ph{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
+  .ph{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:18px;gap:20px}
   .ph .sub{color:var(--text-3);font-size:14px;margin-top:4px}
-  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:22px}
-  .tile{position:relative;overflow:hidden;border-radius:var(--r-16);padding:18px 18px 0;color:#fff;min-height:150px;box-shadow:var(--shadow-2)}
+  .ph-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .surface-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .surface-controls .ho-chip{border-radius:var(--r-pill)}
+  .health{display:flex;align-items:center;gap:7px;background:var(--okay-200);color:var(--okay-700);border-radius:var(--r-pill);padding:8px 12px;font-size:12px;font-weight:600}
+  .health .dot{width:8px;height:8px;border-radius:50%;background:var(--okay-500);box-shadow:0 0 0 4px rgba(25,209,125,.16)}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  .tile{position:relative;overflow:hidden;border-radius:var(--r-16);padding:17px 17px 0;color:var(--white);min-height:146px;box-shadow:var(--shadow-2)}
   .t-imp{background:linear-gradient(150deg,var(--purps-600),var(--purps-800))}
   .t-conv{background:linear-gradient(150deg,var(--link-500),var(--link-700))}
   .t-comm{background:linear-gradient(150deg,var(--okay-600),var(--okay-800))}
-  .tile .tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;background:rgba(255,255,255,.2);padding:4px 9px;border-radius:var(--r-pill)}
+  .t-book{background:linear-gradient(150deg,var(--candy-500),var(--purps-700))}
+  .tile .tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;background:rgba(255,255,255,.2);padding:4px 9px;border-radius:var(--r-pill)}
+  .tile .tag .ee-icon{width:11px;height:11px;stroke-width:2.4}
   .tile .lbl{font-size:13px;color:rgba(255,255,255,.85);margin-top:12px}
-  .tile .big{font-family:var(--font-hd);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:.4px}
+  .tile .big{font-family:var(--font-hd);font-weight:500;font-size:36px;line-height:1.1;letter-spacing:.4px}
   .tile .meta{font-size:11px;color:rgba(255,255,255,.78);margin-top:4px}
+  .tile .delta{display:inline-flex;align-items:center;gap:4px;margin-top:10px;background:rgba(255,255,255,.16);border-radius:var(--r-pill);padding:5px 8px;font-size:11px;font-weight:600}
+  .tile .delta .ee-icon{width:11px;height:11px;stroke-width:2.5}
   .tile .spark{display:block;width:calc(100% + 36px);margin:10px -18px 0;height:38px;opacity:.5}
   .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start}
-  .card{background:#fff;border:1px solid var(--divider);border-radius:var(--r-16);padding:22px;box-shadow:var(--shadow-1)}
+  .card{background:var(--white);border:1px solid var(--divider);border-radius:var(--r-16);padding:22px;box-shadow:var(--shadow-1)}
   .card h3{font-size:15px;font-weight:600;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
-  .card h3 .more{font-size:11px;color:var(--text-3);font-weight:400}
+  .more,.card h3 .more{font-size:11px;color:var(--text-3);font-weight:400}
+  .card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:16px}
+  .card-head h3{margin:0}
+  .card-head .caption{font-size:12px;color:var(--text-3);margin-top:3px}
+  .scoreline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .scoreline .k{background:var(--purps-10);border:1px solid var(--purps-20);border-radius:var(--r-12);padding:12px}
+  .scoreline .n{font-family:var(--font-hd);font-weight:500;font-size:22px;color:var(--text-primary)}
+  .scoreline .l{font-size:11px;color:var(--text-3);margin-top:2px}
   .funnel{display:flex;flex-direction:column;gap:9px}
   .fr{display:flex;align-items:center;gap:12px}
   .fr .fl{width:90px;font-size:12px;color:var(--text-2);flex:none}
   .fr .bar{flex:1;background:var(--grey-100);border-radius:var(--r-8);height:30px;overflow:hidden}
-  .fr .bar i{display:flex;align-items:center;height:100%;background:linear-gradient(90deg,var(--purps),var(--purps-400));border-radius:var(--r-8);padding-left:12px;color:#fff;font-size:12px;font-weight:600;font-style:normal}
+  .fr .bar i{display:flex;align-items:center;height:100%;background:linear-gradient(90deg,var(--purps),var(--purps-400));border-radius:var(--r-8);padding-left:12px;color:var(--white);font-size:12px;font-weight:600;font-style:normal}
   .fr .pct{width:42px;font-size:11px;color:var(--text-3);text-align:right;flex:none}
-  .gmv{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
-  .gmv .k{background:var(--purps-10);border:1px solid var(--purps-20);border-radius:var(--r-12);padding:14px}
-  .gmv .n{font-family:var(--font-hd);font-weight:500;font-size:22px;color:var(--text-primary)} .gmv .l{font-size:11px;color:var(--text-3);margin-top:2px}
   .surf{display:flex;flex-direction:column;gap:10px}
-  .sr{display:flex;align-items:center;gap:12px}
+  .sr{display:flex;align-items:center;gap:12px;border:1px solid transparent;border-radius:var(--r-8);padding:7px 8px;margin:0 -8px;transition:.15s;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}
+  .sr.is-active{background:var(--purps-10);border-color:var(--purps-20)}
   .sr .nm{width:140px;font-size:12.5px;flex:none} .sr .mini{flex:1;height:8px;background:var(--grey-100);border-radius:var(--r-pill);overflow:hidden}
   .sr .mini i{display:block;height:100%;background:var(--purps);border-radius:var(--r-pill)}
-  .sr .amt{font-size:12.5px;font-weight:600;width:54px;text-align:right;flex:none}
-  .row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--divider)}
+  .sr .amt{font-size:12.5px;font-weight:600;width:70px;text-align:right;flex:none}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--divider);gap:12px}
   .row:last-child{border-bottom:0}
   .row .nm{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
-  .row .rank{width:22px;height:22px;border-radius:var(--r-6);background:var(--purps-20);color:var(--text-primary);font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
+  .card.ho-card .row .rank,.row .rank{position:static;width:28px;height:28px;border-radius:var(--r-8);background:var(--purps-20);color:var(--text-primary);display:grid;place-items:center;flex:none;padding:0;text-shadow:none;opacity:1}
+  .row .rank .ee-icon{width:15px;height:15px;stroke-width:2.4}
   .row .vv{font-weight:600;font-size:13px}
-  .langbar{display:flex;height:12px;border-radius:var(--r-pill);overflow:hidden;margin-bottom:10px}
-  .langbar i{display:block;height:100%}
-  .leg{display:flex;gap:14px;font-size:12px;color:var(--text-2)}
-  .leg b{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px}
-  .q{font-size:12.5px;color:var(--text-2);padding:7px 0;display:flex;gap:8px}
+  .q{font-size:12.5px;color:var(--text-2);padding:9px 0;display:flex;gap:8px;border-bottom:1px solid var(--divider)}
+  .q:last-child{border-bottom:0}
   .q .c{font-weight:600;color:var(--text-primary)}
-  .toast{position:fixed;bottom:24px;right:24px;pointer-events:none}
-  .toast .ic{width:28px;height:28px;border-radius:var(--r-8);display:grid;place-items:center;background:rgba(255,255,255,.12);color:var(--okay-400);flex:none}
-  @media(max-width:860px){.tiles{grid-template-columns:1fr}.cols{grid-template-columns:1fr}}
+  .insight{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:var(--r-12);background:var(--surface-tint);border:1px solid var(--purps-20);margin-top:16px}
+  .insight .ee-icon{color:var(--text-primary);margin-top:1px}
+  .insight b{display:block;font-size:13px;color:var(--text-1);margin-bottom:2px}
+  .insight span{font-size:12px;color:var(--text-2);line-height:1.45}
+  .side-stack{display:flex;flex-direction:column;gap:20px}
+  .surface-note{font-size:12px;color:var(--text-3);margin-top:12px}
+  @media(max-width:980px){.tiles{grid-template-columns:repeat(2,1fr)}.scoreline{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:860px){.tiles{grid-template-columns:1fr}.cols{grid-template-columns:1fr}.ph{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
@@ -64,71 +81,106 @@
 
 <div class="wrap">
   <div class="ph">
-    <div><h1 class="display-s">Your scoreboard</h1><div class="sub">Casa Aurelia Rome · hotel · last 14 days</div></div>
+    <div><h1 class="display-s">Partner analytics</h1><div class="sub" id="surfaceSub">Casa Aurelia Rome · all QR surfaces · last 14 days</div></div>
+    <div class="ph-actions">
+      <span class="health"><span class="dot"></span>Live tracking</span>
+      <div class="surface-controls" aria-label="QR surface filter">
+        <button class="ho-chip is-selected" type="button" data-surface="all">All surfaces</button>
+        <button class="ho-chip" type="button" data-surface="lobby">Lobby QR</button>
+        <button class="ho-chip" type="button" data-surface="room">Room card</button>
+        <button class="ho-chip" type="button" data-surface="elevator">Elevator</button>
+        <button class="ho-chip" type="button" data-surface="breakfast">Breakfast</button>
+      </div>
+    </div>
   </div>
 
   <div class="tiles">
     <div class="tile t-imp">
-      <span class="tag">brand reach</span>
+      <span class="tag"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h10"/></svg>visibility</span>
       <div class="lbl">Impressions</div>
-      <div class="big">2,540</div>
-      <div class="meta">84 scans measured · reach you give Headout</div>
-      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 30 L40 26 L80 28 L120 18 L160 20 L200 12 L240 14 L300 6 V38 H0 Z" fill="#fff"/></svg>
+      <div class="big" id="metricImpressions">2,540</div>
+      <div class="meta" id="metricImpressionsMeta">poster views across 4 surfaces</div>
+      <div class="delta" id="metricImpressionsDelta"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>+18% vs previous period</div>
+      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 30 L40 26 L80 28 L120 18 L160 20 L200 12 L240 14 L300 6 V38 H0 Z" fill="currentColor"/></svg>
     </div>
     <div class="tile t-conv">
-      <span class="tag">scan to book</span>
-      <div class="lbl">Conversions</div>
-      <div class="big">8.3%</div>
-      <div class="meta">84 scans to 31 chats to 7 bookings</div>
-      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 32 L50 30 L100 24 L150 26 L200 16 L250 18 L300 10 V38 H0 Z" fill="#fff"/></svg>
+      <span class="tag"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><path d="M14 14h6v6h-6z"/></svg>scan rate</span>
+      <div class="lbl">QR scans</div>
+      <div class="big" id="metricScans">84</div>
+      <div class="meta" id="metricScansMeta">3.3% of measured impressions</div>
+      <div class="delta" id="metricScansDelta"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>lobby table-tent leads</div>
+      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 32 L50 30 L100 24 L150 26 L200 16 L250 18 L300 10 V38 H0 Z" fill="currentColor"/></svg>
+    </div>
+    <div class="tile t-book">
+      <span class="tag"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>bookings</span>
+      <div class="lbl">Confirmed bookings</div>
+      <div class="big" id="metricBookings">8</div>
+      <div class="meta" id="metricBookingsMeta">one new booking just landed</div>
+      <div class="delta" id="metricBookingsDelta"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>9.5% scan to booking</div>
+      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 34 L36 28 L72 31 L108 20 L144 22 L180 12 L216 18 L252 8 L300 6 V38 H0 Z" fill="currentColor"/></svg>
     </div>
     <div class="tile t-comm">
-      <span class="tag">earned</span>
+      <span class="tag"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg>earned</span>
       <div class="lbl">Commission</div>
-      <div class="big">€64.96</div>
-      <div class="meta">this period · next payout €64.96 on 1 Jul</div>
-      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 34 L40 32 L80 30 L120 24 L160 22 L200 16 L240 12 L300 8 V38 H0 Z" fill="#fff"/></svg>
+      <div class="big" id="metricCommission">€66.88</div>
+      <div class="meta" id="metricCommissionMeta">next payout on 1 Jul</div>
+      <div class="delta" id="metricCommissionDelta"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>+€1.92 today</div>
+      <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 34 L40 32 L80 30 L120 24 L160 22 L200 16 L240 12 L300 8 V38 H0 Z" fill="currentColor"/></svg>
     </div>
   </div>
 
   <div class="cols">
-    <div class="card">
-      <h3>The funnel <span class="more">scan to chat to book</span></h3>
+    <div class="card ho-card">
+      <div class="card-head">
+        <div><h3>Conversion path</h3><div class="caption" id="conversionCaption">Where guests move from seeing the QR to booking.</div></div>
+        <span class="ho-chip is-selected">Live</span>
+      </div>
+      <div class="scoreline">
+        <div class="k"><div class="n" id="scoreGmv">€836</div><div class="l">GMV booked</div></div>
+        <div class="k"><div class="n" id="scoreCommission">€66.88</div><div class="l">Commission</div></div>
+        <div class="k"><div class="n" id="scoreBookings">8</div><div class="l">Bookings</div></div>
+        <div class="k"><div class="n" id="scoreConversion">9.5%</div><div class="l">Scan to booking</div></div>
+      </div>
       <div class="funnel">
-        <div class="fr"><span class="fl">Impressions</span><div class="bar"><i style="width:100%">2,540</i></div><span class="pct"></span></div>
-        <div class="fr"><span class="fl">Scans</span><div class="bar"><i style="width:33%">84</i></div><span class="pct">3.3%</span></div>
-        <div class="fr"><span class="fl">Chats</span><div class="bar"><i style="width:18%">31</i></div><span class="pct">37%</span></div>
-        <div class="fr"><span class="fl">Recs shown</span><div class="bar"><i style="width:24%">96</i></div><span class="pct"></span></div>
-        <div class="fr"><span class="fl">Bookings</span><div class="bar"><i style="width:9%">7</i></div><span class="pct">8.3%</span></div>
+        <div class="fr"><span class="fl">Impressions</span><div class="bar"><i id="barImpressions" style="width:100%">2,540</i></div><span class="pct"></span></div>
+        <div class="fr"><span class="fl">Scans</span><div class="bar"><i id="barScans" style="width:33%">84</i></div><span class="pct" id="pctScans">3.3%</span></div>
+        <div class="fr"><span class="fl">Chats</span><div class="bar"><i id="barChats" style="width:18%">31</i></div><span class="pct" id="pctChats">37%</span></div>
+        <div class="fr"><span class="fl">Recs shown</span><div class="bar"><i id="barRecs" style="width:24%">96</i></div><span class="pct"></span></div>
+        <div class="fr"><span class="fl">Bookings</span><div class="bar"><i id="barBookings" style="width:10%">8</i></div><span class="pct" id="pctBookings">9.5%</span></div>
       </div>
-      <div class="gmv">
-        <div class="k"><div class="n">€812</div><div class="l">GMV booked</div></div>
-        <div class="k"><div class="n">€64.96</div><div class="l">Your commission (8%)</div></div>
-        <div class="k"><div class="n">7</div><div class="l">Bookings</div></div>
-      </div>
-      <h3>Performance by QR surface</h3>
+
+      <h3>Performance by QR surface <button class="ho-btn ho-btn--secondary ho-btn--sm" type="button" data-surface="all">All surfaces</button></h3>
       <div class="surf">
-        <div class="sr"><span class="nm">Lobby table-tent</span><span class="mini"><i style="width:100%"></i></span><span class="amt">€41.20</span></div>
-        <div class="sr"><span class="nm">Room key card</span><span class="mini"><i style="width:48%"></i></span><span class="amt">€18.80</span></div>
-        <div class="sr"><span class="nm">Breakfast counter</span><span class="mini"><i style="width:12%"></i></span><span class="amt">€4.96</span></div>
+        <button class="sr" type="button" data-surface="lobby"><span class="nm">Lobby table-tent</span><span class="mini"><i style="width:100%"></i></span><span class="amt">€41.20</span></button>
+        <button class="sr" type="button" data-surface="room"><span class="nm">Room key card</span><span class="mini"><i style="width:48%"></i></span><span class="amt">€18.80</span></button>
+        <button class="sr" type="button" data-surface="elevator"><span class="nm">Elevator</span><span class="mini"><i style="width:18%"></i></span><span class="amt">€5.92</span></button>
+        <button class="sr" type="button" data-surface="breakfast"><span class="nm">Breakfast counter</span><span class="mini"><i style="width:12%"></i></span><span class="amt">€0.96</span></button>
       </div>
+      <div class="surface-note" id="surfaceNote">Showing aggregate performance for all QR surfaces.</div>
     </div>
 
-    <div style="display:flex;flex-direction:column;gap:20px">
-      <div class="card">
-        <h3>Top experiences</h3>
-        <div class="row"><span class="nm"><span class="rank">1</span>Vatican Museums &amp; Sistine Chapel</span><span class="vv">€348</span></div>
-        <div class="row"><span class="nm"><span class="rank">2</span>Castel Sant’Angelo Skip-the-Line</span><span class="vv">€175</span></div>
-        <div class="row"><span class="nm"><span class="rank">3</span>Leonardo Interactive Experience</span><span class="vv">€144</span></div>
+    <div class="side-stack">
+      <div class="card ho-card">
+        <div class="card-head">
+          <div><h3>Live booking stream</h3><div class="caption">Attribution stays tied to the QR surface.</div></div>
+          <span class="ho-chip is-selected">Now</span>
+        </div>
+        <div class="row"><span class="nm"><span class="rank"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Leonardo Experience</span><span class="vv">+€1.92</span></div>
+        <div class="row"><span class="nm"><span class="rank"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V10"/><path d="m18 14-6-6-6 6"/></svg></span>Vatican Museums</span><span class="vv">+€3.04</span></div>
+        <div class="row"><span class="nm"><span class="rank"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V10"/><path d="m18 14-6-6-6 6"/></svg></span>Pantheon Fast-Track</span><span class="vv">+€0.48</span></div>
       </div>
-      <div class="card">
-        <h3>Guest languages</h3>
-        <div class="langbar"><i style="width:60%;background:#8000ff"></i><i style="width:25%;background:#1355f0"></i><i style="width:15%;background:#ffbc00"></i></div>
-        <div class="leg"><span><b style="background:#8000ff"></b>EN 60%</span><span><b style="background:#1355f0"></b>JP 25%</span><span><b style="background:#ffbc00"></b>HI 15%</span></div>
-        <h3 style="margin-top:20px">Top guest questions</h3>
-        <div class="q"><span class="c">12×</span> “rainy afternoon with kids”</div>
-        <div class="q"><span class="c">7×</span> “skip-the-line near the hotel”</div>
-        <div class="q"><span class="c">5×</span> “something tonight, in Japanese”</div>
+
+      <div class="card ho-card">
+        <div class="card-head">
+          <div><h3>Guest intent</h3><div class="caption">Useful signal for where to place the next QR.</div></div>
+        </div>
+        <div class="q"><span class="c">12×</span> rainy afternoon with kids</div>
+        <div class="q"><span class="c">7×</span> skip-the-line near the hotel</div>
+        <div class="q"><span class="c">5×</span> something bookable tonight</div>
+        <div class="insight">
+          <svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h8l-1 8 11-14h-8l1-6Z"/></svg>
+          <div><b>Recommended next move</b><span id="nextMove">Move one QR from the breakfast counter to the elevator. Elevator scans convert better after check-in.</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -139,16 +191,108 @@
     <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Guest storefront</a>
   </div>
   <div class="journey-meta">Step 4 · Analytics dashboard</div>
-  <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="04-place-type-switcher.html?v=journey">Show other place types</a>
-  </div>
+  <div class="journey-actions" aria-hidden="true"></div>
 </nav>
 
-<div class="toast">
-  <div class="ho-toast ho-toast--dark">
-    <span class="ic"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>
-    <div><div style="font-weight:600">New booking · Leonardo Experience</div><div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:2px">Bookings 7 to 8 · +€1.92 · via lobby QR</div></div>
-  </div>
-</div>
+<script>
+  const surfaceData = {
+    all:{
+      label:"all QR surfaces", impressions:"2,540", scans:"84", bookings:"8", commission:"€66.88", gmv:"€836",
+      scanRate:"3.3%", chatRate:"37%", conversion:"9.5%", chats:"31", recs:"96",
+      impressionMeta:"poster views across 4 surfaces", scanMeta:"3.3% of measured impressions", bookingMeta:"one new booking just landed",
+      scanDelta:"lobby table-tent leads", commissionDelta:"+€1.92 today",
+      caption:"Where guests move from seeing the QR to booking.",
+      note:"Showing aggregate performance for all QR surfaces.",
+      next:"Move one QR from the breakfast counter to the elevator. Elevator scans convert better after check-in.",
+      widths:{scans:33,chats:18,recs:24,bookings:10}
+    },
+    lobby:{
+      label:"lobby table-tent", impressions:"1,120", scans:"43", bookings:"5", commission:"€41.20", gmv:"€515",
+      scanRate:"3.8%", chatRate:"42%", conversion:"11.6%", chats:"18", recs:"51",
+      impressionMeta:"highest visibility surface", scanMeta:"43 scans from the lobby", bookingMeta:"best performing QR surface",
+      scanDelta:"after check-in peak", commissionDelta:"62% of total commission",
+      caption:"Lobby scans convert best because guests are already planning their day.",
+      note:"Showing performance for the lobby table-tent QR.",
+      next:"Keep this surface live. It is the highest earning QR and should stay near check-in.",
+      widths:{scans:38,chats:20,recs:25,bookings:12}
+    },
+    room:{
+      label:"room key card", impressions:"780", scans:"24", bookings:"2", commission:"€18.80", gmv:"€235",
+      scanRate:"3.1%", chatRate:"33%", conversion:"8.3%", chats:"8", recs:"26",
+      impressionMeta:"strong late-evening discovery", scanMeta:"24 room-card scans", bookingMeta:"2 confirmed bookings",
+      scanDelta:"works after guests settle in", commissionDelta:"28% of total commission",
+      caption:"Room card scans happen later and skew toward next-day planning.",
+      note:"Showing performance for room key card QR.",
+      next:"Keep the room card, but pair it with a simpler evening copy line.",
+      widths:{scans:31,chats:14,recs:18,bookings:8}
+    },
+    elevator:{
+      label:"elevator", impressions:"420", scans:"12", bookings:"1", commission:"€5.92", gmv:"€74",
+      scanRate:"2.9%", chatRate:"33%", conversion:"8.3%", chats:"4", recs:"13",
+      impressionMeta:"small surface, good intent", scanMeta:"12 scans from elevator", bookingMeta:"1 confirmed booking",
+      scanDelta:"best after check-in", commissionDelta:"growing surface",
+      caption:"Elevator scans are fewer, but the intent signal is clean.",
+      note:"Showing performance for elevator QR.",
+      next:"Move one breakfast QR to the elevator. It has better intent with less visual competition.",
+      widths:{scans:29,chats:13,recs:16,bookings:8}
+    },
+    breakfast:{
+      label:"breakfast counter", impressions:"220", scans:"5", bookings:"0", commission:"€0.96", gmv:"€12",
+      scanRate:"2.3%", chatRate:"20%", conversion:"0%", chats:"1", recs:"6",
+      impressionMeta:"lowest attention surface", scanMeta:"5 scans from breakfast", bookingMeta:"no confirmed booking yet",
+      scanDelta:"needs a stronger prompt", commissionDelta:"low yield",
+      caption:"Breakfast scans are low because guests are in a short dwell-time moment.",
+      note:"Showing performance for breakfast counter QR.",
+      next:"Replace this placement or change the prompt to quick morning plans near the hotel.",
+      widths:{scans:23,chats:8,recs:12,bookings:3}
+    }
+  };
+  const upIcon = '<svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>';
+  const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+  const setHtml = (id, value) => { const el = document.getElementById(id); if(el) el.innerHTML = upIcon + value; };
+  function setBar(id, value, width){
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.textContent = value;
+    el.style.width = width + "%";
+  }
+  function selectSurface(key){
+    const d = surfaceData[key] || surfaceData.all;
+    document.querySelectorAll('[data-surface]').forEach(el => el.classList.toggle('is-selected', el.dataset.surface === key && el.classList.contains('ho-chip')));
+    document.querySelectorAll('.sr').forEach(el => el.classList.toggle('is-active', key !== 'all' && el.dataset.surface === key));
+    setText('surfaceSub', `Casa Aurelia Rome · ${d.label} · last 14 days`);
+    setText('metricImpressions', d.impressions);
+    setText('metricImpressionsMeta', d.impressionMeta);
+    setHtml('metricImpressionsDelta', key === 'all' ? '+18% vs previous period' : d.scanDelta);
+    setText('metricScans', d.scans);
+    setText('metricScansMeta', d.scanMeta);
+    setHtml('metricScansDelta', d.scanDelta);
+    setText('metricBookings', d.bookings);
+    setText('metricBookingsMeta', d.bookingMeta);
+    setHtml('metricBookingsDelta', `${d.conversion} scan to booking`);
+    setText('metricCommission', d.commission);
+    setText('metricCommissionMeta', 'next payout on 1 Jul');
+    setHtml('metricCommissionDelta', d.commissionDelta);
+    setText('scoreGmv', d.gmv);
+    setText('scoreCommission', d.commission);
+    setText('scoreBookings', d.bookings);
+    setText('scoreConversion', d.conversion);
+    setText('conversionCaption', d.caption);
+    setBar('barImpressions', d.impressions, 100);
+    setBar('barScans', d.scans, d.widths.scans);
+    setBar('barChats', d.chats, d.widths.chats);
+    setBar('barRecs', d.recs, d.widths.recs);
+    setBar('barBookings', d.bookings, d.widths.bookings);
+    setText('pctScans', d.scanRate);
+    setText('pctChats', d.chatRate);
+    setText('pctBookings', d.conversion);
+    setText('surfaceNote', d.note);
+    setText('nextMove', d.next);
+  }
+  document.querySelectorAll('[data-surface]').forEach(control => {
+    control.addEventListener('click', () => selectSurface(control.dataset.surface));
+  });
+  selectSurface('all');
+</script>
 </body>
 </html>

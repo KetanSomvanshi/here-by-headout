@@ -42,13 +42,13 @@
 <body>
 <header class="ho-header">
   <a class="ho-logo" href="../index.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
-  <span class="done"><span class="dot"></span> <span id="liveStatus">Casa Aurelia Rome is live</span></span>
+  <span class="done"><span class="dot"></span> <span id="liveStatus">Casa Aurelia Rome QR kit ready</span></span>
 </header>
 
 <div class="head">
-  <span class="kicker">Step 2 of 2 · Your Headout Here is ready</span>
-  <h1 class="display-s">Here’s what you got</h1>
-  <p class="para-m">A branded QR for every placement and a live dashboard — all in 60 seconds. Each QR is tracked separately, so you see which surface earns most.</p>
+  <span class="kicker">Step 2 · QR kit ready</span>
+  <h1 class="display-s">Your QR posters are ready</h1>
+  <p class="para-m">Each selected placement has its own branded visual and tracking tag. Review the posters, then preview what a guest sees after scanning.</p>
 </div>
 
 <div class="grid">
@@ -57,7 +57,7 @@
     <section class="swipe-sheet" aria-label="Generated QR posters">
       <div class="swipe-head">
         <div>
-          <div class="swipe-title">QR swipesheet</div>
+          <div class="swipe-title">Swipe through QR posters</div>
           <div class="qs-h" id="qrSetSummary">Your QR set · <b>4 placements</b>, each with its own tracking tag</div>
         </div>
         <div class="swipe-controls">
@@ -70,7 +70,7 @@
     </section>
 
     <div class="qr-actions">
-      <button class="ho-btn ho-btn--primary ho-btn--sm" id="downloadCurrent">Download current QR</button>
+      <button class="ho-btn ho-btn--primary ho-btn--sm" id="downloadCurrent">Download current poster</button>
       <button class="ho-btn ho-btn--secondary ho-btn--sm" id="downloadAll">Download posters</button>
     </div>
     <div class="scan-tag">Each visual can be exported per placement with a unique tracking tag for separate reporting.</div>
@@ -83,7 +83,7 @@
   </div>
   <div class="journey-meta">Step 2 · QR kit generated</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="../guest-flow/01-map-storefront.html?v=journey">Scan as guest</a>
+    <a class="ho-btn ho-btn--primary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
   </div>
 </nav>
 
@@ -128,7 +128,7 @@
     dots.forEach((dot,i)=>dot.classList.toggle('is-active',i===index));
     prevQr.disabled=index===0;
     nextQr.disabled=index===slides.length-1;
-    downloadCurrent.textContent=`Download ${slides[index]?.dataset.placement||'current QR'}`;
+    downloadCurrent.textContent=`Download ${slides[index]?.dataset.placement||'current'} poster`;
   }
   function activeSlideIndex(){
     const slides=Array.from(qrSwipeTrack.querySelectorAll('.swipe-slide'));
@@ -152,7 +152,7 @@
     const placeName=setup.placeName||DEFAULT_SETUP.placeName;
     const placements=(setup.placements&&setup.placements.length?setup.placements:DEFAULT_SETUP.placements).filter(Boolean);
     const placeSlug=slugify(placeName);
-    document.getElementById('liveStatus').textContent=`${placeName} is live`;
+    document.getElementById('liveStatus').textContent=`${placeName} QR kit ready`;
     document.getElementById('qrSetSummary').innerHTML=`Your QR set · <b>${placements.length} placement${placements.length!==1?'s':''}</b>, each with its own tracking tag`;
     document.getElementById('downloadAll').textContent=`Download ${placements.length} poster${placements.length!==1?'s':''}`;
     qrSwipeTrack.innerHTML=placements.map((placement,index)=>renderSlide({placeName,placeSlug,placement,index})).join('');
