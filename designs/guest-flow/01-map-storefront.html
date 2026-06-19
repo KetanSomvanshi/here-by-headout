@@ -46,6 +46,26 @@
     box-shadow:0 16px 38px rgba(128,0,255,.32)}
   .nudge:active{transform:translateY(1px)}
   .nudge b{color:var(--text-primary)}
+  /* bold earnings payoff CTA — fills the empty stage real estate */
+  .earn-cta{display:block;margin-top:32px;max-width:440px;color:inherit;text-decoration:none;position:relative;overflow:hidden;
+    background:linear-gradient(135deg,rgba(128,0,255,.26),rgba(255,0,122,.16));
+    border:1px solid var(--white-a20);border-radius:var(--r-20);padding:24px 26px;
+    box-shadow:0 18px 44px rgba(0,0,0,.32);transition:transform .26s ease,box-shadow .26s ease,border-color .26s ease}
+  .earn-cta::before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;top:-120px;right:-80px;pointer-events:none;
+    background:radial-gradient(circle,rgba(255,0,122,.32),transparent 70%)}
+  .earn-cta:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--purps) 55%,var(--white-a20));
+    box-shadow:0 30px 60px rgba(128,0,255,.34)}
+  .earn-head{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--purps-100)}
+  .earn-head .d{width:7px;height:7px;border-radius:50%;background:var(--okay-400);box-shadow:0 0 0 0 rgba(73,238,156,.5);animation:earnPulse 2s infinite}
+  @keyframes earnPulse{0%{box-shadow:0 0 0 0 rgba(73,238,156,.5)}70%{box-shadow:0 0 0 10px rgba(73,238,156,0)}100%{box-shadow:0 0 0 0 rgba(73,238,156,0)}}
+  .earn-amt{font-family:var(--font-hd);font-weight:500;font-size:42px;line-height:1;color:#fff;margin:12px 0 4px}
+  .earn-sub{font-size:13px;color:var(--text-white-translucent);line-height:1.4;max-width:300px}
+  .earn-go{display:inline-flex;align-items:center;gap:8px;margin-top:18px;background:#fff;color:var(--text-1);
+    font-family:var(--font-ht);font-weight:700;font-size:14.5px;padding:12px 20px;border-radius:var(--r-pill);
+    box-shadow:0 12px 28px rgba(0,0,0,.28)}
+  .earn-go .ee-icon{width:16px;height:16px;stroke-width:2.6;color:var(--purps)}
+  .earn-cta:hover .earn-go{background:var(--purps);color:#fff}
+  .earn-cta:hover .earn-go .ee-icon{color:#fff}
   .nudge .hand{font-size:18px;animation:nudgeTap 1.5s ease-in-out infinite}
   @keyframes nudgeTap{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-8deg)}}
 
@@ -259,6 +279,12 @@
       <span><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Tracked</span>
     </div>
     <button class="nudge" type="button" onclick="askRainy()" data-reveal="up" style="--reveal-delay:240ms"><span class="hand">👆</span> Try it. Tap <b>“Rainy day + kids”</b></button>
+    <a class="earn-cta" href="../partner-flow/03-partner-dashboard.html?v=journey" data-reveal="up" style="--reveal-delay:320ms" aria-label="See your earnings dashboard">
+      <span class="earn-head"><span class="d"></span> Every scan here earns you</span>
+      <div class="earn-amt" data-countup="€1,248" data-countup-dur="1700">€1,248</div>
+      <div class="earn-sub">commission landed from QR scans like this, this week.</div>
+      <span class="earn-go"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16v-5"/><path d="M12 16V8"/><path d="M16 16v-3"/></svg> See your earnings</span>
+    </a>
   </div>
 
   <!-- ─────────── PHONE ─────────── -->
@@ -326,15 +352,6 @@
   </div>
 </div>
 
-<nav class="journey-nav journey-nav--dark">
-  <div class="journey-actions">
-    <a class="ho-btn ho-btn--secondary" href="../partner-flow/02-generated-output.html?v=journey">QR kit</a>
-  </div>
-  <div class="journey-meta">Step 3 of 4 · What guests see</div>
-  <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="../partner-flow/03-partner-dashboard.html?v=journey">See your earnings</a>
-  </div>
-</nav>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
