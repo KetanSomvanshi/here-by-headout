@@ -9,6 +9,8 @@
 :root{
   /* ── core colours (colors.core.*) ── */
   --purps:#8000ff; --white:#ffffff; --black:#111111;
+  --white-a10:#ffffff19; --white-a20:#ffffff33; --white-a80:#ffffffcc;
+  --black-a30:#0000004c; --black-a50:#0000007f; --black-a80:#000000cc;
   --candy-100:#fff2f8; --candy-200:#ffe5f2; --candy-300:#ff66af; --candy-400:#fe3394;
   --candy-500:#ff007a; --candy-600:#e5006e; --candy-700:#cc0062; --candy-800:#660031;
   --purps-10:#f8f6ff; --purps-20:#f3e9ff; --purps-30:#ecd9ff; --purps-40:#e6ccff;
@@ -29,10 +31,13 @@
   --red-100:#ffe5e5; --red-400:#ef4c4c; --red-500:#ef0404; --red-600:#d60404; --red-700:#bd0303;
 
   /* ── semantic (semantic.*) ── */
-  --cta-primary:var(--purps); --cta-tertiary:var(--purps-20); --cta-black:var(--grey-900); --cta-positive:var(--okay-700);
+  --cta-primary:var(--purps); --cta-tertiary:var(--purps-20); --cta-black:var(--grey-900); --cta-white:var(--white); --cta-positive:var(--okay-700);
   --text-1:var(--grey-900); --text-2:var(--grey-800); --text-3:var(--grey-700);
+  --text-white:var(--white); --text-white-translucent:var(--white-a80);
   --text-primary:var(--purps-700); --text-candy:var(--candy-600); --text-positive:var(--okay-700); --text-warning:var(--mustard-800);
   --surface-1:var(--grey-50); --surface-tint:var(--purps-10); --surface-primary-1:var(--purps-20);
+  --surface-dark-primary-1:var(--purps-900); --surface-dark-primary-2:var(--purps-800); --surface-dark-primary-3:var(--purps-700);
+  --surface-dark-black:var(--grey-900); --overlay-primary:var(--black-a50);
   --divider-light:var(--grey-100); --divider:var(--grey-200); --divider-dark:var(--grey-300);
   --border-primary:var(--purps-600);
   --star:#ffbc00;
@@ -106,6 +111,8 @@ button{font-family:inherit}
 .ho-btn:active{transform:translateY(1px)}
 .ho-btn--primary{background:var(--cta-primary);color:#fff}
 .ho-btn--primary:hover{background:var(--purps-600)}
+.ho-btn--white{background:var(--cta-white);color:var(--text-1)}
+.ho-btn--white:hover{background:var(--grey-100);color:var(--text-1)}
 .ho-btn--secondary{background:#fff;color:var(--text-1);border:1.5px solid var(--divider-dark)}
 .ho-btn--secondary:hover{border-color:var(--grey-400)}
 .ho-btn--tertiary{background:var(--cta-tertiary);color:var(--text-primary)}
