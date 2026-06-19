@@ -17,6 +17,7 @@
   .swipe-sheet{background:#fff;border:1px solid var(--divider);border-radius:var(--r-16);padding:18px;box-shadow:var(--shadow-1)}
   .swipe-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}
   .swipe-title{font-size:15px;font-weight:600;margin-bottom:4px}
+  .poster-count{font-size:12px;color:var(--text-primary);font-weight:600;margin-top:6px}
   .swipe-controls{display:flex;gap:8px;flex:none}
   .swipe-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--divider-dark);background:#fff;color:var(--text-primary);display:grid;place-items:center;cursor:pointer}
   .swipe-btn:hover{border-color:var(--purps);background:var(--purps-20)}
@@ -36,7 +37,14 @@
   .qs-h{font-size:12px;color:var(--text-2);margin-bottom:10px} .qs-h b{color:var(--text-1);font-weight:600}
   .qr-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
   .scan-tag{font-size:11px;color:var(--text-3);background:#fff;border:1px solid var(--divider);border-radius:var(--r-8);padding:10px 12px;margin-top:12px;line-height:1.5}
+  .next-list{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .next-list div{background:#fff;border:1px solid var(--divider);border-radius:var(--r-12);padding:12px;font-size:12px;color:var(--text-2);box-shadow:var(--shadow-1)}
+  .next-list b{display:block;color:var(--text-1);font-size:13px;margin-bottom:4px}
+  .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(12px);background:var(--grey-900);color:#fff;border-radius:var(--r-pill);padding:10px 14px;font-size:13px;font-weight:500;box-shadow:var(--shadow-2);opacity:0;transition:.18s;z-index:20}
+  .toast.is-visible{opacity:1;transform:translateX(-50%) translateY(0)}
   @media(max-width:560px){.swipe-head{align-items:flex-start;flex-direction:column}.swipe-controls{align-self:flex-end}}
+  @media(max-width:720px){.next-list{grid-template-columns:1fr 1fr}}
+  @media(max-width:460px){.next-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -48,7 +56,7 @@
 <div class="head">
   <span class="kicker">Step 2 · QR kit ready</span>
   <h1 class="display-s">Your QR posters are ready</h1>
-  <p class="para-m">Each selected placement has its own branded visual and tracking tag. Review the posters, then preview what a guest sees after scanning.</p>
+  <p class="para-m">Each selected placement has a branded poster and unique link. Download the kit, place the posters, then check the analytics preview to see how commission is attributed.</p>
 </div>
 
 <div class="grid">
@@ -58,7 +66,8 @@
       <div class="swipe-head">
         <div>
           <div class="swipe-title">Swipe through QR posters</div>
-          <div class="qs-h" id="qrSetSummary">Your QR set · <b>4 placements</b>, each with its own tracking tag</div>
+          <div class="qs-h" id="qrSetSummary">Your QR set · <b>4 placements</b>, each with its own unique link</div>
+          <div class="poster-count" id="posterCount">Poster 1 of 4</div>
         </div>
         <div class="swipe-controls">
           <button class="swipe-btn" id="prevQr" type="button" aria-label="Previous QR"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -73,7 +82,13 @@
       <button class="ho-btn ho-btn--primary ho-btn--sm" id="downloadCurrent">Download current poster</button>
       <button class="ho-btn ho-btn--secondary ho-btn--sm" id="downloadAll">Download posters</button>
     </div>
-    <div class="scan-tag">Each visual can be exported per placement with a unique tracking tag for separate reporting.</div>
+    <div class="scan-tag">Each visual exports with a unique link, so every QR spot can be compared in analytics.</div>
+    <div class="next-list" aria-label="What to do next">
+      <div><b>1. Download</b>Save the print-ready poster files.</div>
+      <div><b>2. Place</b>Put each QR where guests already ask for plans.</div>
+      <div><b>3. Preview</b>Check the guest scan experience.</div>
+      <div><b>4. Track</b>Watch bookings and commission by QR spot.</div>
+    </div>
   </div>
 </div>
 
@@ -83,13 +98,16 @@
   </div>
   <div class="journey-meta">Step 2 · QR kit generated</div>
   <div class="journey-actions">
-    <a class="ho-btn ho-btn--primary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
+    <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Preview guest scan</a>
+    <a class="ho-btn ho-btn--primary" href="03-partner-dashboard.html?v=journey">View analytics preview</a>
   </div>
 </nav>
 
 <script>
   const DEFAULT_SETUP={
     placeName:'Casa Aurelia Rome',
+    placeType:'Hotel',
+    location:'Via Germanico, Prati, Rome',
     placements:['Lobby table-tent','Guest room card','Breakfast counter','Elevator']
   };
   const QR_ASSETS=[
@@ -129,6 +147,57 @@
     prevQr.disabled=index===0;
     nextQr.disabled=index===slides.length-1;
     downloadCurrent.textContent=`Download ${slides[index]?.dataset.placement||'current'} poster`;
+    posterCount.textContent=`Poster ${Math.min(index+1,slides.length)} of ${slides.length}`;
+  }
+  function showToast(message){
+    let toast=document.querySelector('.toast');
+    if(!toast){
+      toast=document.createElement('div');
+      toast.className='toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent=message;
+    toast.classList.add('is-visible');
+    clearTimeout(showToast.timer);
+    showToast.timer=setTimeout(()=>toast.classList.remove('is-visible'),1800);
+  }
+  function downloadTextFile(filename, text){
+    const blob=new Blob([text],{type:'text/plain'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  function buildExportText(slides){
+    const setup=readSetup();
+    const placeName=setup.placeName||DEFAULT_SETUP.placeName;
+    return [
+      `${placeName} Headout Here QR kit`,
+      `Place type: ${setup.placeType||DEFAULT_SETUP.placeType}`,
+      `Location: ${setup.location||DEFAULT_SETUP.location}`,
+      '',
+      ...slides.map((slide,index)=>`${index+1}. ${slide.dataset.placement} - /here/${slugify(placeName)}?surface=${slide.dataset.surface}`),
+      '',
+      'Prototype export: use these unique links with the poster artwork shown in the browser.'
+    ].join('\n');
+  }
+  function downloadCurrentPoster(){
+    const slides=Array.from(qrSwipeTrack.querySelectorAll('.swipe-slide'));
+    const slide=slides[activeSlideIndex()]||slides[0];
+    if(!slide)return;
+    const placeName=(readSetup().placeName||DEFAULT_SETUP.placeName);
+    downloadTextFile(`${slugify(placeName)}-${slide.dataset.surface}-poster.txt`, buildExportText([slide]));
+    showToast(`${slide.dataset.placement} poster export started.`);
+  }
+  function downloadAllPosters(){
+    const slides=Array.from(qrSwipeTrack.querySelectorAll('.swipe-slide'));
+    const placeName=(readSetup().placeName||DEFAULT_SETUP.placeName);
+    downloadTextFile(`${slugify(placeName)}-qr-kit.txt`, buildExportText(slides));
+    showToast(`${slides.length} poster exports started.`);
   }
   function activeSlideIndex(){
     const slides=Array.from(qrSwipeTrack.querySelectorAll('.swipe-slide'));
@@ -153,7 +222,7 @@
     const placements=(setup.placements&&setup.placements.length?setup.placements:DEFAULT_SETUP.placements).filter(Boolean);
     const placeSlug=slugify(placeName);
     document.getElementById('liveStatus').textContent=`${placeName} QR kit ready`;
-    document.getElementById('qrSetSummary').innerHTML=`Your QR set · <b>${placements.length} placement${placements.length!==1?'s':''}</b>, each with its own tracking tag`;
+    document.getElementById('qrSetSummary').innerHTML=`Your QR set · <b>${placements.length} placement${placements.length!==1?'s':''}</b>, each with its own unique link`;
     document.getElementById('downloadAll').textContent=`Download ${placements.length} poster${placements.length!==1?'s':''}`;
     qrSwipeTrack.innerHTML=placements.map((placement,index)=>renderSlide({placeName,placeSlug,placement,index})).join('');
     qrDots.innerHTML=placements.map((_,index)=>`<button class="swipe-dot" type="button" aria-label="Show QR ${index+1}" data-index="${index}"></button>`).join('');
@@ -165,9 +234,13 @@
   const prevQr=document.getElementById('prevQr');
   const nextQr=document.getElementById('nextQr');
   const downloadCurrent=document.getElementById('downloadCurrent');
+  const downloadAll=document.getElementById('downloadAll');
+  const posterCount=document.getElementById('posterCount');
   let scrollFrame=0;
   prevQr.addEventListener('click',()=>scrollToSlide(Math.max(0,activeSlideIndex()-1)));
   nextQr.addEventListener('click',()=>scrollToSlide(Math.min(qrSwipeTrack.querySelectorAll('.swipe-slide').length-1,activeSlideIndex()+1)));
+  downloadCurrent.addEventListener('click',downloadCurrentPoster);
+  downloadAll.addEventListener('click',downloadAllPosters);
   qrSwipeTrack.addEventListener('scroll',()=>{
     cancelAnimationFrame(scrollFrame);
     scrollFrame=requestAnimationFrame(()=>setActiveSlide(activeSlideIndex()));

@@ -76,16 +76,16 @@
 <body>
 <header class="ho-header">
   <a class="ho-logo" href="../index.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
-  <span class="rng">Last 14 days <svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
+  <span class="rng">Analytics preview <svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></span>
 </header>
 
 <div class="wrap">
   <div class="ph">
-    <div><h1 class="display-s">Partner analytics</h1><div class="sub" id="surfaceSub">Casa Aurelia Rome · all QR surfaces · last 14 days</div></div>
+    <div><h1 class="display-s">Analytics preview</h1><div class="sub" id="surfaceSub">Casa Aurelia Rome · all QR surfaces · after your first scans</div></div>
     <div class="ph-actions">
-      <span class="health"><span class="dot"></span>Live tracking</span>
-      <div class="surface-controls" aria-label="QR surface filter">
-        <button class="ho-chip is-selected" type="button" data-surface="all">All surfaces</button>
+      <span class="health"><span class="dot"></span>Demo preview</span>
+      <div class="surface-controls" id="surfaceControls" aria-label="QR surface filter">
+        <button class="ho-chip is-selected" type="button" data-surface="all">All QR spots</button>
         <button class="ho-chip" type="button" data-surface="lobby">Lobby QR</button>
         <button class="ho-chip" type="button" data-surface="room">Room card</button>
         <button class="ho-chip" type="button" data-surface="elevator">Elevator</button>
@@ -133,10 +133,10 @@
     <div class="card ho-card">
       <div class="card-head">
         <div><h3>Conversion path</h3><div class="caption" id="conversionCaption">Where guests move from seeing the QR to booking.</div></div>
-        <span class="ho-chip is-selected">Live</span>
+        <span class="ho-chip is-selected">Preview</span>
       </div>
       <div class="scoreline">
-        <div class="k"><div class="n" id="scoreGmv">€836</div><div class="l">GMV booked</div></div>
+        <div class="k"><div class="n" id="scoreGmv">€836</div><div class="l">Guest booking value</div></div>
         <div class="k"><div class="n" id="scoreCommission">€66.88</div><div class="l">Commission</div></div>
         <div class="k"><div class="n" id="scoreBookings">8</div><div class="l">Bookings</div></div>
         <div class="k"><div class="n" id="scoreConversion">9.5%</div><div class="l">Scan to booking</div></div>
@@ -149,8 +149,8 @@
         <div class="fr"><span class="fl">Bookings</span><div class="bar"><i id="barBookings" style="width:10%">8</i></div><span class="pct" id="pctBookings">9.5%</span></div>
       </div>
 
-      <h3>Performance by QR surface <button class="ho-btn ho-btn--secondary ho-btn--sm" type="button" data-surface="all">All surfaces</button></h3>
-      <div class="surf">
+      <h3>Performance by QR surface <button class="ho-btn ho-btn--secondary ho-btn--sm" type="button" data-surface="all">All QR spots</button></h3>
+      <div class="surf" id="surfaceList">
         <button class="sr" type="button" data-surface="lobby"><span class="nm">Lobby table-tent</span><span class="mini"><i style="width:100%"></i></span><span class="amt">€41.20</span></button>
         <button class="sr" type="button" data-surface="room"><span class="nm">Room key card</span><span class="mini"><i style="width:48%"></i></span><span class="amt">€18.80</span></button>
         <button class="sr" type="button" data-surface="elevator"><span class="nm">Elevator</span><span class="mini"><i style="width:18%"></i></span><span class="amt">€5.92</span></button>
@@ -162,8 +162,8 @@
     <div class="side-stack">
       <div class="card ho-card">
         <div class="card-head">
-          <div><h3>Live booking stream</h3><div class="caption">Attribution stays tied to the QR surface.</div></div>
-          <span class="ho-chip is-selected">Now</span>
+          <div><h3>Sample booking stream</h3><div class="caption">Attribution will stay tied to the QR surface.</div></div>
+          <span class="ho-chip is-selected">Example</span>
         </div>
         <div class="row"><span class="nm"><span class="rank"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>Leonardo Experience</span><span class="vv">+€1.92</span></div>
         <div class="row"><span class="nm"><span class="rank"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V10"/><path d="m18 14-6-6-6 6"/></svg></span>Vatican Museums</span><span class="vv">+€3.04</span></div>
@@ -191,7 +191,9 @@
     <a class="ho-btn ho-btn--secondary" href="../guest-flow/01-map-storefront.html?v=journey">Guest storefront</a>
   </div>
   <div class="journey-meta">Step 4 · Analytics dashboard</div>
-  <div class="journey-actions" aria-hidden="true"></div>
+  <div class="journey-actions">
+    <a class="ho-btn ho-btn--primary" href="02-generated-output.html?v=journey">Finish setup & download posters</a>
+  </div>
 </nav>
 
 <script>
@@ -247,6 +249,89 @@
       widths:{scans:23,chats:8,recs:12,bookings:3}
     }
   };
+  const DEFAULT_SETUP={
+    placeName:'Casa Aurelia Rome',
+    placeType:'Hotel',
+    placements:['Lobby table-tent','Guest room card','Breakfast counter','Elevator']
+  };
+  function readSetup(){
+    try{
+      const saved=JSON.parse(sessionStorage.getItem('partnerFlowSetup')||'null');
+      if(saved&&saved.placeName&&Array.isArray(saved.placements)&&saved.placements.length)return saved;
+    }catch(e){}
+    return DEFAULT_SETUP;
+  }
+  function slugify(value){
+    return String(value).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'surface';
+  }
+  function euro(value){return `€${value.toFixed(2)}`;}
+  function generatedSurfaceData(setup){
+    const placements=setup.placements.slice(0,5);
+    const rows=placements.map((label,index)=>{
+      const weight=Math.max(1,placements.length-index);
+      const impressions=180+(weight*210)+(index*35);
+      const scans=Math.max(4,Math.round(impressions*(0.026+(index===0?0.012:0))));
+      const bookings=Math.max(index===placements.length-1?0:1,Math.round(scans*(0.08+(index===0?0.035:0))));
+      const commission=bookings*(7.6+(index*1.4));
+      const gmv=commission/0.08;
+      const key=slugify(label);
+      return {
+        key,label,impressions,scans,bookings,commission,gmv,
+        scanRate:`${((scans/impressions)*100).toFixed(1)}%`,
+        chatRate:`${Math.round(32+(index*3))}%`,
+        conversion:scans?`${((bookings/scans)*100).toFixed(1)}%`:'0%',
+        chats:Math.max(1,Math.round(scans*.38)),
+        recs:Math.max(3,Math.round(scans*1.12))
+      };
+    });
+    const totals=rows.reduce((acc,row)=>{
+      acc.impressions+=row.impressions; acc.scans+=row.scans; acc.bookings+=row.bookings;
+      acc.commission+=row.commission; acc.gmv+=row.gmv; acc.chats+=row.chats; acc.recs+=row.recs;
+      return acc;
+    },{impressions:0,scans:0,bookings:0,commission:0,gmv:0,chats:0,recs:0});
+    const highest=rows[0]||{label:'first QR spot'};
+    const generated={
+      all:{
+        label:'all QR spots', impressions:totals.impressions.toLocaleString(), scans:String(totals.scans), bookings:String(totals.bookings), commission:euro(totals.commission), gmv:euro(totals.gmv),
+        scanRate:`${((totals.scans/totals.impressions)*100).toFixed(1)}%`, chatRate:`${Math.round((totals.chats/Math.max(totals.scans,1))*100)}%`, conversion:`${((totals.bookings/Math.max(totals.scans,1))*100).toFixed(1)}%`, chats:String(totals.chats), recs:String(totals.recs),
+        impressionMeta:`projected poster views across ${rows.length} QR spot${rows.length!==1?'s':''}`, scanMeta:'projected scan rate after launch', bookingMeta:'sample bookings once posters are live',
+        scanDelta:`${highest.label} leads`, commissionDelta:'commission preview',
+        caption:'Preview of how guests move from seeing the QR to booking.',
+        note:`Previewing aggregate performance for ${setup.placeName}. Real data appears after guests scan.`,
+        next:`Start with ${highest.label}. It is projected to get the clearest intent signal.`,
+        widths:{scans:33,chats:18,recs:24,bookings:10}
+      }
+    };
+    rows.forEach((row,index)=>{
+      generated[row.key]={
+        label:row.label, impressions:row.impressions.toLocaleString(), scans:String(row.scans), bookings:String(row.bookings), commission:euro(row.commission), gmv:euro(row.gmv),
+        scanRate:row.scanRate, chatRate:row.chatRate, conversion:row.conversion, chats:String(row.chats), recs:String(row.recs),
+        impressionMeta:'projected views for this QR spot', scanMeta:`${row.scans} projected scans`, bookingMeta:`${row.bookings} projected booking${row.bookings!==1?'s':''}`,
+        scanDelta:index===0?'highest-intent starting spot':'compare after launch', commissionDelta:index===0?'top projected spot':'projected commission',
+        caption:`${row.label} performance preview for ${setup.placeName}.`,
+        note:`Showing preview performance for ${row.label}.`,
+        next:index===0?'Keep this QR prominent during check-in and staff handoff.':'Test this spot for one week, then compare against your highest earner.',
+        widths:{scans:Math.min(100,28+(index*4)),chats:18+(index*3),recs:24+(index*2),bookings:Math.max(4,10-index)}
+      };
+    });
+    return generated;
+  }
+  function customizeDashboard(){
+    const setup=readSetup();
+    const data=generatedSurfaceData(setup);
+    Object.keys(surfaceData).forEach(key=>delete surfaceData[key]);
+    Object.assign(surfaceData,data);
+    const controls=document.getElementById('surfaceControls');
+    const list=document.getElementById('surfaceList');
+    const entries=Object.entries(surfaceData).filter(([key])=>key!=='all');
+    controls.innerHTML='<button class="ho-chip is-selected" type="button" data-surface="all">All QR spots</button>'+
+      entries.map(([key,d])=>`<button class="ho-chip" type="button" data-surface="${key}">${d.label}</button>`).join('');
+    list.innerHTML=entries.map(([key,d],index)=>{
+      const width=Math.max(12,100-(index*18));
+      return `<button class="sr" type="button" data-surface="${key}"><span class="nm">${d.label}</span><span class="mini"><i style="width:${width}%"></i></span><span class="amt">${d.commission}</span></button>`;
+    }).join('');
+    document.querySelector('h1').textContent='Analytics preview';
+  }
   const upIcon = '<svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>';
   const setText = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
   const setHtml = (id, value) => { const el = document.getElementById(id); if(el) el.innerHTML = upIcon + value; };
@@ -260,7 +345,8 @@
     const d = surfaceData[key] || surfaceData.all;
     document.querySelectorAll('[data-surface]').forEach(el => el.classList.toggle('is-selected', el.dataset.surface === key && el.classList.contains('ho-chip')));
     document.querySelectorAll('.sr').forEach(el => el.classList.toggle('is-active', key !== 'all' && el.dataset.surface === key));
-    setText('surfaceSub', `Casa Aurelia Rome · ${d.label} · last 14 days`);
+    const setup=readSetup();
+    setText('surfaceSub', `${setup.placeName||DEFAULT_SETUP.placeName} · ${d.label} · after your first scans`);
     setText('metricImpressions', d.impressions);
     setText('metricImpressionsMeta', d.impressionMeta);
     setHtml('metricImpressionsDelta', key === 'all' ? '+18% vs previous period' : d.scanDelta);
@@ -271,7 +357,7 @@
     setText('metricBookingsMeta', d.bookingMeta);
     setHtml('metricBookingsDelta', `${d.conversion} scan to booking`);
     setText('metricCommission', d.commission);
-    setText('metricCommissionMeta', 'next payout on 1 Jul');
+    setText('metricCommissionMeta', 'first payout after bookings');
     setHtml('metricCommissionDelta', d.commissionDelta);
     setText('scoreGmv', d.gmv);
     setText('scoreCommission', d.commission);
@@ -289,6 +375,7 @@
     setText('surfaceNote', d.note);
     setText('nextMove', d.next);
   }
+  customizeDashboard();
   document.querySelectorAll('[data-surface]').forEach(control => {
     control.addEventListener('click', () => selectSurface(control.dataset.surface));
   });

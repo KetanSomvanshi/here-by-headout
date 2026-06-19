@@ -36,6 +36,12 @@
   .commission input[type=range]{flex:1;accent-color:var(--purps)}
   .commission .big{font-family:var(--font-hd);font-weight:500;font-size:30px;color:var(--text-primary)}
   .cta-note{font-size:12px;color:var(--text-3);margin-top:10px}
+  .field-status{font-size:12px;color:var(--text-warning);margin-top:8px;min-height:16px}
+  .maps-field{display:none;margin-top:10px}
+  .maps-field.is-visible{display:block}
+  .ho-btn[aria-disabled="true"]{pointer-events:none;opacity:.48}
+  .toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(12px);background:var(--grey-900);color:#fff;border-radius:var(--r-pill);padding:10px 14px;font-size:13px;font-weight:500;box-shadow:var(--shadow-2);opacity:0;transition:.18s;z-index:20}
+  .toast.is-visible{opacity:1;transform:translateX(-50%) translateY(0)}
   /* rail */
   .rail{position:sticky;top:20px}
   .rail-card{position:relative;overflow:hidden;border-radius:var(--r-20);min-height:735px;padding:28px 30px 0;color:#fff;background:
@@ -65,11 +71,11 @@
 <div class="layout">
   <div class="form">
     <span class="kicker">Any physical place · 60 seconds</span>
-    <h1 class="display-s">Set up your partner QR kit</h1>
-    <p class="lede para-m">Tell us where guests discover you. We’ll generate tracked QR posters, a guest storefront, and analytics for each placement.</p>
+    <h1 class="display-s">Create your partner QR kit</h1>
+    <p class="lede para-m">Tell us where guests already ask for plans. We’ll generate branded QR posters, a guest storefront, and an earnings dashboard for each placement.</p>
 
     <div class="stack-g">
-      <div class="ho-field"><label>Place name</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
+      <div class="ho-field"><label for="placeNameInput">Place name · required</label><input class="ho-input" id="placeNameInput" value="Casa Aurelia Rome"></div>
 
       <div class="hero-field">
         <span class="ho-tag ho-tag--purps" style="margin-bottom:10px">Choose a place type</span>
@@ -84,24 +90,27 @@
           <button type="button" class="ho-chip" data-type="coworking">Coworking</button>
           <button type="button" class="ho-chip" data-type="short-stay-host">Short-stay host</button>
           <button type="button" class="ho-chip" data-type="gym">Gym</button>
-          <button type="button" class="ho-chip" data-type="custom">+ anything with footfall</button>
+          <button type="button" class="ho-chip" data-type="custom">Other place type</button>
         </div>
         <div class="ho-field type-custom-field" id="customTypeField">
-          <label for="placeTypeInput">Custom place type</label>
+          <label for="placeTypeInput">What kind of place is this? · required</label>
           <input class="ho-input" id="placeTypeInput" placeholder="e.g. Museum shop, campus desk, spa reception">
         </div>
         <div class="hint" id="typeHint">The same engine re-skins for hotels, cafés, venues, desks, and any trusted surface with footfall.</div>
       </div>
 
       <div class="ho-field">
-        <label>Location</label>
-        <input class="ho-input" value="Via Germanico, Prati, Rome">
-        <div class="loc-alt"><span>or</span> <button type="button" class="maps-link"><svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2a5 5 0 0 0 7.1 7.1l1.1-1.1"/></svg>Paste a Google Maps link</button></div>
+        <label for="locationInput">Location · required</label>
+        <input class="ho-input" id="locationInput" value="Via Germanico, Prati, Rome">
+        <div class="loc-alt"><span>or</span> <button type="button" class="maps-link" id="showMapsField"><svg class="ee-icon ee-icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2a5 5 0 0 0 7.1 7.1l1.1-1.1"/></svg>Paste a Google Maps link</button></div>
+        <div class="maps-field" id="mapsField">
+          <input class="ho-input" id="mapsInput" placeholder="Paste Google Maps URL">
+        </div>
       </div>
 
       <div class="ho-field">
-        <label>Where will you place your QRs?</label>
-        <p class="help" id="placementHelp">Each hotel placement gets its own branded QR with a unique tracking tag, so your dashboard shows which surface earns the most.</p>
+        <label>Where will guests see the QR? · choose at least one</label>
+        <p class="help" id="placementHelp">Each hotel poster gets its own unique link, so your dashboard shows which spot earns the most.</p>
         <div class="chips" id="placeChips">
         </div>
         <div class="placement-custom-field" id="customPlacementField">
@@ -109,12 +118,13 @@
           <input class="ho-input" id="customPlacementInput" placeholder="e.g. Pool deck stand">
           <button class="ho-btn ho-btn--secondary" type="button" id="addPlacementButton">Add</button>
         </div>
-        <div class="hint" id="placeCount">4 placements selected. 4 tracked QRs generated.</div>
+        <div class="hint" id="placeCount">4 QR spots selected. 4 posters generated.</div>
+        <div class="field-status" id="placementStatus"></div>
       </div>
 
       <div style="margin-top:10px">
-        <a class="ho-btn ho-btn--primary ho-btn--lg" href="02-generated-output.html">Generate QR kit</a>
-        <p class="cta-note">Next you’ll review the QR posters, then preview what guests see after scanning.</p>
+        <a class="ho-btn ho-btn--primary ho-btn--lg" id="generateLink" href="02-generated-output.html">Generate QR kit</a>
+        <p class="cta-note" id="formStatus">Free to create. No integration. You earn commission only when guests book.</p>
       </div>
     </div>
   </div>
@@ -127,7 +137,7 @@
         <div class="drop-icon"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="2"/><rect x="14" y="4" width="6" height="6" rx="2"/><rect x="4" y="14" width="6" height="6" rx="2"/><rect x="14" y="14" width="6" height="6" rx="2"/></svg></div>
         <div class="drop-copy">
           <div class="t">Branded QR posters — one per placement</div>
-          <div class="d">Headout-coloured, logo-in-centre table-tents — each with its own tracking tag so every surface is measured separately.</div>
+          <div class="d">Headout-coloured, logo-in-centre table-tents — each with a unique link so every spot is measured separately.</div>
         </div>
       </div>
       <div class="drop-row">
@@ -165,7 +175,7 @@
   const typeData={
     hotel:{
       label:'Hotel',
-      help:'Each hotel placement gets its own branded QR with a unique tracking tag, so your dashboard shows which surface earns the most.',
+      help:'Each hotel QR spot gets its own unique link, so your dashboard shows which placement earns the most.',
       selected:['Lobby table-tent','Guest room card','Breakfast counter','Elevator'],
       options:['Lobby table-tent','Guest room card','Breakfast counter','Elevator','Restaurant table','Bar / lounge','Valet / entrance'],
       storefront:'A co-branded hotel storefront',
@@ -173,7 +183,7 @@
     },
     cafe:{
       label:'Café',
-      help:'Each café surface gets its own QR, so you can see whether counter, menu, table, or receipt traffic converts best.',
+      help:'Each café QR spot gets its own unique link, so you can see whether counter, menu, table, or receipt traffic converts best.',
       selected:['Counter stand','Table cards','Receipt QR'],
       options:['Counter stand','Table cards','Receipt QR','Window decal','Menu insert','Pickup shelf','Community board'],
       storefront:'A co-branded café storefront',
@@ -181,7 +191,7 @@
     },
     hostel:{
       label:'Hostel',
-      help:'Each hostel surface gets its own QR, so reception, rooms, and common spaces can be tracked separately.',
+      help:'Each hostel QR spot gets its own unique link, so reception, rooms, and common spaces can be compared separately.',
       selected:['Reception desk','Bunk card','Common room'],
       options:['Reception desk','Bunk card','Common room','Locker area','Kitchen board','Bar crawl board','Tour desk'],
       storefront:'A co-branded hostel storefront',
@@ -189,7 +199,7 @@
     },
     lounge:{
       label:'Lounge',
-      help:'Each lounge placement is tracked separately, from host stand to bar counter.',
+      help:'Each lounge QR spot gets its own unique link, from host stand to bar counter.',
       selected:['Host stand','Table tent','Bar counter'],
       options:['Host stand','Table tent','Bar counter','Menu insert','Bill folder','Private room','Entrance stand'],
       storefront:'A co-branded lounge storefront',
@@ -197,7 +207,7 @@
     },
     venue:{
       label:'Venue',
-      help:'Each venue placement gets a unique QR for measuring pre-show, intermission, and exit traffic.',
+      help:'Each venue QR spot gets a unique link for comparing pre-show, intermission, and exit traffic.',
       selected:['Box office','Foyer stand','Seat-back card'],
       options:['Box office','Foyer stand','Seat-back card','Program insert','Bar counter','Exit board','VIP lounge'],
       storefront:'A co-branded venue storefront',
@@ -205,7 +215,7 @@
     },
     'tourist-desk':{
       label:'Tourist desk',
-      help:'Each tourist-desk placement tracks which information surface turns questions into bookings.',
+      help:'Each tourist-desk QR spot shows which information point turns questions into bookings.',
       selected:['Front desk','Brochure rack','Map handout'],
       options:['Front desk','Brochure rack','Map handout','Queue stand','Window decal','Guide handoff','Hotel partner card'],
       storefront:'A co-branded tourist desk storefront',
@@ -213,7 +223,7 @@
     },
     coworking:{
       label:'Coworking',
-      help:'Each coworking placement tracks where members and visitors discover nearby experiences.',
+      help:'Each coworking QR spot shows where members and visitors discover nearby experiences.',
       selected:['Reception desk','Pantry stand','Meeting room card'],
       options:['Reception desk','Pantry stand','Meeting room card','Event board','Day-pass email','Phone booth sticker','Community table'],
       storefront:'A co-branded coworking storefront',
@@ -221,7 +231,7 @@
     },
     'short-stay-host':{
       label:'Short-stay host',
-      help:'Each short-stay placement tracks the guest journey from check-in to in-room discovery.',
+      help:'Each short-stay QR spot shows the guest journey from check-in to in-room discovery.',
       selected:['Welcome card','Check-in message','Fridge magnet'],
       options:['Welcome card','Check-in message','Fridge magnet','House manual','Wi-Fi card','Door hanger','Checkout note'],
       storefront:'A co-branded short-stay storefront',
@@ -229,7 +239,7 @@
     },
     gym:{
       label:'Gym',
-      help:'Each gym placement tracks where active guests discover nearby recovery, wellness, and city experiences.',
+      help:'Each gym QR spot shows where active guests discover nearby recovery, wellness, and city experiences.',
       selected:['Front desk','Locker room','Juice bar'],
       options:['Front desk','Locker room','Juice bar','Class schedule','Trainer card','Member email','Entrance stand'],
       storefront:'A co-branded gym storefront',
@@ -237,7 +247,7 @@
     },
     custom:{
       label:'Custom place',
-      help:'Each custom placement gets its own QR, so any trusted surface with footfall can be measured.',
+      help:'Each custom QR spot gets its own unique link, so any trusted place with footfall can be measured.',
       selected:['Front desk','Table card','Exit stand'],
       options:['Front desk','Table card','Exit stand','Counter card','Window decal','Receipt QR','Staff handoff'],
       storefront:'A co-branded storefront',
@@ -248,8 +258,10 @@
   const chipsEl=document.getElementById('placeChips'), countEl=document.getElementById('placeCount');
   const customPlacementField=document.getElementById('customPlacementField'), customPlacementInput=document.getElementById('customPlacementInput'), addPlacementButton=document.getElementById('addPlacementButton');
   const typeChips=document.getElementById('typeChips'), placeTypeInput=document.getElementById('placeTypeInput'), customTypeField=document.getElementById('customTypeField'), placeNameInput=document.getElementById('placeNameInput');
-  const placementHelp=document.getElementById('placementHelp');
+  const locationInput=document.getElementById('locationInput'), mapsInput=document.getElementById('mapsInput'), mapsField=document.getElementById('mapsField'), showMapsField=document.getElementById('showMapsField');
+  const placementHelp=document.getElementById('placementHelp'), placementStatus=document.getElementById('placementStatus'), formStatus=document.getElementById('formStatus'), generateLinks=Array.from(document.querySelectorAll('a[href="02-generated-output.html"]'));
   let currentTypeKey='hotel';
+  let toastTimer=0;
 
   function selectedPlacements(){
     return Array.from(chipsEl.querySelectorAll('.ho-chip.is-selected:not(.add)')).map(c=>c.textContent.trim());
@@ -262,16 +274,49 @@
     return {
       placeName: placeNameInput.value || 'Selected place',
       placeType: selectedPlaceType(),
+      location: mapsInput.value.trim() || locationInput.value.trim(),
       placements: selectedPlacements()
     };
   }
   function savePartnerFlowState(){
     sessionStorage.setItem('partnerFlowSetup',JSON.stringify(partnerFlowState()));
   }
+  function showToast(message){
+    let toast=document.querySelector('.toast');
+    if(!toast){
+      toast=document.createElement('div');
+      toast.className='toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent=message;
+    toast.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>toast.classList.remove('is-visible'),1800);
+  }
+  function validateForm(){
+    const selected=selectedPlacements();
+    const needsCustom=currentTypeKey==='custom';
+    const missing=[];
+    if(!placeNameInput.value.trim()) missing.push('place name');
+    if(!locationInput.value.trim()&&!mapsInput.value.trim()) missing.push('location');
+    if(needsCustom&&!placeTypeInput.value.trim()) missing.push('place type');
+    if(!selected.length) missing.push('one QR placement');
+    const ok=!missing.length;
+    generateLinks.forEach(link=>{
+      link.setAttribute('aria-disabled', ok ? 'false' : 'true');
+      link.classList.toggle('ho-btn--disabled', !ok);
+    });
+    placementStatus.textContent=selected.length ? '' : 'Choose at least one QR placement.';
+    formStatus.textContent=ok
+      ? `Ready to generate ${selected.length} QR poster${selected.length!==1?'s':''}. Free to create, no integration required.`
+      : `Add ${missing.join(', ')} to generate your QR kit.`;
+    return ok;
+  }
   function updateCount(){
-    const n=chipsEl.querySelectorAll('.ho-chip.is-selected').length;
-    countEl.textContent=`${n} placement${n!==1?'s':''} selected. ${n} tracked QR${n!==1?'s':''} generated.`;
+    const n=selectedPlacements().length;
+    countEl.textContent=`${n} QR spot${n!==1?'s':''} selected. ${n} poster${n!==1?'s':''} generated.`;
     savePartnerFlowState();
+    validateForm();
   }
   function bindPlacementChips(){
     chipsEl.querySelectorAll('.ho-chip').forEach(c=>c.addEventListener('click',()=>{
@@ -286,7 +331,7 @@
   }
   function addCustomPlacement(){
     const label=customPlacementInput.value.trim();
-    if(!label)return;
+    if(!label){showToast('Name the QR placement first.');return;}
     const exists=Array.from(chipsEl.querySelectorAll('.ho-chip:not(.add)')).some(c=>c.textContent.trim().toLowerCase()===label.toLowerCase());
     if(!exists){
       const chip=document.createElement('button');
@@ -299,8 +344,11 @@
         chip.classList.toggle('is-selected');
         updateCount();
       });
+    }else{
+      showToast(`${label} is already added.`);
     }
     customPlacementInput.value='';
+    addPlacementButton.disabled=true;
     updateCount();
   }
   function renderPlacements(typeKey, updateInput=true){
@@ -316,7 +364,7 @@
     chipsEl.innerHTML=data.options.map(option=>{
       const selected=data.selected.includes(option)?' is-selected':'';
       return `<button type="button" class="ho-chip${selected}">${option}</button>`;
-    }).join('')+'<button type="button" class="ho-chip add">+ Add your own</button>';
+    }).join('')+'<button type="button" class="ho-chip add">+ Add a QR spot</button>';
     bindPlacementChips();
     updateCount();
   }
@@ -327,8 +375,12 @@
   }));
   placeTypeInput.addEventListener('input',()=>{
     savePartnerFlowState();
+    validateForm();
   });
   addPlacementButton.addEventListener('click',addCustomPlacement);
+  customPlacementInput.addEventListener('input',()=>{
+    addPlacementButton.disabled=!customPlacementInput.value.trim();
+  });
   customPlacementInput.addEventListener('keydown',event=>{
     if(event.key==='Enter'){
       event.preventDefault();
@@ -337,9 +389,30 @@
   });
   placeNameInput.addEventListener('input',()=>{
     savePartnerFlowState();
+    validateForm();
   });
-  document.querySelectorAll('a[href="02-generated-output.html"]').forEach(link=>link.addEventListener('click',savePartnerFlowState));
+  locationInput.addEventListener('input',()=>{
+    savePartnerFlowState();
+    validateForm();
+  });
+  mapsInput.addEventListener('input',()=>{
+    savePartnerFlowState();
+    validateForm();
+  });
+  showMapsField.addEventListener('click',()=>{
+    mapsField.classList.add('is-visible');
+    mapsInput.focus();
+  });
+  document.querySelectorAll('a[href="02-generated-output.html"]').forEach(link=>link.addEventListener('click',event=>{
+    if(!validateForm()){
+      event.preventDefault();
+      showToast('Complete the required fields first.');
+      return;
+    }
+    savePartnerFlowState();
+  }));
   renderPlacements('hotel');
+  addPlacementButton.disabled=true;
 </script>
 </body>
 </html>
