@@ -30,16 +30,23 @@
   .qr .eye::after{content:"";position:absolute;inset:8px;background:var(--purps);border-radius:3px}
   .qr .e1{top:0;left:0}.qr .e2{top:0;right:0}.qr .e3{bottom:0;left:0}
   .qr .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;background:#fff;border-radius:8px;display:grid;place-items:center;box-shadow:0 0 0 5px #fff}
-  .qr .center svg{width:30px}
+  .qr .center img{width:32px;height:auto;display:block}
   .qcap{margin-top:12px} .qcap .pl{font-weight:600;font-size:14px;color:var(--text-1)} .qcap .ho{font-size:11px;color:var(--text-3)} .qcap .ho b{color:var(--text-primary)}
   .foot{font-size:11px;color:var(--purps-100);padding:16px 0 0;position:relative;z-index:2}
   .foot .wm{font-weight:700}
   .skyline{display:block;width:100%;height:42px;opacity:.25;margin-top:6px}
+  .surf-badge{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:600;padding:5px 11px;border-radius:var(--r-pill)}
+  .track{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:var(--text-3);margin-top:3px}
+  .qr-set{margin-top:14px;background:#fff;border:1px solid var(--divider);border-radius:var(--r-12);padding:14px}
+  .qs-h{font-size:12px;color:var(--text-2);margin-bottom:10px} .qs-h b{color:var(--text-1);font-weight:600}
+  .qs-chips{display:flex;gap:8px;flex-wrap:wrap}
+  .qs{font-family:var(--font-ht);font-size:12.5px;font-weight:500;border:1.5px solid var(--divider-dark);background:#fff;color:var(--text-2);padding:8px 12px;border-radius:var(--r-pill);cursor:pointer;transition:.15s}
+  .qs:hover{border-color:var(--grey-400)} .qs.is-active{background:var(--purps-20);border-color:var(--purps);color:var(--text-primary)}
   .qr-actions{display:flex;gap:10px;margin-top:14px}
   .scan-tag{font-size:11px;color:var(--text-3);background:#fff;border:1px solid var(--divider);border-radius:var(--r-8);padding:10px 12px;margin-top:12px;line-height:1.5}
   /* phone preview — the real guest map storefront, in miniature */
   .preview-wrap{display:grid;grid-template-columns:210px 1fr;gap:18px;align-items:start}
-  .phone{border:8px solid var(--grey-900);border-radius:30px;overflow:hidden;background:#fff;box-shadow:var(--shadow-2)}
+  .phone{border:8px solid var(--grey-900);border-radius:30px;overflow:hidden;background:#fff;box-shadow:var(--shadow-2);width:100%;max-width:230px}
   .ms-hd{padding:10px 12px}
   .ms-promo{background:var(--purps);color:#fff;text-align:center;font-size:9px;font-weight:500;padding:5px 8px;margin:-10px -12px 9px}
   .ms-cb{display:flex;align-items:center;gap:5px;font-weight:600;font-size:13px;color:var(--text-1)}
@@ -73,7 +80,7 @@
   .asset .go{margin-left:auto;font-size:12px;font-weight:600;color:var(--text-primary)}
   .embed{background:var(--purps-900);border-radius:var(--r-12);padding:14px 16px;font-family:ui-monospace,Menlo,monospace;font-size:11.5px;color:#cc99ff;overflow:auto;line-height:1.7}
   .embed .tag{color:#49ee9c}.embed .at{color:#ffbc00}.embed .v{color:#fff}
-  @media(max-width:860px){.grid{grid-template-columns:1fr}.preview-wrap{grid-template-columns:1fr}}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}.preview-wrap{grid-template-columns:1fr;justify-items:center}.preview-wrap .assets{width:100%}}
 </style>
 </head>
 <body>
@@ -85,30 +92,41 @@
 <div class="head">
   <span class="kicker">Step 2 of 2 · Your Headout Here is ready</span>
   <h1 class="display-s">Here’s what you got</h1>
-  <p class="para-m">A branded QR poster, a co-branded storefront, and a live dashboard — all in 60 seconds.</p>
+  <p class="para-m">A branded QR for every placement, a co-branded storefront, and a live dashboard — all in 60 seconds. Each QR is tracked separately, so you see which surface earns most.</p>
 </div>
 
 <div class="grid">
   <!-- BRANDED QR POSTER -->
   <div>
     <div class="poster">
+      <div class="surf-badge" id="surfBadge">🛎️ Lobby table-tent</div>
       <div class="pcap">Need plans nearby?</div>
       <div class="ptitle">Scan for Headout picks</div>
       <div class="qcard">
         <div class="qr" id="qr">
           <div class="eye e1"></div><div class="eye e2"></div><div class="eye e3"></div>
-          <div class="center"><svg viewBox="0 0 40 28" fill="none"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#8000ff"/><path d="M4 12 L-2 7 L-2 17 Z" fill="#8000ff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#8000ff"/><circle cx="24" cy="12" r="2.4" fill="#fff"/></svg></div>
+          <div class="center"><img src="../assets/headout-mark-purps.png" alt="Headout"></div>
         </div>
-        <div class="qcap"><div class="pl">Casa Aurelia Rome</div><div class="ho">powered by <b>headout</b></div></div>
+        <div class="qcap"><div class="pl">Casa Aurelia Rome</div><div class="track" id="trackUrl">/here/casa-aurelia?surface=lobby</div></div>
       </div>
       <div class="foot"><span class="wm">headout</span> · wherever travelers ask what to do next</div>
       <svg class="skyline" viewBox="0 0 380 46" preserveAspectRatio="none"><path fill="#fff" d="M0 46 V30 h18 v-8 h10 v8 h14 l8-14 8 14 h20 v-18 h12 v18 h22 v-10 h14 v10 h16 v-22 l10-6 10 6 v22 h22 v-12 h12 v12 h26 v-16 h14 v16 h30 v-9 h12 v9 h30 V46 Z"/></svg>
     </div>
-    <div class="qr-actions">
-      <button class="ho-btn ho-btn--primary ho-btn--sm">⬇ Download poster</button>
-      <button class="ho-btn ho-btn--secondary ho-btn--sm">Table-tent</button>
+
+    <div class="qr-set">
+      <div class="qs-h">Your QR set · <b>3 placements</b>, each with its own tracking tag</div>
+      <div class="qs-chips" id="qsChips">
+        <button class="qs is-active" data-s="lobby" data-i="🛎️" data-n="Lobby table-tent" data-seed="1">🛎️ Lobby</button>
+        <button class="qs" data-s="room" data-i="🔑" data-n="Guest room card" data-seed="2">🔑 Guest room</button>
+        <button class="qs" data-s="breakfast" data-i="🍳" data-n="Breakfast counter" data-seed="3">🍳 Breakfast</button>
+      </div>
     </div>
-    <div class="scan-tag">🔒 Level-H error correction · logo ≤20% · tested on a real phone — cool never costs a scan</div>
+
+    <div class="qr-actions">
+      <button class="ho-btn ho-btn--primary ho-btn--sm">⬇ Download this QR</button>
+      <button class="ho-btn ho-btn--secondary ho-btn--sm">⬇ All 3 posters (PDF)</button>
+    </div>
+    <div class="scan-tag">🔒 Level-H error correction · logo ≤20% · tested on a real phone · each placement scans to a unique tracking tag — cool never costs a scan</div>
   </div>
 
   <!-- STOREFRONT + ASSETS -->
@@ -139,31 +157,40 @@
         <div class="assets">
           <div class="asset"><div class="ic">📊</div><div><div class="t">Partner dashboard</div><div class="d">Live impressions, conversions, commission</div></div><span class="go">Open →</span></div>
           <div class="asset"><div class="ic">🖼️</div><div><div class="t">Print-ready poster</div><div class="d">Table-tent &amp; lobby stand · PDF + PNG</div></div><span class="go">Get →</span></div>
-          <div class="asset"><div class="ic">🔗</div><div><div class="t">Storefront link</div><div class="d">headout.com/here/casa-aurelia</div></div><span class="go">Copy →</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="card">
-      <h3>Embed on your site <span class="copy">Copy</span></h3>
-      <div class="embed">&lt;<span class="tag">script</span> <span class="at">src</span>=<span class="v">"https://headout.com/here/embed.js"</span><br>&nbsp;&nbsp;<span class="at">data-place</span>=<span class="v">"casa-aurelia-rome"</span><br>&nbsp;&nbsp;<span class="at">data-surface</span>=<span class="v">"lobby"</span>&gt;&lt;/<span class="tag">script</span>&gt;</div>
     </div>
   </div>
 </div>
 
 <script>
-  const qr=document.getElementById('qr');let s=0x5EED42;
+  const qr=document.getElementById('qr');
   function blocked(r,c){
     if((r<7&&c<7)||(r<7&&c>13)||(r>13&&c<7))return true;
     if(r>7&&r<13&&c>7&&c<13)return true;
     return false;
   }
-  for(let r=0;r<21;r++)for(let c=0;c<21;c++){
-    s=(s*1103515245+12345)&0x7fffffff;
-    const i=document.createElement('i');
-    i.style.background=(!blocked(r,c)&&((s>>9)%10>4))?'#8000ff':'transparent';
-    qr.appendChild(i);
+  function drawQR(seed){
+    qr.querySelectorAll('i').forEach(e=>e.remove());
+    let s=seed;
+    for(let r=0;r<21;r++)for(let c=0;c<21;c++){
+      s=(s*1103515245+12345)&0x7fffffff;
+      const i=document.createElement('i');
+      i.style.background=(!blocked(r,c)&&((s>>9)%10>4))?'#8000ff':'transparent';
+      qr.appendChild(i);
+    }
   }
+  drawQR(0x5EED42);
+
+  // placement switcher — each surface = a distinct, tracked QR
+  const qsChips=document.getElementById('qsChips');
+  qsChips.querySelectorAll('.qs').forEach(b=>b.addEventListener('click',()=>{
+    qsChips.querySelectorAll('.qs').forEach(x=>x.classList.remove('is-active'));
+    b.classList.add('is-active');
+    document.getElementById('surfBadge').textContent=`${b.dataset.i} ${b.dataset.n}`;
+    document.getElementById('trackUrl').textContent=`/here/casa-aurelia?surface=${b.dataset.s}`;
+    drawQR((+b.dataset.seed*0x9E3779B1)&0x7fffffff);
+  }));
 </script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>

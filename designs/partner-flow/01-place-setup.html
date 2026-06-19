@@ -19,7 +19,11 @@
   .hero-field{background:linear-gradient(135deg,var(--purps-10),var(--purps-20));border:1.5px solid var(--purps-30);border-radius:var(--r-12);padding:22px}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .hint{font-size:12px;color:var(--text-primary);margin-top:10px;font-weight:500}
+  .ho-field .help{margin:2px 0 4px}
+  .chips .add{border-style:dashed;color:var(--text-3)}
   .opt{color:var(--grey-500);font-weight:400}
+  .loc-alt{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:12px;color:var(--text-3)}
+  .loc-alt .maps-link{font-weight:600;color:var(--text-primary);background:var(--purps-20);padding:5px 10px;border-radius:var(--r-pill)}
   .colorpick{display:flex;align-items:center;gap:10px}
   .colorpick .sw{width:38px;height:38px;border-radius:var(--r-8);flex:none;border:1px solid var(--divider-dark)}
   .commission{display:flex;align-items:center;gap:16px}
@@ -69,9 +73,26 @@
         <div class="hint">↑ This one field is the whole promise — the same engine re-skins for any trusted surface.</div>
       </div>
 
-      <div class="row2">
-        <div class="ho-field"><label>Location</label><input class="ho-input" value="Via Germanico, Prati, Rome"></div>
-        <div class="ho-field"><label>Guest profile</label><input class="ho-input" value="International families & couples"></div>
+      <div class="ho-field">
+        <label>Location</label>
+        <input class="ho-input" value="Via Germanico, Prati, Rome">
+        <div class="loc-alt"><span>or</span> <a href="#" class="maps-link">🔗 Paste a Google Maps link</a></div>
+      </div>
+
+      <div class="ho-field">
+        <label>Where will you place your QRs?</label>
+        <p class="help">Each placement gets its own branded QR with a unique tracking tag — so your dashboard shows which surface earns the most.</p>
+        <div class="chips" id="placeChips">
+          <span class="ho-chip is-selected">🛎️ Lobby table-tent</span>
+          <span class="ho-chip is-selected">🔑 Guest room card</span>
+          <span class="ho-chip is-selected">🍳 Breakfast counter</span>
+          <span class="ho-chip">🛗 Elevator</span>
+          <span class="ho-chip">🍽️ Restaurant table</span>
+          <span class="ho-chip">🍸 Bar / lounge</span>
+          <span class="ho-chip">🅿️ Valet / entrance</span>
+          <span class="ho-chip add">＋ Add your own</span>
+        </div>
+        <div class="hint" id="placeCount">3 placements selected → 3 tracked QRs generated</div>
       </div>
 
       <div style="margin-top:10px">
@@ -83,7 +104,7 @@
 
   <aside class="rail">
     <h3>What drops out</h3>
-    <div class="deliver"><div class="ic">🎟️</div><div><div class="t">A branded Headout QR poster</div><div class="d">Headout-coloured, logo-in-centre, themed as a table-tent — never a plain B/W square.</div></div></div>
+    <div class="deliver"><div class="ic">🎟️</div><div><div class="t">Branded QR posters — one per placement</div><div class="d">Headout-coloured, logo-in-centre table-tents — each with its own tracking tag so every surface is measured separately.</div></div></div>
     <div class="deliver"><div class="ic">📱</div><div><div class="t">A co-branded guest storefront</div><div class="d">“{Place} × Headout” concierge — multilingual, weather-aware, bookable in two taps.</div></div></div>
     <div class="deliver"><div class="ic">📊</div><div><div class="t">A live partner dashboard</div><div class="d">Impressions, conversions &amp; commission — updating the instant a booking lands.</div></div></div>
     <div class="mini-qr">
@@ -99,6 +120,18 @@
   const g=document.getElementById('g');let s=0xC0FFEE;
   for(let i=0;i<81;i++){s=(s*1103515245+12345)&0x7fffffff;const on=(s>>8)%10>4;
     const el=document.createElement('i');el.style.background=on?'#cc99ff':'rgba(255,255,255,.12)';g.appendChild(el);}
+
+  // QR placements — toggle + live count
+  const chipsEl=document.getElementById('placeChips'), countEl=document.getElementById('placeCount');
+  function updateCount(){
+    const n=chipsEl.querySelectorAll('.ho-chip.is-selected').length;
+    countEl.textContent=`${n} placement${n!==1?'s':''} selected → ${n} tracked QR${n!==1?'s':''} generated`;
+  }
+  chipsEl.querySelectorAll('.ho-chip').forEach(c=>c.addEventListener('click',()=>{
+    if(c.classList.contains('add')){ c.classList.toggle('is-selected'); }
+    else c.classList.toggle('is-selected');
+    updateCount();
+  }));
 </script>
 </body>
 </html>
