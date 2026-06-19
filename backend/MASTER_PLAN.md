@@ -1,7 +1,10 @@
 # HERE by Headout — Backend Master Plan
 
 > Hackathon (Hackin'26) backend for the partner onboarding flow.
-> Goal: make every "live" claim in the designs literally true, hosted entirely on free tiers.
+> Goal: make every "live" claim in the designs literally true.
+> Approach: **build the entire stack locally first** (see `LOCAL_DEV.md`), then host
+> (see `HOSTING.md`). Local and hosted are the same Supabase software, so going live
+> changes only env vars — not code.
 
 ## 1. Stack (locked)
 
@@ -81,28 +84,41 @@ hardcoded `surfaceData` object in `03-partner-dashboard.html` collapses into one
 
 ## 6. Build order (milestones)
 
-1. **Infra** — Supabase project, schema SQL, RLS policies.
-2. **Scaffold** — FastAPI app (`uv`), routers, Supabase client, Render config, `/health`.
+Everything below is built and verified **locally** (`supabase start` + uvicorn) before
+any cloud setup. Hosting (milestone 9) is a no-code-change cutover.
+
+1. **Local infra** — `supabase init` + `supabase start` (Postgres/Auth/Realtime/Storage
+   in Docker); schema + RLS as migrations; `seed.sql`. → `LOCAL_DEV.md`
+2. **Scaffold** — FastAPI app (`uv`), routers, Supabase client, `/health`, StaticFiles
+   serving `../designs`.
 3. **Screen 01** — `POST /places`; replace `sessionStorage` write with an API call.
 4. **Screen 02** — QR + poster generation; replace `.txt` export with real PNG downloads.
 5. **Scan** — `/here/{token}` redirect + scan logging.
 6. **Booking** — `POST /bookings` + commission attribution.
 7. **Screen 03** — `/analytics` aggregation + browser Supabase Realtime subscription
    (delete the fake `setInterval` ping loop).
-8. **Polish** — seed demo data so the dashboard looks alive on first load for judges.
+8. **Polish** — seed demo data so the dashboard looks alive on first load for judges;
+   verify the full scan→book→live-ping loop on localhost.
+9. **Host** — `supabase link` + `db push`, deploy FastAPI to Render, swap env vars. → `HOSTING.md`
 
 ## 7. Proposed repo layout
 
 ```
 backend/
   MASTER_PLAN.md        # this file
-  HOSTING.md            # deploy runbook
+  LOCAL_DEV.md          # local-first runbook (build here first)
+  HOSTING.md            # deploy runbook (cutover, no code changes)
   pyproject.toml        # uv-managed deps
-  .env.example          # SUPABASE_URL, SUPABASE_SERVICE_KEY, SUPABASE_ANON_KEY
+  .env.example          # documented env vars
+  .env.local            # local Supabase URL + keys (gitignored)
   render.yaml           # Render deploy config
+  supabase/             # created by `supabase init`
+    config.toml
+    migrations/         # schema + RLS as timestamped SQL (source of truth)
+    seed.sql            # demo data, re-applied on `supabase db reset`
   app/
-    main.py             # FastAPI app, CORS, StaticFiles for designs/
-    config.py           # settings from env
+    main.py             # FastAPI app, CORS, StaticFiles for ../designs
+    config.py           # settings from env (.env.local locally)
     db.py               # Supabase client
     routers/
       places.py
@@ -112,10 +128,6 @@ backend/
     services/
       qr.py             # segno QR generation
       posters.py        # Pillow poster compositing
-  sql/
-    schema.sql          # tables
-    policies.sql        # RLS
-    seed.sql            # demo data for judging
 ```
 
 ## 8. Demo strategy (so it lands with judges)
@@ -126,8 +138,13 @@ backend/
   watch the booking ping appear on the dashboard **live** via Realtime. That single
   loop is the whole pitch.
 
-## 9. What I need from you (interactive)
+## 9. What I need from you
 
+**To build locally (now):** nothing from any cloud account. Just install the
+prerequisites in `LOCAL_DEV.md` (Python 3.12, uv, Docker, Supabase CLI). The local
+keys are printed by `supabase start`.
+
+**To host (later):**
 1. Create a Supabase project: `! open https://supabase.com/dashboard`
-2. Paste back: project URL, `anon` key, `service_role` key → I'll put them in `.env`.
-3. A Render account (free) when we're ready to deploy: `! open https://render.com`
+2. Paste back: project URL, `anon` key, `service_role` key → cloud `.env`.
+3. A Render account (free): `! open https://render.com`

@@ -162,11 +162,11 @@
 
       <div class="ho-field">
         <label>Where will guests see the QR? · choose at least one</label>
-        <p class="help" id="placementHelp">Each hotel poster gets its own unique link, so your dashboard shows which spot earns the most.</p>
+        <p class="help" id="placementHelp">Each QR spot gets its own unique link, so your dashboard shows which one earns the most.</p>
         <div class="chips" id="placeChips">
         </div>
         <div class="placement-custom-field" id="customPlacementField">
-          <label for="customPlacementInput">Custom QR placement</label>
+          <label for="customPlacementInput">Custom QR spot</label>
           <input class="ho-input" id="customPlacementInput" placeholder="e.g. Pool deck stand">
           <button class="ho-btn ho-btn--secondary" type="button" id="addPlacementButton">Add</button>
         </div>
@@ -219,7 +219,7 @@
 <script src="../assets/partner-motion.js"></script>
 <script>
   const typeData={
-    hotel:{label:'Hotel',help:'Each hotel QR spot gets its own unique link, so your dashboard shows which placement earns the most.',selected:['Lobby table-tent','Guest room card','Breakfast counter','Elevator'],options:['Lobby table-tent','Guest room card','Breakfast counter','Elevator','Restaurant table','Bar / lounge','Valet / entrance']},
+    hotel:{label:'Hotel',help:'Each QR spot gets its own unique link, so your dashboard shows which one earns the most.',selected:['Lobby table-tent','Guest room card','Breakfast counter','Elevator'],options:['Lobby table-tent','Guest room card','Breakfast counter','Elevator','Restaurant table','Bar / lounge','Valet / entrance']},
     cafe:{label:'Café',help:'Each café QR spot gets its own unique link, so you can see whether counter, menu, table, or receipt traffic converts best.',selected:['Counter stand','Table cards','Receipt QR'],options:['Counter stand','Table cards','Receipt QR','Window decal','Menu insert','Pickup shelf','Community board']},
     hostel:{label:'Hostel',help:'Each hostel QR spot gets its own unique link, so reception, rooms, and common spaces can be compared separately.',selected:['Reception desk','Bunk card','Common room'],options:['Reception desk','Bunk card','Common room','Locker area','Kitchen board','Bar crawl board','Tour desk']},
     lounge:{label:'Lounge',help:'Each lounge QR spot gets its own unique link, from host stand to bar counter.',selected:['Host stand','Table tent','Bar counter'],options:['Host stand','Table tent','Bar counter','Menu insert','Bill folder','Private room','Entrance stand']},
@@ -270,13 +270,13 @@
     if(!placeNameInput.value.trim()) missing.push('place name');
     if(!locationInput.value.trim()&&!mapsInput.value.trim()) missing.push('location');
     if(needsCustom&&!placeTypeInput.value.trim()) missing.push('place type');
-    if(!selected.length) missing.push('one QR placement');
+    if(!selected.length) missing.push('one QR spot');
     const ok=!missing.length;
     generateLinks.forEach(link=>{
       link.setAttribute('aria-disabled', ok ? 'false' : 'true');
       link.classList.toggle('ho-btn--disabled', !ok);
     });
-    placementStatus.textContent=selected.length ? '' : 'Choose at least one QR placement.';
+    placementStatus.textContent=selected.length ? '' : 'Choose at least one QR spot.';
     formStatus.textContent=ok
       ? `Ready to generate ${selected.length} QR poster${selected.length!==1?'s':''}. Free to create, no integration required.`
       : `Add ${missing.join(', ')} to generate your QR kit.`;
@@ -319,7 +319,7 @@
   }
   function addCustomPlacement(){
     const label=customPlacementInput.value.trim();
-    if(!label){showToast('Name the QR placement first.');return;}
+    if(!label){showToast('Name the QR spot first.');return;}
     const exists=Array.from(chipsEl.querySelectorAll('.ho-chip:not(.add)')).some(c=>c.textContent.trim().toLowerCase()===label.toLowerCase());
     if(!exists){
       const chip=document.createElement('button');
@@ -371,12 +371,6 @@
   PF.rail(['Set up','QR kit','Guest view','Earnings'], 0, '#rail');
   PF.pageTransition();
 
-  // cinematic touch: a live "this is real" ping, like the landing & guest views
-  setTimeout(()=>{ if(!PF.reduced) PF.ping({
-    title:'Storefront preview is live',
-    sub:'Guests see this the moment you publish',
-    icon:'<svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.6 3.9L17.5 8l-3.9 1.6L12 13.5 10.4 9.6 6.5 8l3.9-1.1L12 3Z"/></svg>'
-  }); }, 2200);
 </script>
 </body>
 </html>

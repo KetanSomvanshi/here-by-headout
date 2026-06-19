@@ -25,19 +25,20 @@
   .health{display:flex;align-items:center;gap:7px;background:var(--okay-200);color:var(--okay-700);border-radius:var(--r-pill);padding:8px 12px;font-size:12px;font-weight:600}
   .health .dot{width:8px;height:8px;border-radius:50%;background:var(--okay-500);box-shadow:0 0 0 4px rgba(25,209,125,.16)}
   .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-  .tile{position:relative;overflow:hidden;border-radius:var(--r-16);padding:17px 17px 0;color:var(--white);min-height:146px;box-shadow:var(--shadow-2)}
-  .t-imp{background:linear-gradient(150deg,var(--purps-600),var(--purps-800))}
-  .t-conv{background:linear-gradient(150deg,var(--link-500),var(--link-700))}
-  .t-comm{background:linear-gradient(150deg,var(--okay-600),var(--okay-800))}
-  .t-book{background:linear-gradient(150deg,var(--candy-500),var(--purps-700))}
-  .tile .tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;background:rgba(255,255,255,.2);padding:4px 9px;border-radius:var(--r-pill)}
+  .tile{position:relative;overflow:hidden;border-radius:var(--r-16);padding:17px 17px 0;color:var(--text-1);background:var(--white);border:1px solid var(--divider);min-height:146px;box-shadow:var(--shadow-1);--accent:var(--purps);--accent-soft:var(--purps-20)}
+  .tile::before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--accent)}
+  .t-imp{--accent:var(--purps);--accent-soft:var(--purps-20)}
+  .t-conv{--accent:var(--link-500);--accent-soft:var(--ocean-200)}
+  .t-comm{--accent:var(--okay-700);--accent-soft:var(--okay-200)}
+  .t-book{--accent:var(--candy-600);--accent-soft:var(--candy-200)}
+  .tile .tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;background:var(--accent-soft);color:var(--accent);padding:4px 9px;border-radius:var(--r-pill)}
   .tile .tag .ee-icon{width:11px;height:11px;stroke-width:2.4}
-  .tile .lbl{font-size:12px;color:rgba(255,255,255,.85);margin-top:12px}
-  .tile .big{font-family:var(--font-hd);font-weight:500;font-size:36px;line-height:1.1;letter-spacing:.4px}
-  .tile .meta{font-size:10px;color:rgba(255,255,255,.78);margin-top:4px}
-  .tile .delta{display:inline-flex;align-items:center;gap:4px;margin-top:10px;background:rgba(255,255,255,.16);border-radius:var(--r-pill);padding:5px 8px;font-size:10px;font-weight:600}
+  .tile .lbl{font-size:12px;color:var(--text-2);margin-top:12px}
+  .tile .big{font-family:var(--font-hd);font-weight:500;font-size:36px;line-height:1.1;letter-spacing:.4px;color:var(--text-1)}
+  .tile .meta{font-size:10px;color:var(--text-3);margin-top:4px}
+  .tile .delta{display:inline-flex;align-items:center;gap:4px;margin-top:10px;background:var(--accent-soft);color:var(--accent);border-radius:var(--r-pill);padding:5px 8px;font-size:10px;font-weight:600}
   .tile .delta .ee-icon{width:11px;height:11px;stroke-width:2.5}
-  .tile .spark{display:block;width:calc(100% + 36px);margin:10px -18px 0;height:38px;opacity:.5}
+  .tile .spark{display:block;width:calc(100% + 36px);margin:10px -18px 0;height:38px;color:var(--accent);opacity:.14}
   .cols{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start}
   .card{background:var(--white);border:1px solid var(--divider);border-radius:var(--r-16);padding:22px;box-shadow:var(--shadow-1)}
   .card h3{font-size:15px;font-weight:600;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
@@ -88,10 +89,10 @@
 
 <div class="wrap">
   <div class="ph">
-    <div><h1 class="display-s">Analytics preview</h1><div class="sub" id="surfaceSub">Casa Aurelia Rome · all QR surfaces · after your first scans</div></div>
+    <div><h1 class="display-s">Analytics preview</h1><div class="sub" id="surfaceSub">Casa Aurelia Rome · all QR spots · after your first scans</div></div>
     <div class="ph-actions">
       <span class="health"><span class="dot"></span>Demo preview</span>
-      <div class="surface-controls" id="surfaceControls" aria-label="QR surface filter">
+      <div class="surface-controls" id="surfaceControls" aria-label="QR spot filter">
         <button class="ho-chip is-selected" type="button" data-surface="all">All QR spots</button>
         <button class="ho-chip" type="button" data-surface="lobby">Lobby QR</button>
         <button class="ho-chip" type="button" data-surface="room">Room card</button>
@@ -106,7 +107,7 @@
       <span class="tag"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h10"/></svg>visibility</span>
       <div class="lbl">Impressions</div>
       <div class="big" id="metricImpressions">2,540</div>
-      <div class="meta" id="metricImpressionsMeta">poster views across 4 surfaces</div>
+      <div class="meta" id="metricImpressionsMeta">poster views across 4 QR spots</div>
       <div class="delta" id="metricImpressionsDelta"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>+18% vs previous period</div>
       <svg class="spark" viewBox="0 0 300 38" preserveAspectRatio="none"><path d="M0 30 L40 26 L80 28 L120 18 L160 20 L200 12 L240 14 L300 6 V38 H0 Z" fill="currentColor"/></svg>
     </div>
@@ -156,20 +157,20 @@
         <div class="fr"><span class="fl">Bookings</span><div class="bar"><i id="barBookings" style="width:10%">8</i></div><span class="pct" id="pctBookings">9.5%</span></div>
       </div>
 
-      <h3>Performance by QR surface <button class="ho-btn ho-btn--secondary ho-btn--sm" type="button" data-surface="all">All QR spots</button></h3>
+      <h3>Performance by QR spot <button class="ho-btn ho-btn--secondary ho-btn--sm" type="button" data-surface="all">All QR spots</button></h3>
       <div class="surf" id="surfaceList">
         <button class="sr" type="button" data-surface="lobby"><span class="nm">Lobby table-tent</span><span class="mini"><i style="width:100%"></i></span><span class="amt">€41.20</span></button>
         <button class="sr" type="button" data-surface="room"><span class="nm">Room key card</span><span class="mini"><i style="width:48%"></i></span><span class="amt">€18.80</span></button>
         <button class="sr" type="button" data-surface="elevator"><span class="nm">Elevator</span><span class="mini"><i style="width:18%"></i></span><span class="amt">€5.92</span></button>
         <button class="sr" type="button" data-surface="breakfast"><span class="nm">Breakfast counter</span><span class="mini"><i style="width:12%"></i></span><span class="amt">€0.96</span></button>
       </div>
-      <div class="surface-note" id="surfaceNote">Showing aggregate performance for all QR surfaces.</div>
+      <div class="surface-note" id="surfaceNote">Showing aggregate performance for all QR spots.</div>
     </div>
 
     <div class="side-stack" data-reveal="up" style="--reveal-delay:120ms">
       <div class="card ho-card">
         <div class="card-head">
-          <div><h3>Sample booking stream</h3><div class="caption">Attribution will stay tied to the QR surface.</div></div>
+          <div><h3>Sample booking stream</h3><div class="caption">Attribution will stay tied to the QR spot.</div></div>
           <span class="ho-chip is-selected">Example</span>
         </div>
         <div id="bookingStream"></div>
@@ -183,7 +184,7 @@
           <div><h3>Guest intent</h3><div class="caption">Useful signal for where to place the next QR.</div></div>
         </div>
         <div class="q"><span class="c">12×</span> rainy afternoon with kids</div>
-        <div class="q"><span class="c">7×</span> skip-the-line near the hotel</div>
+        <div class="q"><span class="c">7×</span> skip-the-line nearby</div>
         <div class="q"><span class="c">5×</span> something bookable tonight</div>
         <div class="insight">
           <svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 3 14h8l-1 8 11-14h-8l1-6Z"/></svg>
@@ -209,23 +210,23 @@
 <script>
   const surfaceData = {
     all:{
-      label:"all QR surfaces", impressions:"2,540", scans:"84", bookings:"8", commission:"€66.88", gmv:"€836",
+      label:"all QR spots", impressions:"2,540", scans:"84", bookings:"8", commission:"€66.88", gmv:"€836",
       scanRate:"3.3%", chatRate:"37%", conversion:"9.5%", chats:"31", recs:"96",
-      impressionMeta:"poster views across 4 surfaces", scanMeta:"3.3% of measured impressions", bookingMeta:"one new booking just landed",
+      impressionMeta:"poster views across 4 QR spots", scanMeta:"3.3% of measured impressions", bookingMeta:"one new booking just landed",
       scanDelta:"lobby table-tent leads", commissionDelta:"+€1.92 today",
       caption:"Where guests move from seeing the QR to booking.",
-      note:"Showing aggregate performance for all QR surfaces.",
+      note:"Showing aggregate performance for all QR spots.",
       next:"Move one QR from the breakfast counter to the elevator. Elevator scans convert better after check-in.",
       widths:{scans:33,chats:18,recs:24,bookings:10}
     },
     lobby:{
       label:"lobby table-tent", impressions:"1,120", scans:"43", bookings:"5", commission:"€41.20", gmv:"€515",
       scanRate:"3.8%", chatRate:"42%", conversion:"11.6%", chats:"18", recs:"51",
-      impressionMeta:"highest visibility surface", scanMeta:"43 scans from the lobby", bookingMeta:"best performing QR surface",
+      impressionMeta:"highest visibility QR spot", scanMeta:"43 scans from the lobby", bookingMeta:"best performing QR spot",
       scanDelta:"after check-in peak", commissionDelta:"62% of total commission",
       caption:"Lobby scans convert best because guests are already planning their day.",
       note:"Showing performance for the lobby table-tent QR.",
-      next:"Keep this surface live. It is the highest earning QR and should stay near check-in.",
+      next:"Keep this QR spot live. It is the highest earner and should stay near check-in.",
       widths:{scans:38,chats:20,recs:25,bookings:12}
     },
     room:{
@@ -241,8 +242,8 @@
     elevator:{
       label:"elevator", impressions:"420", scans:"12", bookings:"1", commission:"€5.92", gmv:"€74",
       scanRate:"2.9%", chatRate:"33%", conversion:"8.3%", chats:"4", recs:"13",
-      impressionMeta:"small surface, good intent", scanMeta:"12 scans from elevator", bookingMeta:"1 confirmed booking",
-      scanDelta:"best after check-in", commissionDelta:"growing surface",
+      impressionMeta:"small QR spot, good intent", scanMeta:"12 scans from elevator", bookingMeta:"1 confirmed booking",
+      scanDelta:"best after check-in", commissionDelta:"growing QR spot",
       caption:"Elevator scans are fewer, but the intent signal is clean.",
       note:"Showing performance for elevator QR.",
       next:"Move one breakfast QR to the elevator. It has better intent with less visual competition.",
@@ -251,11 +252,11 @@
     breakfast:{
       label:"breakfast counter", impressions:"220", scans:"5", bookings:"0", commission:"€0.96", gmv:"€12",
       scanRate:"2.3%", chatRate:"20%", conversion:"0%", chats:"1", recs:"6",
-      impressionMeta:"lowest attention surface", scanMeta:"5 scans from breakfast", bookingMeta:"no confirmed booking yet",
+      impressionMeta:"lowest attention QR spot", scanMeta:"5 scans from breakfast", bookingMeta:"no confirmed booking yet",
       scanDelta:"needs a stronger prompt", commissionDelta:"low yield",
       caption:"Breakfast scans are low because guests are in a short dwell-time moment.",
       note:"Showing performance for breakfast counter QR.",
-      next:"Replace this placement or change the prompt to quick morning plans near the hotel.",
+      next:"Replace this spot or change the prompt to quick morning plans nearby.",
       widths:{scans:23,chats:8,recs:12,bookings:3}
     }
   };
@@ -413,7 +414,6 @@
     const EXPS=['Vatican Museums','Colosseum Night Tour','Pantheon Fast-Track','Borghese Gallery','Trastevere Food Tour'];
     const AMTS=[1.92,3.04,0.48,2.40,1.20,4.10];
     const upIcon='<svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"/></svg>';
-    let fired=0;
     function isAll(){ const c=document.querySelector('.surface-controls .ho-chip.is-selected'); return c && c.dataset.surface==='all'; }
     function bump(el){ if(!el||PF.reduced) return; el.classList.remove('pf-bump'); void el.offsetWidth; el.classList.add('pf-bump'); }
     function landBooking(){
@@ -437,12 +437,9 @@
         row.innerHTML=`<span class="nm"><span class="rank"><svg class="ee-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span>${exp}</span><span class="vv up">+€${amt.toFixed(2)}</span>`;
         stream.prepend(row);
       }
-      PF.ping({title:'Booking just landed', sub:`${exp} · Lobby QR`, amount:'+€'+amt.toFixed(2)});
-      if(++fired>=4){ clearInterval(loop); }
     }
-    let loop;
     if(!PF.reduced){
-      setTimeout(()=>{ landBooking(); loop=setInterval(landBooking,3600); }, 2800);
+      setTimeout(()=>{ landBooking(); }, 2800);
     }
 
     PF.rail(['Set up','QR kit','Guest view','Earnings'], 3, '#rail');

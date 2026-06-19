@@ -33,6 +33,8 @@
   /* ── cinematic dark stage (shared skin with 00/01) ── */
   .stagewrap{position:relative;
     background:linear-gradient(165deg,var(--surface-dark-primary-1),var(--surface-dark-primary-2) 52%,var(--surface-dark-primary-3))}
+  .stagewrap,.journey-nav,#rail{opacity:0;transition:opacity .18s ease}
+  body.is-kit-ready .stagewrap,body.is-kit-ready .journey-nav,body.is-kit-ready #rail{opacity:1}
   .stage-fx{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
   .stage-fx::before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;
     background:radial-gradient(circle,rgba(128,0,255,.5),transparent 70%);top:-180px;right:-140px}
@@ -200,10 +202,10 @@
   <aside class="rail" aria-label="Your QR spots and what happens next">
     <span class="kicker" data-reveal="up"><span class="dot"></span> Step 2 of 4 · QR kit ready</span>
     <h1 class="headline display-s" data-reveal="up" style="--reveal-delay:60ms">Your QR kit is <span class="grad">ready to earn</span></h1>
-    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Every placement has its own branded poster. Download the kit, put the posters where guests already ask for plans, then watch commission land by spot.</p>
+    <p class="lede" data-reveal="up" style="--reveal-delay:120ms">Every QR spot has its own branded poster. Download the kit, put the posters where guests already ask for plans, then watch commission land by spot.</p>
 
     <div class="rail-cap" data-reveal="up" style="--reveal-delay:180ms">Your QR spots <span class="live"><span class="d"></span>Tracked</span></div>
-    <div class="rail-sub" id="railSub">4 placements · 4 unique links</div>
+    <div class="rail-sub" id="railSub">4 QR spots · 4 unique links</div>
     <div class="spots" id="spotList"></div>
 
     <div class="nextmini">
@@ -378,7 +380,7 @@
     const placeSlug=slugify(placeName);
     const n=placements.length;
     document.getElementById('liveStatus').textContent=`${placeName} QR kit ready`;
-    document.getElementById('railSub').textContent=`${n} placement${n!==1?'s':''} · ${n} unique link${n!==1?'s':''}`;
+    document.getElementById('railSub').textContent=`${n} QR spot${n!==1?'s':''} · ${n} unique link${n!==1?'s':''}`;
     document.getElementById('downloadAll').textContent=`Download ${n} poster${n!==1?'s':''}`;
     qrSwipeTrack.innerHTML=placements.map((placement,index)=>renderSlide({placeName,placeSlug,placement,index})).join('');
     qrDots.innerHTML=placements.map((_,index)=>`<button class="swipe-dot" type="button" aria-label="Show QR ${index+1}" data-index="${index}"></button>`).join('');
@@ -418,10 +420,12 @@
       gen.classList.add('done');
       document.getElementById('genTitle').textContent='Your QR kit is ready';
       document.getElementById('genSum').innerHTML=`<b id="genCount">${count}</b> poster${count!==1?'s':''} · <b>${count}</b> unique link${count!==1?'s':''} for ${name}`;
-      if(window.PF) PF.confetti({count:120});
       setTimeout(()=>{
         gen.classList.add('is-gone');
-        if(window.PF){ PF.reveal(); }
+        setTimeout(()=>{
+          document.body.classList.add('is-kit-ready');
+          if(window.PF){ PF.reveal(); }
+        }, reduced?0:260);
       }, reduced?200:850);
     }
     if(reduced){ finish(); return; }

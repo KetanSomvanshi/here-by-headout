@@ -243,9 +243,8 @@
     tick.textContent='€'+Math.round(total).toLocaleString();
     tick.classList.remove('pf-pop');void tick.offsetWidth;tick.classList.add('pf-pop');
   }
-  // first live "commission landed" ping shortly after load, then periodic coins
-  setTimeout(()=>{ if(!PF.reduced) PF.ping({title:'Commission just landed',sub:'Casa Aurelia · Lobby QR',amount:'+€3.04'}); }, 2600);
-  setInterval(popCoin, 4200);
+  // Keep the commission preview subtle: one live update, no floating toast.
+  setTimeout(popCoin, 4200);
 
   PF.pageTransition();
 </script>
