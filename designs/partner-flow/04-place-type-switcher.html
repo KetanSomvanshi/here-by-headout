@@ -6,9 +6,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>04 · Place-Type Switcher</title>
 <link rel="stylesheet" href="../assets/eevee.css">
+<link rel="stylesheet" href="../assets/partner-motion.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
   body{background:var(--surface-1)}
+  .types .ho-chip{cursor:pointer}
+  .pcard.is-in{transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .35s,filter .35s}
+  .pcard.is-in.is-emph{transform:translateY(-6px) scale(1.015)}
+  .pcard.is-emph .phone{box-shadow:0 0 0 3px var(--purps),0 18px 44px rgba(128,0,255,.28)}
+  .pcard.is-in.is-dim{opacity:.62;filter:saturate(.85)}
+  /* dark closing band */
+  .reveal-band{margin-top:56px}
+  .reveal-band .inner{max-width:1080px;margin:0 auto;padding:64px 28px;text-align:center}
+  .reveal-band h2{color:#fff;max-width:620px;margin:0 auto}
+  .reveal-band p{color:var(--text-white-translucent);font-size:16px;max-width:520px;margin:12px auto 0}
+  .reveal-stat{display:inline-flex;align-items:center;gap:18px;margin:30px 0 28px;font-family:var(--font-hd);font-weight:500}
+  .reveal-stat .v{font-size:46px;color:#fff;line-height:1}
+  .reveal-stat .x{font-size:26px;color:var(--purps-100)}
+  .reveal-stat .l{font-size:13px;font-weight:400;color:var(--text-white-translucent);font-family:var(--font-ht);text-align:left}
+  .reveal-actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
   .wrap{max-width:1080px;margin:0 auto;padding:30px 24px 64px;text-align:center}
   .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text-primary);background:var(--purps-20);padding:6px 12px;border-radius:var(--r-pill);margin-bottom:14px}
   .lede{color:var(--text-2);max-width:600px;margin:8px auto 0}
@@ -63,18 +79,17 @@
   <h1 class="display-s">One Headout Here, every kind of place</h1>
   <p class="lede para-m">The setup form re-skins the same guest map storefront for whatever has footfall — same Headout brand, same real inventory, the guest just asks in context.</p>
 
-  <div class="types">
-    <span class="ho-chip is-selected">Hotel</span>
-    <span class="ho-chip">Café</span>
-    <span class="ho-chip">Lounge</span>
-    <span class="ho-chip">Venue</span>
-    <span class="ho-chip">Tourist desk</span>
+  <div class="types" id="typeChips">
+    <button type="button" class="ho-chip is-selected" data-type="hotel">Hotel</button>
+    <button type="button" class="ho-chip" data-type="cafe">Café</button>
+    <button type="button" class="ho-chip" data-type="venue">Venue</button>
+    <button type="button" class="ho-chip" data-type="tourist-desk">Tourist desk</button>
   </div>
   <div class="same">Same Headout brand &amp; map storefront · only the <b>context</b> changes</div>
 
   <div class="phones">
     <!-- HOTEL -->
-    <div>
+    <div class="pcard" data-type="hotel" data-reveal="up" style="--reveal-delay:0ms">
       <div class="phone">
         <div class="ms-hd">
           <div class="ms-promo">Headout picks for guests</div>
@@ -100,7 +115,7 @@
     </div>
 
     <!-- CAFÉ -->
-    <div>
+    <div class="pcard" data-type="cafe" data-reveal="up" style="--reveal-delay:100ms">
       <div class="phone">
         <div class="ms-hd">
           <div class="ms-promo">Headout picks for guests</div>
@@ -126,7 +141,7 @@
     </div>
 
     <!-- VENUE -->
-    <div>
+    <div class="pcard" data-type="venue" data-reveal="up" style="--reveal-delay:200ms">
       <div class="phone">
         <div class="ms-hd">
           <div class="ms-promo">Headout picks for guests</div>
@@ -152,7 +167,7 @@
     </div>
 
     <!-- TOURIST DESK -->
-    <div>
+    <div class="pcard" data-type="tourist-desk" data-reveal="up" style="--reveal-delay:300ms">
       <div class="phone">
         <div class="ms-hd">
           <div class="ms-promo">Headout picks for guests</div>
@@ -179,6 +194,24 @@
   </div>
 </div>
 
+<section class="reveal-band pf-dark">
+  <div class="inner">
+    <span class="kicker" style="background:var(--white-a10);color:var(--purps-100)" data-reveal="up">The reveal</span>
+    <h2 class="display-m" data-reveal="up" style="--reveal-delay:80ms">One engine. Every kind of place.</h2>
+    <p data-reveal="up" style="--reveal-delay:140ms">The same Headout brand, the same real inventory — only the guest's context changes. Set it up once, for whatever has footfall.</p>
+    <div class="reveal-stat" data-reveal="up" style="--reveal-delay:200ms">
+      <span class="v">1</span><span class="l">engine &amp;<br>storefront</span>
+      <span class="x">×</span>
+      <span class="v">∞</span><span class="l">trusted<br>places</span>
+    </div>
+    <div class="reveal-actions" data-reveal="up" style="--reveal-delay:260ms">
+      <a class="ho-btn ho-btn--white ho-btn--lg" href="01-place-setup.html">Set up your place</a>
+      <a class="ho-btn ho-btn--secondary ho-btn--lg" href="00-landing.html" style="background:transparent;color:#fff;border-color:var(--white-a20)">Start over</a>
+    </div>
+  </div>
+</section>
+
+<div id="rail"></div>
 <nav class="journey-nav">
   <div class="journey-actions">
     <a class="ho-btn ho-btn--secondary" href="03-partner-dashboard.html?v=journey">Analytics dashboard</a>
@@ -218,6 +251,30 @@
   mini('m2',[41.9038,12.4665],14,[41.9075,12.4640],[41.9000,12.4690],FOOD);
   mini('m3',[41.8974,12.4906],13,[41.9046,12.4889],[41.8902,12.4922],COLOSSEUM);
   mini('m4',[41.9046,12.4555],15,[41.9069,12.4570],[41.9022,12.4539],STPETERS);
+</script>
+<script src="../assets/partner-motion.js"></script>
+<script>
+  // chip-driven emphasis of the matching phone
+  const chips=document.querySelectorAll('#typeChips .ho-chip');
+  const cards=document.querySelectorAll('.pcard');
+  function emphasize(type){
+    cards.forEach(c=>{
+      const match=c.dataset.type===type;
+      c.classList.toggle('is-emph',match);
+      c.classList.toggle('is-dim',!match);
+    });
+  }
+  chips.forEach(chip=>chip.addEventListener('click',()=>{
+    chips.forEach(c=>c.classList.remove('is-selected'));
+    chip.classList.add('is-selected');
+    emphasize(chip.dataset.type);
+  }));
+  emphasize('hotel');
+
+  if(window.PF){
+    PF.rail(['Set up','QR kit','Guest scan','Earnings','Any place'], 4, '#rail');
+    PF.pageTransition();
+  }
 </script>
 </body>
 </html>

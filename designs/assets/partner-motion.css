@@ -1,0 +1,97 @@
+/* ─────────────────────────────────────────────────────────────
+   Partner Motion — shared motion + cinematic skin for the
+   Headout Here partner journey (00→04).
+   Pure CSS, no deps. Built on eevee.css tokens. Honors
+   prefers-reduced-motion. Pairs with partner-motion.js.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── page transition (filmic cut between steps) ── */
+.pf-fade{opacity:0;transition:opacity .42s ease}
+.pf-fade.is-ready{opacity:1}
+.pf-fade.is-leaving{opacity:0;transition:opacity .26s ease}
+
+/* ── reveal on scroll ── */
+[data-reveal]{opacity:0;will-change:transform,opacity;transition:opacity .62s cubic-bezier(.22,1,.36,1),transform .62s cubic-bezier(.22,1,.36,1);transition-delay:var(--reveal-delay,0ms)}
+[data-reveal="up"]{transform:translateY(26px)}
+[data-reveal="down"]{transform:translateY(-22px)}
+[data-reveal="left"]{transform:translateX(28px)}
+[data-reveal="right"]{transform:translateX(-28px)}
+[data-reveal="scale"]{transform:scale(.92)}
+[data-reveal="rise"]{transform:translateY(40px) scale(.97)}
+[data-reveal].is-in{opacity:1;transform:none}
+
+/* ── number count-up shimmer ── */
+.pf-counting{background:linear-gradient(90deg,currentColor 0%,currentColor 40%,rgba(255,255,255,.65) 50%,currentColor 60%,currentColor 100%);background-size:280% 100%;-webkit-background-clip:text;background-clip:text;animation:pfShimmer 1s ease-out}
+@keyframes pfShimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+
+/* ── coin / commission "land" pop ── */
+@keyframes pfPop{0%{transform:translateY(10px) scale(.7);opacity:0}55%{transform:translateY(-4px) scale(1.08);opacity:1}100%{transform:translateY(0) scale(1);opacity:1}}
+.pf-pop{animation:pfPop .5s cubic-bezier(.22,1,.36,1)}
+
+/* ── soft tile bump (used when a live value updates) ── */
+@keyframes pfBump{0%{transform:scale(1)}40%{transform:scale(1.04)}100%{transform:scale(1)}}
+.pf-bump{animation:pfBump .5s ease}
+
+/* ── sheen sweep across a card ── */
+.pf-sheen{position:relative;overflow:hidden}
+.pf-sheen::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);
+  transform:skewX(-18deg);animation:pfSweep 3.6s ease-in-out infinite;pointer-events:none}
+@keyframes pfSweep{0%{left:-60%}28%,100%{left:140%}}
+
+/* ── glow pulse halo ── */
+@keyframes pfGlow{0%,100%{box-shadow:0 0 0 0 rgba(128,0,255,.36)}50%{box-shadow:0 0 0 14px rgba(128,0,255,0)}}
+.pf-glow{animation:pfGlow 2.6s ease-out infinite}
+
+/* ── confetti burst ── */
+.pf-confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.pf-confetti i{position:absolute;top:-12px;width:9px;height:14px;border-radius:2px;opacity:0;animation:pfFall var(--cf-dur,2.4s) var(--cf-delay,0s) cubic-bezier(.3,.6,.5,1) forwards}
+@keyframes pfFall{0%{opacity:0;transform:translateY(-10px) rotate(0)}10%{opacity:1}100%{opacity:0;transform:translateY(105vh) rotate(var(--cf-rot,540deg))}}
+
+/* ── cinematic dark skin (shared by 00 / 02 / 04 "show" moments) ── */
+.pf-dark{position:relative;overflow:hidden;color:var(--text-white);
+  background:linear-gradient(165deg,var(--surface-dark-primary-1),var(--surface-dark-primary-2) 52%,var(--surface-dark-primary-3))}
+.pf-dark::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(128,0,255,.55),transparent 70%);top:-150px;right:-120px;pointer-events:none}
+.pf-dark::after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,102,175,.22),transparent 70%);bottom:-160px;left:-80px;pointer-events:none}
+.pf-dark > *{position:relative;z-index:1}
+
+/* ── live "just landed" ping toast (top-anchored, distinct from .toast) ── */
+.pf-ping{position:fixed;top:18px;right:18px;z-index:50;display:flex;align-items:center;gap:10px;
+  background:var(--white);border:1px solid var(--divider);border-radius:var(--r-12);
+  padding:11px 14px;box-shadow:var(--shadow-3);min-width:230px;
+  transform:translateX(120%);opacity:0;transition:transform .42s cubic-bezier(.22,1,.36,1),opacity .42s}
+.pf-ping.is-in{transform:translateX(0);opacity:1}
+.pf-ping .ic{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:var(--okay-200);color:var(--okay-700)}
+.pf-ping .ic .ee-icon{width:18px;height:18px;stroke-width:2.4}
+.pf-ping .tx{line-height:1.3}
+.pf-ping .tx b{display:block;font-size:13px;color:var(--text-1);font-weight:600}
+.pf-ping .tx span{font-size:11.5px;color:var(--text-3)}
+.pf-ping .amt{margin-left:auto;font-family:var(--font-hd);font-weight:500;font-size:16px;color:var(--okay-700)}
+
+/* ── journey progress rail (sits above .journey-nav) ── */
+.pf-rail{display:flex;align-items:center;justify-content:center;gap:0;max-width:1080px;margin:0 auto;padding:18px 24px 2px}
+.pf-rail .seg{display:flex;align-items:center;gap:0}
+.pf-rail .node{display:flex;flex-direction:column;align-items:center;gap:7px;position:relative}
+.pf-rail .dot{width:13px;height:13px;border-radius:50%;background:var(--grey-300);border:2px solid var(--surface-1);box-shadow:0 0 0 2px var(--grey-300);transition:.3s}
+.pf-rail .lbl{font-size:11px;font-weight:500;color:var(--text-3);white-space:nowrap}
+.pf-rail .bar{width:48px;height:2px;background:var(--grey-300);margin:0 6px;margin-bottom:24px;border-radius:2px;transition:.3s}
+.pf-rail .node.done .dot{background:var(--purps);box-shadow:0 0 0 2px var(--purps)}
+.pf-rail .node.done .lbl{color:var(--text-2)}
+.pf-rail .node.active .dot{background:var(--purps);box-shadow:0 0 0 2px var(--purps),0 0 0 6px var(--purps-20)}
+.pf-rail .node.active .lbl{color:var(--text-primary);font-weight:600}
+.pf-rail .seg.done .bar{background:var(--purps)}
+@media(max-width:680px){.pf-rail .lbl{display:none}.pf-rail .bar{width:30px;margin-bottom:0}.pf-rail .node{gap:0}}
+
+/* ── reduced motion: snap everything, kill loops ── */
+@media (prefers-reduced-motion: reduce){
+  .pf-fade,.pf-fade.is-ready,.pf-fade.is-leaving{opacity:1!important;transition:none!important}
+  [data-reveal]{opacity:1!important;transform:none!important;transition:none!important}
+  .pf-counting{animation:none!important;-webkit-text-fill-color:currentColor;color:inherit}
+  .pf-pop,.pf-bump,.pf-glow{animation:none!important}
+  .pf-sheen::after{animation:none!important;display:none}
+  .pf-confetti{display:none!important}
+  .pf-ping{transition:opacity .2s!important;transform:none!important}
+}
