@@ -4,60 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Headout Here — Partner Flow Designs</title>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/eevee.css">
 <style>
-  :root{
-    --purps:#8000FF; --purps-600:#6A00D6; --purps-tint:#F4ECFF; --candy:#FF0A6C;
-    --slate:#16161D; --ink-2:#4A4A57; --ink-3:#8A8A99; --line:#E7E4F0; --bg:#FBFAFF; --white:#fff;
-    --r:18px; --shadow:0 8px 30px rgba(24,8,60,.08); --shadow-lg:0 24px 70px rgba(24,8,60,.16);
-    --font:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--font);background:var(--bg);color:var(--slate);line-height:1.45}
-  .hero{background:linear-gradient(165deg,#1B0B2E,#2A0F47 60%,#3A1466);color:#fff;padding:64px 32px 72px;position:relative;overflow:hidden}
-  .hero::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(128,0,255,.45),transparent 70%);top:-120px;right:-100px}
+  body{background:var(--surface-1)}
+  .hero{background:linear-gradient(165deg,var(--purps-900),var(--purps-800) 55%,var(--purps-600));color:#fff;padding:48px 28px 64px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(128,0,255,.5),transparent 70%);top:-130px;right:-110px}
   .inner{max-width:1080px;margin:0 auto;position:relative;z-index:1}
-  .logo{display:flex;align-items:center;gap:9px;font-weight:900;font-size:22px;letter-spacing:-.02em;margin-bottom:26px}
-  .logo .h{color:#C9A8FF}
-  .blimp{width:32px;height:23px}
-  .kicker{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#E6D4FF;background:rgba(255,255,255,.12);padding:7px 14px;border-radius:99px;margin-bottom:20px}
-  h1{font-size:46px;font-weight:900;letter-spacing:-.035em;line-height:1.05;max-width:760px}
-  h1 .grad{background:linear-gradient(90deg,#C9A8FF,#FF7DB8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .lede{color:#C7BBDB;font-size:18px;max-width:620px;margin-top:16px}
-  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
-  .tag{font-size:12.5px;font-weight:700;color:#E6D4FF;background:rgba(255,255,255,.1);padding:8px 14px;border-radius:99px}
-  .wrap{max-width:1080px;margin:-36px auto 0;padding:0 32px 72px;position:relative;z-index:2}
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-  .card{display:block;text-decoration:none;color:inherit;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line);transition:transform .18s,box-shadow .18s}
-  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
-  .thumb{height:230px;overflow:hidden;position:relative;background:#fff;border-bottom:1px solid var(--line)}
+  .inner .logo img{height:20px;filter:none}
+  .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:var(--purps-100);background:rgba(255,255,255,.12);padding:7px 14px;border-radius:var(--r-pill);margin:22px 0 18px}
+  .hero h1{max-width:760px}
+  .hero h1 .grad{background:linear-gradient(90deg,#cc99ff,#ff66af);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .lede{color:rgba(255,255,255,.8);font-size:17px;max-width:600px;margin-top:14px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .meta .tag{font-size:12px;font-weight:500;color:#fff;background:rgba(255,255,255,.12);padding:7px 13px;border-radius:var(--r-pill)}
+  .wrap{max-width:1080px;margin:-32px auto 0;padding:0 28px 40px;position:relative;z-index:2}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+  .card{display:block;color:inherit;background:#fff;border-radius:var(--r-16);overflow:hidden;box-shadow:var(--shadow-1);border:1px solid var(--divider);transition:transform .18s,box-shadow .18s}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-3)}
+  .thumb{height:230px;overflow:hidden;position:relative;background:#fff;border-bottom:1px solid var(--divider)}
   .thumb iframe{width:1280px;height:820px;border:0;transform:scale(.36);transform-origin:top left;pointer-events:none}
-  .num{position:absolute;top:14px;left:14px;width:30px;height:30px;border-radius:9px;background:var(--purps);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 4px 12px rgba(128,0,255,.35)}
+  .num{position:absolute;top:14px;left:14px;width:30px;height:30px;border-radius:var(--r-8);background:var(--purps);color:#fff;font-weight:600;font-size:14px;display:flex;align-items:center;justify-content:center;z-index:2;box-shadow:0 4px 12px rgba(128,0,255,.35)}
   .cap{padding:18px 22px 20px}
-  .cap h3{font-size:19px;font-weight:800;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+  .cap h3{font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
   .cap .arrow{color:var(--purps);transition:transform .18s}
   .card:hover .arrow{transform:translateX(4px)}
-  .cap p{color:var(--ink-2);font-size:14px;margin-top:5px}
+  .cap p{color:var(--text-2);font-size:14px;margin-top:5px}
   .full{grid-column:1 / -1}
   .full .thumb{height:200px}
-  .foot{max-width:1080px;margin:0 auto;padding:0 32px 64px;color:var(--ink-3);font-size:13px;line-height:1.7}
-  .foot b{color:var(--ink-2)}
-  .foot a{color:var(--purps);font-weight:600;text-decoration:none}
-  @media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:34px}}
+  .foot{max-width:1080px;margin:0 auto;padding:0 28px 56px;color:var(--text-3);font-size:13px;line-height:1.7}
+  .foot b{color:var(--text-2)} .foot a{color:var(--text-primary);font-weight:600}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
   <div class="hero">
     <div class="inner">
-      <div class="logo">
-        <svg class="blimp" viewBox="0 0 40 28" fill="none"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#A64DFF"/><path d="M4 12 L-2 7 L-2 17 Z" fill="#A64DFF"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#A64DFF"/><circle cx="24" cy="12" r="2.4" fill="#1B0B2E"/></svg>
-        headout <span class="h">Here</span>
-      </div>
+      <a class="ho-logo logo" href="../index.html" aria-label="Headout"><img src="assets/headout-logo-white.svg" alt="Headout"></a>
       <span class="kicker">Hackin '26 · Design</span>
-      <h1>The <span class="grad">partner flow</span>, end to end.</h1>
-      <p class="lede">How any trusted place becomes a Headout-branded storefront — set up in 60 seconds, generate a branded QR, and watch commission land live. Built on the Headout brand.</p>
+      <h1 class="display-l">The <span class="grad">partner flow</span>, end to end.</h1>
+      <p class="lede">How any trusted place becomes a Headout-branded storefront — set up in 60 seconds, generate a branded QR, and watch commission land live. Built on the real Eevee design system.</p>
       <div class="meta">
-        <span class="tag">5 screens</span><span class="tag">Mobile + desktop</span><span class="tag">Seed data: Rome</span><span class="tag">Purps #8000FF · Halyard/Figtree</span>
+        <span class="tag">5 screens</span><span class="tag">Mobile + desktop</span><span class="tag">Seed data: Rome</span><span class="tag">Eevee tokens · Halyard</span>
       </div>
     </div>
   </div>
@@ -82,13 +69,13 @@
       </a>
       <a class="card full" href="foundations/index.html">
         <div class="thumb"><span class="num">✦</span><iframe src="foundations/index.html" loading="lazy" scrolling="no"></iframe></div>
-        <div class="cap"><h3>Foundations <span class="arrow">→</span></h3><p>The token set every screen is built on — palette, type, buttons, co-brand lockup.</p></div>
+        <div class="cap"><h3>Foundations <span class="arrow">→</span></h3><p>The real Eevee token set, Halyard type &amp; brand components every screen is built on.</p></div>
       </a>
     </div>
   </div>
 
   <div class="foot">
-    <p><b>Note on brand fidelity:</b> these use Headout's real <b>Purps #8000FF</b> and the named brand palette, with <b>Figtree</b> standing in for the licensed <b>Halyard</b> family. To be re-skinned against live Eevee design-system tokens when available. · <a href="../">← Back to master doc</a></p>
+    <p><b>Brand fidelity:</b> built on Headout's real <b>Eevee design system</b> — tokens, text styles &amp; component anatomy pulled live from the <b>oak</b> MCP, real <b>Halyard</b> from Adobe Fonts, and the official Headout logo. · <a href="../">← Back to master doc</a></p>
   </div>
 </body>
 </html>

@@ -5,74 +5,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>04 · Place-Type Switcher</title>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/eevee.css">
 <style>
-  :root{
-    --purps:#8000FF; --purps-600:#6A00D6; --purps-tint:#F4ECFF; --candy:#FF0A6C;
-    --slate:#16161D; --ink-2:#4A4A57; --ink-3:#8A8A99; --line:#E7E4F0;
-    --bg:#FBFAFF; --white:#fff;
-    --r:18px; --r-sm:12px; --shadow:0 8px 30px rgba(24,8,60,.08); --shadow-lg:0 24px 70px rgba(24,8,60,.16);
-    --font:"Figtree",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--font);background:var(--bg);color:var(--slate);line-height:1.4}
-  .top{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid var(--line);background:#fff}
-  .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:20px;letter-spacing:-.02em}
-  .blimp{width:30px;height:21px}.logo .h{color:var(--purps)}
-  .badge{font-size:12px;font-weight:800;color:var(--purps);background:var(--purps-tint);padding:6px 12px;border-radius:99px}
-  .head{text-align:center;padding:40px 20px 4px}
-  .head h1{font-size:34px;font-weight:900;letter-spacing:-.03em}
-  .head p{color:var(--ink-2);font-size:16px;margin-top:8px;max-width:620px;margin-left:auto;margin-right:auto}
-  .head p b{color:var(--purps-600)}
-  /* switch */
-  .switch{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:28px 0 10px}
-  .switch .opt{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:11px 20px;border-radius:99px;border:1.5px solid var(--line);background:#fff;color:var(--ink-2);cursor:pointer}
-  .switch .opt.on{background:var(--purps);color:#fff;border-color:var(--purps);box-shadow:0 8px 22px rgba(128,0,255,.28)}
-  .same{text-align:center;font-size:13px;font-weight:700;color:var(--ink-3);margin-bottom:30px}
-  .same b{color:var(--purps)}
-  /* phone row */
-  .phones{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;padding:0 32px 60px}
-  .phone{width:240px;border:9px solid #16161D;border-radius:36px;overflow:hidden;background:#fff;box-shadow:var(--shadow-lg)}
-  .ph-head{padding:18px 16px 16px;color:#fff;position:relative}
-  .ho-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.18);padding:3px 9px;border-radius:99px;font-size:10px;font-weight:800;margin-bottom:9px}
-  .cb{font-size:13px;font-weight:800}
-  .cb .x{opacity:.7;font-weight:500}
-  .ph-type{font-size:11px;font-weight:700;opacity:.8;margin-top:2px;text-transform:uppercase;letter-spacing:.06em}
-  .ph-body{padding:14px}
-  .ask{border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-size:12px;color:var(--ink-3);display:flex;justify-content:space-between;align-items:center}
-  .ask .send{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-  .chips span{font-size:10.5px;font-weight:600;padding:6px 10px;border-radius:99px}
-  .rec{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:11px}
-  .rec .t{font-size:12px;font-weight:800}
-  .rec .why{font-size:9.5px;font-weight:700;margin-top:4px;color:#1FC07A}
-  .rec .pr{display:flex;justify-content:space-between;align-items:center;margin-top:9px}
-  .rec .price{font-size:13px;font-weight:800}
-  .rec .book{font-size:10.5px;font-weight:800;color:#fff;background:var(--candy);padding:5px 13px;border-radius:99px}
-  .label{text-align:center;font-size:13px;font-weight:800;margin-top:14px;color:var(--ink-2)}
-  /* per-type accent via inline */
+  body{background:var(--surface-1)}
+  .wrap{max-width:1080px;margin:0 auto;padding:30px 24px 64px;text-align:center}
+  .kicker{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--text-primary);background:var(--purps-20);padding:6px 12px;border-radius:var(--r-pill);margin-bottom:14px}
+  .lede{color:var(--text-2);max-width:600px;margin:8px auto 0}
+  .types{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:22px 0 6px}
+  .same{font-size:13px;color:var(--text-primary);font-weight:500;margin-bottom:24px}
+  .same b{font-weight:700}
+  .phones{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .phone{border:8px solid var(--grey-900);border-radius:28px;overflow:hidden;background:#fff;box-shadow:var(--shadow-2);text-align:left}
+  .ph-head{color:#fff;padding:13px 13px 12px}
+  .ho-pill{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:500;opacity:.9}
+  .cb{font-weight:600;font-size:13.5px;margin-top:3px} .cb .x{font-weight:500;opacity:.85}
+  .ph-type{font-size:10.5px;opacity:.8;margin-top:1px}
+  .ph-body{padding:12px}
+  .ask{background:var(--grey-100);border-radius:var(--r-pill);padding:9px 12px;font-size:11.5px;color:var(--text-2);display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .ask .send{color:#fff;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:11px;flex:none}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+  .chips span{font-size:10px;padding:4px 8px;border-radius:var(--r-pill)}
+  .rec{border:1px solid var(--divider);border-radius:var(--r-12);padding:10px}
+  .rec .t{font-weight:600;font-size:12px} .rec .why{font-size:10px;color:var(--text-positive);margin:4px 0 8px}
+  .rec .pr{display:flex;justify-content:space-between;align-items:center}
+  .rec .price{font-weight:600;font-size:13px} .rec .book{background:var(--purps);color:#fff;font-size:10.5px;font-weight:500;padding:5px 11px;border-radius:var(--r-pill)}
+  .label{text-align:center;font-size:12px;color:var(--text-3);font-style:italic;margin-top:10px}
+  @media(max-width:860px){.phones{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.phones{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-  <div class="top">
-    <span class="logo">
-      <svg class="blimp" viewBox="0 0 40 28" fill="none"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#8000FF"/><path d="M4 12 L-2 7 L-2 17 Z" fill="#8000FF"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#8000FF"/><circle cx="24" cy="12" r="2.4" fill="#fff"/></svg>
-      headout <span class="h">Here</span>
-    </span>
-    <span class="badge">The reveal · place-agnostic</span>
-  </div>
+<header class="ho-header">
+  <a class="ho-logo" href="../index.html" aria-label="Headout"><img src="../assets/headout-logo-purps.svg" alt="Headout"></a>
+  <span style="font-size:13px;color:var(--text-2)">The reveal · one engine, every place</span>
+</header>
 
-  <div class="head">
-    <h1>One engine. Any trusted place.</h1>
-    <p>Flip the place type and the header, copy, chips &amp; CTA re-skin instantly — but it’s <b>the same Headout brand, the same engine</b>. Hotels were never the point.</p>
-  </div>
+<div class="wrap">
+  <span class="kicker">Same engine · any trusted surface</span>
+  <h1 class="display-s">One Headout Here, every kind of place</h1>
+  <p class="lede para-m">The setup form re-skins the same concierge for whatever has footfall — the guest just asks, in context.</p>
 
-  <div class="switch">
-    <span class="opt on">🏨 Hotel</span>
-    <span class="opt">☕ Café</span>
-    <span class="opt">🛋️ Lounge</span>
-    <span class="opt">🎭 Venue</span>
-    <span class="opt">🗺️ Tourist desk</span>
+  <div class="types">
+    <span class="ho-chip is-selected">🏨 Hotel</span>
+    <span class="ho-chip">☕ Café</span>
+    <span class="ho-chip">🛋️ Lounge</span>
+    <span class="ho-chip">🎭 Venue</span>
+    <span class="ho-chip">🗺️ Tourist desk</span>
   </div>
   <div class="same">Same Headout brand &amp; engine — only the <b>context</b> changes ↓</div>
 
@@ -80,7 +58,7 @@
     <!-- HOTEL -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:#1B4B5A">
+        <div class="ph-head" style="background:linear-gradient(135deg,#1B4B5A,#123640)">
           <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
           <div class="cb">Casa Aurelia <span class="x">× Headout</span></div>
           <div class="ph-type">Hotel · Rome</div>
@@ -97,7 +75,7 @@
     <!-- CAFÉ -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:#B5651D">
+        <div class="ph-head" style="background:linear-gradient(135deg,#B5651D,#8a4d16)">
           <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
           <div class="cb">Caffè Prati <span class="x">× Headout</span></div>
           <div class="ph-type">Café · Rome</div>
@@ -114,7 +92,7 @@
     <!-- VENUE -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:#3A1D6E">
+        <div class="ph-head" style="background:linear-gradient(135deg,#3A1D6E,#2a1550)">
           <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
           <div class="cb">Teatro Sistina <span class="x">× Headout</span></div>
           <div class="ph-type">Venue · Rome</div>
@@ -131,7 +109,7 @@
     <!-- TOURIST DESK -->
     <div>
       <div class="phone">
-        <div class="ph-head" style="background:#2E7D32">
+        <div class="ph-head" style="background:linear-gradient(135deg,#2E7D32,#1f5a23)">
           <span class="ho-pill"><svg width="13" height="9" viewBox="0 0 40 28"><ellipse cx="19" cy="12" rx="17" ry="9.5" fill="#fff"/><rect x="13" y="20" width="12" height="5" rx="2.5" fill="#fff"/></svg> headout</span>
           <div class="cb">Prati Visitor Desk <span class="x">× Headout</span></div>
           <div class="ph-type">Tourist desk · Rome</div>
@@ -145,5 +123,6 @@
       <div class="label">“In my language.”</div>
     </div>
   </div>
+</div>
 </body>
 </html>
