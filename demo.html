@@ -68,19 +68,22 @@
   .cta:hover{transform:translateY(-2px);box-shadow:0 22px 52px -14px rgba(255,102,175,.75)}
   .cta svg{width:18px;height:18px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
   .cta-note{font-size:13px;color:var(--muted);max-width:42ch}
-
-  /* what's in the video */
-  section{padding:54px 0;border-top:1px solid var(--line)}
-  .shead{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
-  .snum{font-family:var(--mono);font-size:13px;color:var(--accent-2)}
-  h2{font-size:clamp(22px,3.2vw,30px);letter-spacing:-.02em;font-weight:700;margin:0}
-  .sdesc{color:var(--muted);font-size:15px;max-width:64ch;margin:0 0 28px}
-
-  .beats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-  .beat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 16px 20px}
-  .beat .t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2);margin-bottom:10px}
-  .beat h3{margin:0 0 6px;font-size:15.5px;font-weight:600}
-  .beat p{margin:0;font-size:13px;color:var(--muted)}
+  .vote-card{max-width:720px;margin:30px auto 0;padding:22px 24px;border:1px solid rgba(199,156,255,.28);
+    border-radius:var(--r);background:linear-gradient(140deg,rgba(255,255,255,.075),rgba(255,255,255,.035));
+    box-shadow:0 26px 80px -54px rgba(199,156,255,.72);text-align:left}
+  .vote-kicker{font-family:var(--mono);font-size:12px;color:var(--accent);margin:0 0 8px}
+  .vote-card h2{font-size:22px;line-height:1.2;margin:0 0 10px}
+  .vote-card p{margin:0;color:var(--muted);font-size:14px;max-width:60ch}
+  .emoji{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+  .custom-emoji{width:22px;height:22px;display:inline-block;vertical-align:-6px;margin:0 3px}
+  .custom-reaction{display:inline-flex;align-items:center;gap:7px;color:var(--text);font-weight:700}
+  .custom-reaction code{font-family:var(--mono);font-size:12px;color:var(--accent)}
+  .vote-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}
+  .vote-actions .slack-cta{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-weight:700;font-size:14px;
+    color:var(--ground);background:var(--live);border-radius:var(--r-pill);padding:12px 18px;
+    box-shadow:0 14px 34px -18px rgba(73,238,156,.9);transition:transform .15s,box-shadow .2s}
+  .vote-actions .slack-cta:hover{transform:translateY(-2px);box-shadow:0 20px 44px -18px rgba(73,238,156,1)}
+  .vote-hint{font-family:var(--mono);font-size:12px;color:var(--muted)}
 
   footer{padding:46px 0 70px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
   .flinks{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
@@ -88,9 +91,6 @@
     border:1px solid var(--line);border-radius:var(--r-pill);padding:7px 13px;transition:border-color .2s,color .2s}
   .flinks a:hover{border-color:var(--accent);color:var(--accent)}
 
-  @media(max-width:760px){
-    .beats{grid-template-columns:repeat(2,1fr)}
-  }
   @media(prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -106,6 +106,16 @@
 
     <h1>Watch a place turn into a <span class="grad">storefront.</span></h1>
     <p class="lede">Two minutes, end to end: a partner sets up a place, a guest scans the QR on the wall, books on Headout, and the commission lands on the dashboard — live.</p>
+
+    <aside class="vote-card" aria-label="Vote for HERE by Headout">
+      <p class="vote-kicker">Hackin&rsquo;26 voting</p>
+      <h2>Vote for HERE by Headout.</h2>
+      <p>If the 2-minute demo clicks, vote on the Hackin&rsquo;26 Slack thread with <span class="custom-reaction"><img class="custom-emoji" src="designs/assets/take-my-money-hackin.png" alt=""> <code>:take-my-money-hackin:</code></span></p>
+      <div class="vote-actions">
+        <a class="slack-cta" href="https://headout.slack.com/archives/C0B7FFRCRH7/p1781904079151669" target="_blank" rel="noopener">Vote on Slack</a>
+        <span class="vote-hint">React with <span class="custom-reaction"><img class="custom-emoji" src="designs/assets/take-my-money-hackin.png" alt=""> <code>:take-my-money-hackin:</code></span></span>
+      </div>
+    </aside>
 
     <!-- THE VIDEO -->
     <div class="stage">
@@ -128,20 +138,6 @@
     </div>
   </div>
 </header>
-
-<!-- WHAT YOU'LL SEE -->
-<section id="beats">
-  <div class="wrap">
-    <div class="shead"><span class="snum">01</span><h2>What you&rsquo;ll see</h2></div>
-    <p class="sdesc">The whole pitch is one loop. Each beat in the video maps to a real backend job — nothing on screen is faked.</p>
-    <div class="beats">
-      <div class="beat"><div class="t">Setup</div><h3>Claim a place</h3><p>A partner names their place and its surfaces, and gets a QR kit back in seconds.</p></div>
-      <div class="beat"><div class="t">Scan</div><h3>Guest at the wall</h3><p>A phone scans the QR; a co-branded storefront opens, attributed to that exact spot.</p></div>
-      <div class="beat"><div class="t">Book</div><h3>Books on Headout</h3><p>The guest books an experience. Commission is captured at 8%, tied to the placement.</p></div>
-      <div class="beat"><div class="t">Live</div><h3>Dashboard pings</h3><p>The earning shows up on the partner dashboard instantly over SSE — no refresh.</p></div>
-    </div>
-  </div>
-</section>
 
 <footer>
   <div class="wrap">
